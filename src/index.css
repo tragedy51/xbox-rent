@@ -1,0 +1,65 @@
+@font-face {
+	font-family: 'SF Pro Display Regular';
+	src: url('./fonts/SFPRODISPLAYREGULAR.OTF') format('OTF');
+	font-weight: 400;
+	font-style: normal;
+}
+
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	font-family: 'SF Pro Display', sans-serif;
+	color: white;
+}
+
+body {
+	min-height: 100vh;
+	min-height: 100svh;
+	overflow-x: hidden;
+	background: url(./assets/main-bg.jpg) no-repeat 50% / cover,
+		linear-gradient(90deg, #132539, #1d212e);
+		background-attachment: fixed;
+}
+
+img {
+	width: 100%;
+	display: block;
+}
+
+button {
+	border: none;
+	outline: none;
+	background: none;
+	cursor: pointer;
+}
+
+section {
+	margin-bottom: 1.75rem;
+}
+
+section .section-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 1.5rem;
+	gap: .5rem;
+}
+
+.section-title {
+	font-size: 1.5rem;
+	line-height: 2rem;
+	display: flex;
+	align-items: center;
+	gap: 0.75rem;
+}
+
+.wrapper {
+	width: min(1100px, 100% - 32px);
+	margin: 0 auto;
+}
+
+.wrapper-left {
+	width: 100%;
+	padding-left: 16px;
+}

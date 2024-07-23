@@ -1,0 +1,28 @@
+.hotNewGamesSection {
+	background-position: center;
+	background-size: cover;
+	background-repeat: no-repeat;
+}
+
+.blurBg {
+	background: rgb(0 0 0 / 0.5);
+	padding: 20px 0 28px;
+	backdrop-filter: blur(8px);
+}
+
+.input {
+	margin-bottom: 32px;
+}
+
+.hotNewGamesSection h3 {
+	justify-content: center;
+	margin-bottom: 16px;
+}
+
+.slide img {
+	transform: scale(0.8);
+}
+
+.activeSlide img {
+	transform: scale(1);
+}

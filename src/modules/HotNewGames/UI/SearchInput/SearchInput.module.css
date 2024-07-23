@@ -1,0 +1,28 @@
+.inputCont {
+	border-radius: 99px;
+	position: relative;
+}
+
+.inputCont svg {
+	position: absolute;
+	left: 1rem;
+	top: 50%;
+	transform: translateY(-50%);
+	fill: rgb(156 163 175);
+}
+
+.inputCont input {
+	padding: 12px 12px 12px 40px;
+	color: rgb(156 163 175);
+	border: 1px solid rgb(75 85 99);
+	border-radius: 99px;
+	width: 100%;
+	background: rgb(35 34 34);
+	font-size: 1.125rem;
+	line-height: 1.75rem;
+	outline: none;
+}
+
+.inputCont input:focus {
+	border-color: rgb(21 128 61);
+}

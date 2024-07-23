@@ -1,0 +1,44 @@
+.categoryTitle {
+	margin: 1rem 0;
+	font-size: 1.5rem;
+	line-height: 2rem;
+}
+
+.categoryTitle span {
+	font-size: 1rem;
+	line-height: 1.5rem;
+}
+
+section .categoryFilter {
+	backdrop-filter: blur(4px);
+	background-color: rgb(55 65 81 / 0.4);
+	height: 100%;
+	margin-bottom: 1.75rem;
+	padding: 1rem 0;
+	border-radius: 0.5rem;
+}
+
+.categoryFilterCards {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 1rem;
+	margin-bottom: 0.7rem;
+	overflow: hidden;
+	position: relative;
+}
+
+.shadow {
+	box-shadow: 0 0 5px 5px #23313b;
+	position: absolute;
+	width: 100%;
+	bottom: 0;
+	left: 0;
+}
+
+.dropdownButton {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 100%;
+	gap: 0.25rem;
+}

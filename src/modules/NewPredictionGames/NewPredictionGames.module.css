@@ -1,0 +1,11 @@
+.NewPredictionGames {
+	background-position: center;
+	background-size: cover;
+	background-repeat: no-repeat;
+}
+
+.blurBg {
+	background: rgb(0 0 0 / 0.5);
+	backdrop-filter: blur(8px);
+	padding: 1.75rem 0;
+}
