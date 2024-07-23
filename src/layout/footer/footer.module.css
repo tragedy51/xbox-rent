@@ -1,0 +1,8 @@
+.footer {
+	background: rgb(35 34 34 / 0.7);
+}
+
+.footer nav {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+}

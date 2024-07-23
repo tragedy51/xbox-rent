@@ -32,6 +32,7 @@ const SectionWithSlide = ({
 								gameTitle={slide.gameTitle}
 								gamePrice={slide.gamePrice}
 								gameDiscountPrice={slide.gameDiscountPrice}
+								preOrder={slide.preOrder}
 							/>
 						</SwiperSlide>
 					))}

@@ -4,6 +4,22 @@
 	background-color: rgb(55 65 81 / 0.4);
 }
 
+.banner {
+	background: #efd000;
+	color: #000000;
+	position: absolute;
+	padding: 5px;
+	border-radius: 5px;
+	bottom: 10px;
+	right: 0px;
+	font-size: 12px;
+	font-weight: 600;
+}
+
+.imgWrapper {
+	position: relative;
+}
+
 .imgWrapper img {
 	border-top-left-radius: 0.5rem;
 	border-top-right-radius: 0.5rem;
@@ -20,7 +36,7 @@
 	font-size: 0.875rem;
 	line-height: 1.25rem;
 	white-space: nowrap;
-    text-overflow: ellipsis;
+	text-overflow: ellipsis;
 	overflow: hidden;
 }
 

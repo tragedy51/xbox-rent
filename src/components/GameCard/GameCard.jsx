@@ -1,10 +1,11 @@
 import cls from './GameCard.module.css';
 
-const GameCard = ({ imgSrc, gameTitle, gamePrice, gameDiscountPrice }) => {
+const GameCard = ({ imgSrc, gameTitle, gamePrice, gameDiscountPrice, preOrder=false }) => {
 	return (
 		<div className={cls.gameCard}>
 			<div className={cls.imgWrapper}>
 				<img src={imgSrc} alt='' loading='lazy' />
+				{preOrder && <p className={cls.banner}>Предзаказ</p>}
 			</div>
 			<div className={cls.gameInfo}>
 				<h2 className={cls.gameTitle}>{gameTitle}</h2>

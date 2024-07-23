@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 
 import cls from './Categories.module.css';
 import DropdownArrow from '../../assets/icons/dropdown-arrows-icon.svg?react';
+import HorrorCategoryBg from '../../assets/imgs/horror-category-bg.jpg';
 
 const CategoryFilter = () => {
 	const [isOpen, setIsOpen] = useState(false);
@@ -27,11 +28,6 @@ const CategoryFilter = () => {
 
 	return (
 		<section>
-			<div className='wrapper'>
-				<h3 className={`${cls.categoryTitle}`}>
-					Аренда игр <span>(285 position)</span>
-				</h3>
-			</div>
 			<div className={`${cls.categoryFilter} wrapper`}>
 				<div className='wrapper'>
 					<motion.div
@@ -40,9 +36,7 @@ const CategoryFilter = () => {
 						className={cls.categoryFilterCards}>
 						<CategoryCard
 							ref={categoryCardRef}
-							imgSrc={
-								'https://sun9-38.userapi.com/s/v1/ig2/4cvs3CLk9_l4kiKl_O18gmnfy7HeM-r84VoE90uaPtTXvFiD4nDdgcktvpKmkcnuwy4OhO_6uE2KCUAtTmhhtXgc.jpg?quality=96&as=32x18,48x27,72x40,108x61,160x90,240x135,360x202,480x270,540x304,640x360,720x405,1080x607,1280x720&from=bu&u=lweQaUprrjKdo9av2ogyUvdcMMf_ogQhv4V6e675Do0&cs=807x454'
-							}
+							imgSrc={HorrorCategoryBg}
 							category={'Хоррор'}
 						/>
 						<CategoryCard

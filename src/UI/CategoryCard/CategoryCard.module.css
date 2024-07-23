@@ -18,5 +18,21 @@
 .categoryCard span {
 	font-size: 0.74rem;
 	line-height: 1.06rem;
-    font-weight: 700;
+	font-weight: 700;
+}
+
+.text {
+	position: absolute;
+	width: 30px;
+	height: 30px;
+	/* backdrop-filter: blur(4px);
+	background-color: rgb(55 65 81 / 0.4); */
+	background: #ffffff;
+	color: #000000;
+	border-radius: 8px;
+	display: grid;
+	place-content: center;
+	top: 5px;
+	right: 5px;
+	font-weight: 600;
 }

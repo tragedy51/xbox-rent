@@ -6,6 +6,7 @@ export const games = [
 		gameTitle: 'GTA V',
 		imgSrc:
 			'https://project-green.ru/pgstore/webapp/fastapi/app/games/9MXMJFNZMVWD/images/tile.webp',
+		preOrder: true,
 	},
 	{
 		id: 2,
@@ -20,6 +21,7 @@ export const games = [
 		gameTitle: 'ARMORED CORE VI FIRES OF RUBICON',
 		imgSrc:
 			'https://project-green.ru/pgstore/webapp/fastapi/app/games/9P4SV7R7N3HW/images/tile.webp',
+		preOrder: true,
 	},
 	{
 		id: 4,
