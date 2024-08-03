@@ -1,8 +1,30 @@
 .footer {
-	background: rgb(35 34 34 / 0.7);
+	background: rgb(35 34 34 / 96%);
+	backdrop-filter: blur(8px);
+	padding: 8px 0 24px;
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	z-index: 999999999;
 }
 
 .footer nav {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
+	display: grid;
+	grid-template-columns: repeat(5, 1fr);
+}
+
+.footer nav a {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 40px;
+}
+
+.footer nav a.active svg {
+	fill: white;
+}
+
+.footer nav a svg {
+	fill: rgb(156 163 175);
 }

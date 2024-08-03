@@ -1,0 +1,25 @@
+.backdrop {
+	position: fixed;
+	inset: 0;
+	z-index: 99999999;
+	backdrop-filter: blur(4px);
+	background-color: rgb(17 24 39 / 0.5);
+}
+
+.modal {
+	position: absolute;
+	bottom: 82px;
+	left: 50%;
+	transform: translateX(-50%);
+}
+
+.closeModalBtn {
+	width: 100%;
+	margin-top: 0.5rem;
+	font-size: 1rem;
+	line-height: 1.5rem;
+	font-weight: 700;
+	border-radius: 0.5rem;
+	padding: 0.75rem;
+	background: #273446;
+}

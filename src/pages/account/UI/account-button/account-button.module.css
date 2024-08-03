@@ -1,0 +1,42 @@
+.button {
+	padding: 0 0.75rem 0;
+	padding-right: 0;
+	background: #1c1c1e;
+	width: 100%;
+	display: grid;
+	grid-template-columns: 32px 1fr;
+	align-items: center;
+	gap: 1rem;
+}
+
+.buttonContent {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	border-bottom: 1px solid #37415166;
+	padding: 0.625rem 0;
+}
+
+.arrow {
+	margin-right: 0.75rem;
+}
+
+.iconCont {
+	padding: 0.5rem;
+	border-radius: 0.5rem;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.btnText {
+	font-size: 1.125rem;
+	line-height: 1.75rem;
+}
+
+@media (max-width: 390px) {
+	.btnText {
+		font-size: 16px;
+		text-align: left;
+	}
+}

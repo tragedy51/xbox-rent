@@ -1,0 +1,80 @@
+main .gameInfoCont {
+    height: calc(100% - 30px - 50px - 72px + 40px);
+}
+
+.gameInfo img {
+	width: 100%;
+}
+
+.gameInfoHeader {
+	padding: 1rem 0 0;
+	border-top-left-radius: 0.75rem;
+	border-top-right-radius: 0.75rem;
+	background: rgb(35 34 34);
+    transform: translateY(-40px);
+}
+
+.gameInfoHeader p {
+	font-size: 1rem;
+	line-height: 1.06rem;
+	font-weight: 700;
+    border-bottom: 2px solid white;
+    width: max-content;
+    padding-bottom: 8px;
+}
+
+.gameInfoText {
+	white-space: pre-wrap;
+}
+
+.gameInfoMain {
+	background: rgb(35 34 34);
+    transform: translateY(-40px);
+}
+
+.gameInfo {
+	overflow: auto;
+	height: calc(100% - 30px - 50px - 72px);
+}
+
+.gameTitle {
+	display: grid;
+	grid-template-columns: 72px 1fr;
+	align-items: center;
+	gap: 15px;
+	padding: 15px 0;
+}
+
+.gameTitle img {
+	width: 100%;
+	height: 100%;
+	border-radius: 0.75rem;
+	object-fit: cover;
+}
+
+.gameTitle h2 {
+	font-size: 1.1rem;
+}
+
+.gameTitle span {
+	font-size: 0.74rem;
+	color: rgb(156 163 175);
+}
+
+.labels {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 1rem;
+	margin: 0 0 1rem;
+}
+
+.label {
+	flex-shrink: 0;
+	background-color: rgb(229 231 235);
+	padding: 0.25rem 0.75rem;
+	border-radius: 999px;
+	color: rgb(55 65 81);
+	font-size: 0.74rem;
+	font-weight: 600;
+	width: max-content;
+}

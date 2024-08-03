@@ -1,0 +1,41 @@
+body:has(.sheet) {
+    overflow: hidden;
+}
+
+.sheet {
+    height: 100vh;
+    height: 100dvh;
+    background: url('../../assets/main-bg.jpg') center/cover no-repeat;
+    position: fixed;
+    inset: 0;
+    top: 30px;
+    z-index: 99999;
+    border-top-left-radius: 25px;
+    border-top-right-radius: 25px;
+    /* padding-bottom: 10%; */
+}
+
+.sheetBody {
+   height: 100%;
+}
+
+.sheetHeader {
+    padding: 15px 0;
+}
+
+.closeBtn {
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.backdrop {
+    position: fixed;
+    inset: 0;
+    background: #00000080;
+    z-index: 9999;
+    backdrop-filter: blur(1px);
+}
+
+.sheetMain {
+    height: calc(100% - 30px - 50px - 72px);
+}

@@ -1,0 +1,14 @@
+.Search {
+    min-height: 100lvh;
+	background-color: #2E272B;
+}
+
+.searchHeader {
+    padding: 10px 0;
+    display: flex;
+    justify-content: end;
+}
+
+.searchHeader a {
+    width: max-content;
+}

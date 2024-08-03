@@ -1,0 +1,31 @@
+.accountMain {
+	padding: 1rem 0;
+	background: #000;
+	min-height: 100lvh;
+}
+
+.userName {
+	font-size: 30px;
+	font-weight: 700;
+	margin-bottom: 1.5rem;
+	text-align: center;
+	display: flex;
+	align-items: center;
+	gap: 5px;
+	justify-content: center;
+}
+
+.buttons {
+	background: #1c1c1e;
+	padding: 0.375rem 0;
+	border-radius: 0.5rem;
+}
+
+.accountBtn:nth-of-type(4) * {
+	border-bottom: none;
+}
+
+.allButtons {
+	display: grid;
+	gap: 1rem;
+}

@@ -3,6 +3,7 @@ import GameCard from '../GameCard/GameCard';
 
 import Button from '../../UI/Button/Button';
 import DropdownIcon from '../../assets/icons/dropdown-arrows-icon.svg?react';
+import cls from './SectionWithSlide.module.css';
 
 const SectionWithSlide = ({
 	sectionTitle,
@@ -24,10 +25,15 @@ const SectionWithSlide = ({
 				)}
 			</div>
 			<div className='wrapper-left'>
-				<Swiper spaceBetween={20} slidesPerView={2.3}>
+				<Swiper
+					className={`swiper swiper-initialized swiper-horizontal ${cls.slider}`}
+					spaceBetween={20}
+					slidesPerView={2.3}>
 					{slides.map((slide) => (
 						<SwiperSlide key={slide.id}>
 							<GameCard
+								game={slide}
+								xs={slide.xs}
 								imgSrc={slide.imgSrc}
 								gameTitle={slide.gameTitle}
 								gamePrice={slide.gamePrice}

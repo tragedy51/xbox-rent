@@ -23,16 +23,43 @@
 
 .text {
 	position: absolute;
-	width: 30px;
-	height: 30px;
-	/* backdrop-filter: blur(4px);
-	background-color: rgb(55 65 81 / 0.4); */
 	background: #ffffff;
 	color: #000000;
-	border-radius: 8px;
-	display: grid;
-	place-content: center;
-	top: 5px;
-	right: 5px;
 	font-weight: 600;
+	font-size: 12px;
+	padding: 5px 10px;
+	transform: skew(-20deg) translateX(-50%);
+	border-radius: 5px;
+	bottom: 10px;
+	left: 50%;
+	min-width: 100px;
+	text-align: center;
+	z-index: 3;
+}
+
+.text p {
+	position: relative;
+	z-index: 4;
+	color: black;
+	transform: skew(20deg);
+}
+
+.count {
+	background: #00000066;
+	backdrop-filter: blur(4px);
+	transform: skew(0) translateX(-50%) translateY(-100%);
+	position: absolute;
+	top: 0;
+	left: 46%;
+	border-radius: 4px;
+}
+
+.count p {
+	position: relative;
+	z-index: 1;
+	font-size: 10px;
+	padding: 3px 5px;
+	transform: skew(20deg);
+	color: white;
+	width: max-content;
 }

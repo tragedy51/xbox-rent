@@ -1,0 +1,37 @@
+.BasketCard {
+	padding: 1rem;
+	background-color: rgb(35 34 34);
+	border-radius: 0.75rem;
+}
+
+.priceCont {
+	display: flex;
+	gap: 0.5rem;
+	align-items: center;
+	justify-content: end;
+	margin-bottom: 0.75rem;
+}
+
+.priceCont p {
+	font-size: 1rem;
+	line-height: 1.5rem;
+	font-weight: 700;
+	color: #ffffff;
+}
+
+.priceCont:has(.discount) .price {
+	font-size: 0.875rem;
+	line-height: 1.25rem;
+	color: rgb(156 163 175);
+	text-decoration: line-through;
+}
+
+.buyPrice {
+	font-size: 1rem;
+	line-height: 1.5rem;
+	font-weight: 700;
+	padding: 0.75rem;
+	border-radius: 0.5rem;
+	background-color: rgb(21 128 61);
+	width: 100%;
+}

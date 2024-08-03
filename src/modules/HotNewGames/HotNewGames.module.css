@@ -4,9 +4,20 @@
 	background-repeat: no-repeat;
 }
 
+.titleCont {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	margin-bottom: 20px;
+}
+
+.searchBtn {
+	padding: 0.7rem;
+}
+
 .categoryTitle {
 	margin: 1rem 0;
-	font-size: 1.5rem;
+	font-size: 1.7rem;
 	line-height: 2rem;
 }
 
@@ -36,4 +47,49 @@
 
 .activeSlide img {
 	transform: scale(1);
+}
+
+.swiperCont {
+	position: relative;
+}
+
+.prevBtn {
+	position: absolute;
+	top: 50%;
+	left: 0.7rem;
+	transform: translateY(-50%);
+	z-index: 1;
+}
+
+.nextBtn {
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
+	z-index: 1;
+	right: 0.7rem;
+}
+
+.filterBtn svg {
+	transform: rotate(180deg);
+}
+
+.filterByDate {
+	padding: 0.75rem 0 0.75rem 1rem;
+	background: #273446;
+	border-radius: 0.5rem;
+}
+
+.filterByDate h3 {
+	text-align: center;
+	justify-content: center;
+	margin-bottom: 0.75rem;
+}
+
+.filters {
+	display: grid;
+	gap: 0.75rem;
+}
+
+.filters > button:nth-of-type(4) * {
+	border-bottom: none;
 }

@@ -1,14 +1,24 @@
 /* eslint-disable react-refresh/only-export-components */
-import { Link } from 'react-router-dom';
 import cls from './CategoryCard.module.css';
 import { forwardRef } from 'react';
+import { num_word } from '../../helpers';
 
-const CategoryCard = ({ route, imgSrc, category, count = 0 }, ref) => {
+const CategoryCard = (
+	{ imgSrc, category, count = 0, ...props },
+	ref
+) => {
 	return (
-		<Link ref={ref} to={route} className={cls.categoryCard}>
+		<button ref={ref} className={cls.categoryCard} {...props}>
 			<img src={imgSrc} alt={category} />
-			{/* <p className={cls.text}>{count}</p> */}
-		</Link>
+			<div className={cls.text}>
+				<div className={cls.count}>
+					<p>
+						{count} {num_word(count, ['товар', 'товара', 'товаров'])}
+					</p>
+				</div>
+				<p>{category}</p>
+			</div>
+		</button>
 	);
 };
 

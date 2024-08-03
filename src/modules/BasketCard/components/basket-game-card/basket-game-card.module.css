@@ -1,0 +1,59 @@
+.BasketGameCard {
+	padding-bottom: 0.75rem;
+	display: grid;
+	grid-template-columns: 80px 1fr;
+	gap: 1.5rem;
+	align-items: center;
+	border-bottom: 1px solid rgb(64 64 64);
+	margin-bottom: 0.75rem;
+}
+
+.gameImg {
+	width: 80px;
+	height: 80px;
+	display: block;
+	object-fit: cover;
+	border-radius: 0.375rem;
+}
+
+.gameInfo {
+	display: grid;
+	grid-template-columns: 1fr auto;
+}
+
+.gameTitle {
+	font-size: 1rem;
+	line-height: 1.5rem;
+	font-weight: 600;
+}
+
+.deleteBtn {
+	padding: 0.25rem;
+}
+
+.deleteBtn svg {
+	fill: rgb(156 163 175);
+}
+
+.gamePriceCont {
+	display: flex;
+	gap: 0.25rem;
+}
+
+.gamePriceCont p {
+	font-size: 0.875rem;
+	line-height: 1.25rem;
+}
+
+.discount {
+	color: #ffffff;
+}
+
+.price {
+	color: #ffffff;
+}
+
+.gamePriceCont:has(p.discount) .price {
+	color: rgb(156 163 175);
+	text-decoration: line-through;
+}
