@@ -3,12 +3,12 @@ import Footer from '../footer/footer';
 import MainBg from '../../assets/main-bg.jpg';
 import { useStore } from '../../store';
 import { Modal } from '../../UI';
-import { GameInfo } from '../../modules/game-info/game-info';
-import { BasketCard } from '../../modules/BasketCard/basket-card';
-import { CategoryBottomSheet } from '../../modules/CategoryBottomSheet/CategoryBottomSheet';
+// import { GameInfo } from '../../modules/game-info/game-info';
+// import { BasketCard } from '../../modules/BasketCard/basket-card';
+// import { CategoryBottomSheet } from '../../modules/CategoryBottomSheet/CategoryBottomSheet';
 
 const Root = () => {
-	const { XsIsOpen, changeXsIsOpen, XsGameName, gameInfoBottomSheetIsOpen } =
+	const { XsIsOpen, changeXsIsOpen, XsGameName } =
 		useStore((state) => state);
 
 	return (
@@ -26,9 +26,9 @@ const Root = () => {
 					</p>
 				</div>
 			</Modal>
-			<CategoryBottomSheet adjustPosition={gameInfoBottomSheetIsOpen} />
+			{/* <CategoryBottomSheet adjustPosition={gameInfoBottomSheetIsOpen} />
 			<GameInfo />
-			<BasketCard />
+			<BasketCard /> */}
 		</>
 	);
 };
