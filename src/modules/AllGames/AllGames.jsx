@@ -12,11 +12,10 @@ import { useStore } from '../../store';
 // import { getAllGames } from './api/getAllGames';
 import { FilterButton, Modal } from '../../UI';
 import { num_word } from '../../helpers';
-import { BasketIcon } from '../../assets';
 import useScrollDirection from '../../hooks/useScrollDirection';
 
-const MotionButton = motion(Button);
 const MotionGameCard = motion(GameCard);
+const MotionButton = motion(Button);
 
 const AllGames = ({ sectionTitle, inBottomSheet, scrollContainerRef }) => {
 	const variants = [
@@ -42,28 +41,23 @@ const AllGames = ({ sectionTitle, inBottomSheet, scrollContainerRef }) => {
 	// 	queryKey: ['all-games'],
 	// 	queryFn: getAllGames,
 	// });
-
-	const [buttonUpIsShown, setButtonUpIsShown] = useState(false);
-	const [isEnd, setIsEnd] = useState(false);
 	const [filtersIsOpen, setFiltersIsOpen] = useState(false);
 	const [sortIsOpen, setSortIsOpen] = useState(false);
 
 	const {
-		counter,
 		direction,
 		increaseCounter,
 		decreaseCounter,
 		emptyCounter,
-		games: basketGames,
 		setGameInfoBottomSheetIsOpen,
-		setBasketBottomSheet,
+		setCountButtonUpIsShown,
+		setActiveGame,
+		setIsEnd
 	} = useStore((state) => state);
 
 	useScrollDirection(inBottomSheet ? scrollContainerRef : undefined);
 
-	function handleScrollToTop() {
-		document.getElementById('root').scrollIntoView({ behavior: 'smooth' });
-	}
+	
 
 	function handleCardLeaveViewport() {
 		if (direction === 'up') {
@@ -78,13 +72,18 @@ const AllGames = ({ sectionTitle, inBottomSheet, scrollContainerRef }) => {
 	}
 
 	function enterAllGamesSection() {
-		setButtonUpIsShown(true);
+		setCountButtonUpIsShown(true);
 		setIsEnd(false);
 	}
 
 	function leaveAllGamesSection() {
-		setButtonUpIsShown(false);
+		setCountButtonUpIsShown(false);
 		emptyCounter();
+	}
+
+	function handleOpenGameInfoBottomSheet(game) {
+		setActiveGame(game)
+		setGameInfoBottomSheetIsOpen(true)
 	}
 
 	return (
@@ -92,7 +91,9 @@ const AllGames = ({ sectionTitle, inBottomSheet, scrollContainerRef }) => {
 			<section style={{ position: 'relative', zIndex: 1 }}>
 				<div className='wrapper'>
 					{sectionTitle && (
-						<div className={cls.sectionHeader}>
+						<div
+							style={inBottomSheet && { marginTop: 0 }}
+							className={cls.sectionHeader}>
 							<h2 className='section-title'>
 								{sectionTitle}{' '}
 								<span style={{ fontSize: '14px' }}>
@@ -132,7 +133,7 @@ const AllGames = ({ sectionTitle, inBottomSheet, scrollContainerRef }) => {
 						{games.map((game, i) => (
 							<div className={cls.gameCarCont} key={game.id}>
 								<MotionGameCard
-									onClick={() => setGameInfoBottomSheetIsOpen(true)}
+									onClick={() => handleOpenGameInfoBottomSheet(game)}
 									game={game}
 									xs={game.xs}
 									gameTitle={game.gameTitle}
@@ -153,37 +154,7 @@ const AllGames = ({ sectionTitle, inBottomSheet, scrollContainerRef }) => {
 						))}
 					</div>
 				</div>
-				<MotionButton
-					variants={variants[1]}
-					animate={buttonUpIsShown ? 'up' : 'down'}
-					onClick={() => setBasketBottomSheet(true)}
-					className={cls.basketBtn}>
-					<BasketIcon width={23} height={23} />
-					<span className={cls.basketBtnSpan}>{basketGames.length}</span>
-				</MotionButton>
-				<MotionButton
-					onClick={handleScrollToTop}
-					variants={variants[0]}
-					animate={buttonUpIsShown ? 'up' : 'down'}
-					className={cls.buttonUp}>
-					<AnimatePresence initial={false}>
-						{!isEnd ? (
-							<motion.p
-								animate={{ opacity: 1 }}
-								initial={{ opacity: 0 }}
-								exit={{ opacity: 0 }}>
-								{counter}/{games.length}
-							</motion.p>
-						) : (
-							<motion.p
-								animate={{ opacity: 1 }}
-								initial={{ opacity: 0 }}
-								exit={{ opacity: 0 }}>
-								<DropdownIcon width={25} height={25} />
-							</motion.p>
-						)}
-					</AnimatePresence>
-				</MotionButton>
+				
 				<motion.div
 					onViewportEnter={() => setIsEnd(true)}
 					onViewportLeave={() => setIsEnd(false)}

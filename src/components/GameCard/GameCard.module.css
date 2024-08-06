@@ -48,9 +48,12 @@
 .gameTitle {
 	font-size: 0.875rem;
 	line-height: 1.25rem;
-	white-space: nowrap;
-	text-overflow: ellipsis;
+	display: -webkit-box;
+	-webkit-box-orient: vertical;
+	-webkit-line-clamp: 2;
 	overflow: hidden;
+	height: 40px;
+	word-break: break-all;
 }
 
 .gamePriceCont {

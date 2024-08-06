@@ -3,13 +3,18 @@ import Footer from '../footer/footer';
 import MainBg from '../../assets/main-bg.jpg';
 import { useStore } from '../../store';
 import { Modal } from '../../UI';
-// import { GameInfo } from '../../modules/game-info/game-info';
-// import { BasketCard } from '../../modules/BasketCard/basket-card';
-// import { CategoryBottomSheet } from '../../modules/CategoryBottomSheet/CategoryBottomSheet';
+import { GameInfo } from '../../modules/game-info/game-info';
+import { BasketCard } from '../../modules/BasketCard/basket-card';
+import { CategoryBottomSheet } from '../../modules/CategoryBottomSheet/CategoryBottomSheet';
 
 const Root = () => {
-	const { XsIsOpen, changeXsIsOpen, XsGameName } =
-		useStore((state) => state);
+	const {
+		XsIsOpen,
+		changeXsIsOpen,
+		XsText,
+		gameInfoBottomSheetIsOpen,
+		basketBottomSheet,
+	} = useStore((state) => state);
 
 	return (
 		<>
@@ -19,16 +24,14 @@ const Root = () => {
 			<Modal isOpen={XsIsOpen} setIsopen={changeXsIsOpen}>
 				<div className='xs-info'>
 					<h3 className='xs-title section-title'>Подсказка</h3>
-					<p>
-						Значок X|S обозначает что игра {XsGameName} работает только на
-						приставке Xbox Series S и Xbox Series X и не работает на приставке
-						Xbox one.
-					</p>
+					<p>{XsText}</p>
 				</div>
 			</Modal>
-			{/* <CategoryBottomSheet adjustPosition={gameInfoBottomSheetIsOpen} />
-			<GameInfo />
-			<BasketCard /> */}
+			<CategoryBottomSheet
+				adjustPosition={gameInfoBottomSheetIsOpen || basketBottomSheet}
+			/>
+			<GameInfo adjustPosition={basketBottomSheet} />
+			<BasketCard />
 		</>
 	);
 };

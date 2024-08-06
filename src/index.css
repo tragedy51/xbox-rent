@@ -15,7 +15,7 @@
 
 body {
 	min-height: 100vh;
-	min-height: 100lvh;
+	min-height: 100dvh;
 	overflow-x: hidden;
 	-ms-overflow-style: none;
 	scrollbar-width: none;
@@ -58,7 +58,7 @@ body {
 	top: 0;
 	z-index: -1;
 	min-height: 100vh;
-	min-height: 100lvh;
+	min-height: 100dvh;
 }
 
 img {
@@ -71,6 +71,11 @@ button {
 	outline: none;
 	background: none;
 	cursor: pointer;
+	transition: 0.3s;
+}
+
+button:active {
+	transform: scale(0.9);
 }
 
 section {
@@ -92,6 +97,7 @@ section .section-header {
 	align-items: center;
 	gap: 0.75rem;
 	white-space: nowrap;
+	line-height: normal;
 }
 
 @media (max-width: 390px) {
@@ -118,4 +124,8 @@ section .section-header {
 
 .dropdown-icon {
 	transform: rotate(180deg);
+}
+
+.popup-header {
+	background: #152727 !important;
 }

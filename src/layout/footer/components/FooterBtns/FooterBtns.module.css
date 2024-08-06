@@ -1,0 +1,29 @@
+.footerBtns {
+	display: grid;
+	grid-template-columns: 1fr;
+	gap: 10px;
+	padding: 10px 20px 10px;
+	position: absolute;
+	top: 0;
+	width: 100%;
+	background: rgb(35 34 34 / 70%);
+	backdrop-filter: blur(4px);
+	position: fixed;
+	z-index: 999999;
+	bottom: -5px;
+	top: auto;
+}
+
+.footerBtns:has(.likeBtn) {
+	grid-template-columns: 1fr 50px;
+}
+
+.addToCart {
+	background: #15803d;
+	border-radius: 0.75rem;
+	padding: 0.75rem 1rem;
+	font-size: 0.85rem;
+	line-height: 1.275rem;
+	font-weight: 700;
+	color: #fff;
+}

@@ -1,14 +1,33 @@
+import { useEffect } from 'react';
 import { useStore } from '../../store';
 import { CustomBottomSheet } from '../../UI/BottomSheet/BottomSheet';
 import cls from './game-info.module.css';
 
-export const GameInfo = () => {
-	const { gameInfoBottomSheetIsOpen, setGameInfoBottomSheetIsOpen } = useStore(
-		(state) => state
-	);
+export const GameInfo = ({ adjustPosition }) => {
+	const {
+		gameInfoBottomSheetIsOpen,
+		setGameInfoBottomSheetIsOpen,
+		setProductAddToCardIsVisiible,
+	} = useStore((state) => state);
+
+	// const gameImgRef = useRef(null);
+	// const [gameMainHeight, setGameMainHeight] = useState(100);
+
+	// useEffect(() => {
+	// 	if (gameImgRef?.current) {
+	// 		const height = gameImgRef?.current?.offsetHeight - 160;
+	// 		setGameMainHeight(height);
+	// 	}
+	// }, [gameInfoBottomSheetIsOpen]);
+
+	useEffect(() => {
+		setProductAddToCardIsVisiible(gameInfoBottomSheetIsOpen);
+	}, [gameInfoBottomSheetIsOpen, setProductAddToCardIsVisiible]);
 
 	return (
 		<CustomBottomSheet
+			sheetBgColor='#232222'
+			adjustPosition={adjustPosition}
 			isOpen={gameInfoBottomSheetIsOpen}
 			setIsopen={setGameInfoBottomSheetIsOpen}>
 			<div className={cls.gameInfoCont}>

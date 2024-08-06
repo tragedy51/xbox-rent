@@ -2,12 +2,11 @@
 import { forwardRef, memo } from 'react';
 
 import cls from './GameCard.module.css';
-import { BasketIcon, XSIcon } from '../../assets';
+import { XSIcon } from '../../assets';
 import { useStore } from '../../store';
 
 const GameCard = (
 	{
-		game,
 		imgSrc,
 		gameTitle,
 		gamePrice,
@@ -18,29 +17,26 @@ const GameCard = (
 	},
 	ref
 ) => {
-	const {
-		changeXsIsOpen,
-		setXsGameName,
-		addGameToBasket,
-		games,
-		deleteGameFromBasket,
-	} = useStore((state) => state);
-
-	const gameInBasket = games.find((bgame) => bgame.id === game.id);
+	const { changeXsIsOpen, setXsText } = useStore(
+		(state) => state
+	);
 
 	function handleOpenXsInfo(e, name) {
 		e.stopPropagation();
-		setXsGameName(name);
+		setXsText(
+			`Значок X|S обозначает что игра ${name} работает только на
+						приставке Xbox Series S и Xbox Series X и не работает на приставке
+						Xbox one.!`
+		);
 		changeXsIsOpen(true);
 	}
 
-	function handleGameAddToBasket(e, game) {
+	function handleOpenPreOrder(e, name) {
 		e.stopPropagation();
-		if (gameInBasket) {
-			deleteGameFromBasket(game);
-		} else {
-			addGameToBasket(game);
-		}
+		setXsText(
+			`Иконка Предзаказ обозначает что игра ${name} еще не вышла, а выйдет она ХХ.ХХ.ХХХХ, но вы уже можете ее приобрести!`
+		);
+		changeXsIsOpen(true);
 	}
 
 	return (
@@ -48,7 +44,13 @@ const GameCard = (
 			<div className={cls.gameCard} ref={ref} {...props}>
 				<div className={cls.imgWrapper}>
 					<img src={imgSrc} alt='' loading='lazy' />
-					{preOrder && <p className={cls.banner}>Предзаказ</p>}
+					{preOrder && (
+						<p
+							onClick={(e) => handleOpenPreOrder(e, gameTitle)}
+							className={cls.banner}>
+							Предзаказ
+						</p>
+					)}
 					{xs && (
 						<div className={cls.XSCont}>
 							<button onClick={(e) => handleOpenXsInfo(e, gameTitle)}>
@@ -66,15 +68,6 @@ const GameCard = (
 						<p className={cls.price}>{gamePrice} ₽</p>
 					</div>
 				</div>
-				<button
-					className={cls.basketBtn}
-					onClick={(e) => handleGameAddToBasket(e, game)}>
-					<BasketIcon
-						width={20}
-						height={20}
-						fill={gameInBasket ? '#00FF0066' : '#ffffff99'}
-					/>
-				</button>
 			</div>
 		</>
 	);

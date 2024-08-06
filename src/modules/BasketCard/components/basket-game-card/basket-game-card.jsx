@@ -3,7 +3,19 @@ import { DeleteIcon } from '../../../../assets';
 import { useStore } from '../../../../store';
 
 export const BasketGameCard = ({ game, className }) => {
-	const { deleteGameFromBasket } = useStore((state) => state);
+	const {
+		deleteGameFromBasket,
+		games: basketGames,
+		setBasketBottomSheet,
+	} = useStore((state) => state);
+
+	function handleDeleteGameFromBasket(game) {
+		deleteGameFromBasket(game);
+
+		if (basketGames.length === 1) {
+			setBasketBottomSheet(false);
+		}
+	}
 
 	return (
 		<div className={`${cls.BasketGameCard} ${className}`}>
@@ -20,7 +32,7 @@ export const BasketGameCard = ({ game, className }) => {
 				</div>
 				<button
 					className={cls.deleteBtn}
-					onClick={() => deleteGameFromBasket(game)}>
+					onClick={() => handleDeleteGameFromBasket(game)}>
 					<DeleteIcon width={16} height={16} />
 				</button>
 			</div>

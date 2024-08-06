@@ -81,24 +81,28 @@ const HotNewGames = () => {
 							modules={[EffectCoverflow, Navigation, Autoplay]}>
 							<SwiperSlide>
 								<img
+									className={cls.sliderImg}
 									src='https://project-green.ru/pgstore/webapp/fastapi/app/games/9PLTKZZK35RF/images/tile.webp'
 									alt=''
 								/>
 							</SwiperSlide>
 							<SwiperSlide>
 								<img
+									className={cls.sliderImg}
 									src='https://project-green.ru/pgstore/webapp/fastapi/app/games/9PMPZZLKQM43/images/tile.webp'
 									alt=''
 								/>
 							</SwiperSlide>
 							<SwiperSlide>
 								<img
+									className={cls.sliderImg}
 									src='https://project-green.ru/pgstore/webapp/fastapi/app/games/9N9H2HMFZKLM/images/tile.webp'
 									alt=''
 								/>
 							</SwiperSlide>
 							<SwiperSlide>
 								<img
+									className={cls.sliderImg}
 									src='https://project-green.ru/pgstore/webapp/fastapi/app/games/9PJQMBMJ3154/images/tile.webp'
 									alt=''
 								/>

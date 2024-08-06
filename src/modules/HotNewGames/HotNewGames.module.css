@@ -93,3 +93,7 @@
 .filters > button:nth-of-type(4) * {
 	border-bottom: none;
 }
+
+.sliderImg {
+	border-radius: 0.5rem;
+}

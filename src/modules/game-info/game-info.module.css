@@ -1,5 +1,5 @@
 main .gameInfoCont {
-    height: calc(100% - 30px - 50px - 72px + 40px);
+	height: calc(100% - 30px - 50px - 72px + 40px);
 }
 
 .gameInfo img {
@@ -11,16 +11,16 @@ main .gameInfoCont {
 	border-top-left-radius: 0.75rem;
 	border-top-right-radius: 0.75rem;
 	background: rgb(35 34 34);
-    transform: translateY(-40px);
+	transform: translateY(-140px);
 }
 
 .gameInfoHeader p {
 	font-size: 1rem;
 	line-height: 1.06rem;
 	font-weight: 700;
-    border-bottom: 2px solid white;
-    width: max-content;
-    padding-bottom: 8px;
+	border-bottom: 2px solid white;
+	width: max-content;
+	padding-bottom: 8px;
 }
 
 .gameInfoText {
@@ -28,8 +28,10 @@ main .gameInfoCont {
 }
 
 .gameInfoMain {
-	background: rgb(35 34 34);
-    transform: translateY(-40px);
+	background: #232222;
+	transform: translateY(-140px);
+	padding-bottom: 70px;
+	overflow: auto;
 }
 
 .gameInfo {
@@ -77,4 +79,29 @@ main .gameInfoCont {
 	font-size: 0.74rem;
 	font-weight: 600;
 	width: max-content;
+}
+
+.basketBtn {
+	width: 50px;
+	height: 50px;
+	display: grid;
+	place-content: center;
+	position: fixed;
+	right: 20px;
+	bottom: 0;
+	z-index: 2;
+	background: rgb(55 65 81 / 0.8);
+}
+
+.basketBtnSpan {
+	width: 15px;
+	height: 15px;
+	border-radius: 99px;
+	background: green;
+	font-size: 12px;
+	display: grid;
+	place-content: center;
+	position: absolute;
+	right: 5px;
+	top: 10px;
 }

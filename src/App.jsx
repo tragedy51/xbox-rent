@@ -6,6 +6,8 @@ import 'swiper/css/navigation';
 import Root from './layout/root/root';
 import { Account, Basket, RentGames, Search } from './pages';
 import AllGames from './modules/AllGames/AllGames';
+import { useEffect } from 'react';
+import WebApp from '@twa-dev/sdk';
 
 const router = createHashRouter([
 	{
@@ -26,6 +28,12 @@ const router = createHashRouter([
 
 function App() {
 	const queryClient = new QueryClient();
+
+	useEffect(() => {
+		WebApp.ready();
+		WebApp.setHeaderColor('#172729');
+		WebApp.disableVerticalSwipes(false);
+	}, []);
 
 	return (
 		<QueryClientProvider client={queryClient}>

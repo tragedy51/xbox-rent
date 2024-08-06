@@ -1,14 +1,15 @@
 .Search {
-    min-height: 100lvh;
-	background-color: #2E272B;
+	min-height: 100vh;
+	min-height: 100dvh;
+	background-color: #2e272b;
 }
 
 .searchHeader {
-    padding: 10px 0;
-    display: flex;
-    justify-content: end;
+	padding: 10px 0;
+	display: flex;
+	justify-content: end;
 }
 
 .searchHeader a {
-    width: max-content;
+	width: max-content;
 }
