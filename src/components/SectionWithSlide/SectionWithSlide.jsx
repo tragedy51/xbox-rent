@@ -11,6 +11,7 @@ const SectionWithSlide = ({
 	slides,
 	iconSize = 24,
 	withFilter = false,
+	bigCards = false,
 }) => {
 	return (
 		<>
@@ -39,6 +40,7 @@ const SectionWithSlide = ({
 								gamePrice={slide.gamePrice}
 								gameDiscountPrice={slide.gameDiscountPrice}
 								preOrder={slide.preOrder}
+								size={bigCards ? 'lg' : 'md'}
 							/>
 						</SwiperSlide>
 					))}

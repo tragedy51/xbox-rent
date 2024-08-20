@@ -1,14 +1,16 @@
 import { useStore } from '../../store';
-import cls from './CategoryBottomSheet.module.css';
-import AllGames from '../AllGames/AllGames';
 // import { useRef } from 'react';
 import { CustomBottomSheet } from '../../UI/BottomSheet/BottomSheet';
+import cls from './CategoryBottomSheet.module.css';
+import GamesFilteredBycategory from '../GamesFilteredBycategory/GamesFilteredBycategory';
 
 export const CategoryBottomSheet = ({ adjustPosition }) => {
 	// const scrollContainerRef = useRef(null);
-	const { categoryBottomSheetIsOpen, setCategoryBottomSheetIsOpen } = useStore(
-		(state) => state
-	);
+	const {
+		categoryBottomSheetIsOpen,
+		setCategoryBottomSheetIsOpen,
+		activeCategory,
+	} = useStore((state) => state);
 
 	return (
 		<CustomBottomSheet
@@ -18,11 +20,11 @@ export const CategoryBottomSheet = ({ adjustPosition }) => {
 			bottomSheetHeader={
 				<div style={{ marginTop: 0 }} className={cls.sectionHeader}>
 					<h2 style={{ fontWeight: 500 }} className='section-title'>
-						Хоррор{' '}
+						{activeCategory.name}
 					</h2>
 				</div>
 			}>
-			<AllGames inBottomSheet={true} />
+			<GamesFilteredBycategory inBottomSheet={true} />
 		</CustomBottomSheet>
 	);
 };

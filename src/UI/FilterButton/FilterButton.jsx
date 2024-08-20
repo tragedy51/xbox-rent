@@ -1,9 +1,9 @@
 import { CheckIcon, DollarIcon } from '../../assets';
 import cls from './FilterButton.module.css';
 
-export const FilterButton = ({ Icon, text, isChecked }) => {
+export const FilterButton = ({ Icon, text, isChecked, onClick }) => {
 	return (
-		<button className={cls.filter}>
+		<button className={cls.filter} onClick={onClick}>
 			<div className={cls.iconCont}>
 				{Icon ? (
 					<Icon width={16} height={16} />

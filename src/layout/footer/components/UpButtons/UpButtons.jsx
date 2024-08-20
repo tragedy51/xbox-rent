@@ -27,7 +27,7 @@ export const UpButtons = () => {
 			},
 			down: {
 				y: '100%',
-				bottom: '0',
+				// bottom: '0',
 			},
 		},
 		{

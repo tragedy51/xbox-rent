@@ -1,48 +1,24 @@
 import GameCard from '../../components/GameCard/GameCard';
-import { games } from '../../consts/games';
 import Button from '../../UI/Button/Button';
-import { AnimatePresence, motion } from 'framer-motion';
+import { motion } from 'framer-motion';
 
 import cls from './AllGames.module.css';
 import FilterIcon from '../../assets/icons/filter-icon.svg?react';
 import DropdownIcon from '../../assets/icons/dropdown-arrows-icon.svg?react';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useStore } from '../../store';
-// import { useQuery } from '@tanstack/react-query';
-// import { getAllGames } from './api/getAllGames';
+import { useQuery } from '@tanstack/react-query';
+import { getAllGames } from './api/getAllGames';
 import { FilterButton, Modal } from '../../UI';
-import { num_word } from '../../helpers';
 import useScrollDirection from '../../hooks/useScrollDirection';
+import { useShallow } from 'zustand/react/shallow';
 
 const MotionGameCard = motion(GameCard);
-const MotionButton = motion(Button);
 
-const AllGames = ({ sectionTitle, inBottomSheet, scrollContainerRef }) => {
-	const variants = [
-		{
-			up: {
-				bottom: inBottomSheet ? '110px' : '82px',
-			},
-			down: {
-				bottom: '0px',
-			},
-		},
-		{
-			up: {
-				bottom: inBottomSheet ? '165px' : '137px',
-			},
-			down: {
-				bottom: '0px',
-			},
-		},
-	];
-
-	// const { data } = useQuery({
-	// 	queryKey: ['all-games'],
-	// 	queryFn: getAllGames,
-	// });
+const AllGames = ({ inBottomSheet, scrollContainerRef }) => {
 	const [filtersIsOpen, setFiltersIsOpen] = useState(false);
 	const [sortIsOpen, setSortIsOpen] = useState(false);
+	const content = useRef(null);
 
 	const {
 		direction,
@@ -52,12 +28,24 @@ const AllGames = ({ sectionTitle, inBottomSheet, scrollContainerRef }) => {
 		setGameInfoBottomSheetIsOpen,
 		setCountButtonUpIsShown,
 		setActiveGame,
-		setIsEnd
-	} = useStore((state) => state);
+		setIsEnd,
+		dateFilter,
+		setGamesCount,
+		gamesCount,
+	} = useStore(useShallow((state) => state));
+
+	const [sortType, setSortType] = useState(null);
+
+	const { data, isLoading, isSuccess, isError } = useQuery({
+		queryKey: [
+			'all-games',
+			`all-games-sorted-${sortType}`,
+			`all-games-filtered-by-${dateFilter.filter}`,
+		],
+		queryFn: () => getAllGames(sortType, dateFilter.filter),
+	});
 
 	useScrollDirection(inBottomSheet ? scrollContainerRef : undefined);
-
-	
 
 	function handleCardLeaveViewport() {
 		if (direction === 'up') {
@@ -82,26 +70,66 @@ const AllGames = ({ sectionTitle, inBottomSheet, scrollContainerRef }) => {
 	}
 
 	function handleOpenGameInfoBottomSheet(game) {
-		setActiveGame(game)
-		setGameInfoBottomSheetIsOpen(true)
+		setActiveGame(game);
+		setGameInfoBottomSheetIsOpen(true);
+	}
+
+	useEffect(() => {
+		if (gamesCount !== data?.results?.length) {
+			setGamesCount(data?.results?.length);
+		}
+	}, [data?.results?.length, gamesCount, setGamesCount]);
+
+	if (isSuccess) {
+		content.current = data.results.map((game, i) => (
+			<div className={cls.gameCarCont} key={game.id}>
+				<MotionGameCard
+					onClick={() => handleOpenGameInfoBottomSheet(game)}
+					game={game}
+					xs={game.compatibility === 'xbox_series_x_s'}
+					gameTitle={game.title}
+					gamePrice={game.price}
+					subprice={game.subprice}
+					imgSrc={game.image}
+					rus={game.voice_acting === 'russian'}
+				/>
+				<motion.div
+					onViewportEnter={handleCardEnterViewport}
+					onViewportLeave={handleCardLeaveViewport}
+					style={
+						i % 2 === 0
+							? { height: 0 }
+							: { height: 0, transform: 'translateY(-70px)' }
+					}
+				/>
+			</div>
+		));
+	}
+
+	if (isLoading) {
+		content.current = <p>Loading...</p>;
+	}
+
+	if (isError) {
+		content.current = <p>There is some error...</p>;
 	}
 
 	return (
 		<>
 			<section style={{ position: 'relative', zIndex: 1 }}>
 				<div className='wrapper'>
-					{sectionTitle && (
+					{/* {activeCategory.name && (
 						<div
 							style={inBottomSheet && { marginTop: 0 }}
 							className={cls.sectionHeader}>
 							<h2 className='section-title'>
-								{sectionTitle}{' '}
+								{activeCategory.name}{' '}
 								<span style={{ fontSize: '14px' }}>
-									(285 {num_word(285, ['позиция', 'позиции', 'позиций'])})
+									({data?.count} {numWordWithMemo})
 								</span>
 							</h2>
 						</div>
-					)}
+					)} */}
 					<div className={cls.filterButtons}>
 						<Button
 							onClick={() => setSortIsOpen(true)}
@@ -129,32 +157,9 @@ const AllGames = ({ sectionTitle, inBottomSheet, scrollContainerRef }) => {
 						onViewportEnter={enterAllGamesSection}
 						onViewportLeave={leaveAllGamesSection}
 					/>
-					<div className={cls.allGamesCont}>
-						{games.map((game, i) => (
-							<div className={cls.gameCarCont} key={game.id}>
-								<MotionGameCard
-									onClick={() => handleOpenGameInfoBottomSheet(game)}
-									game={game}
-									xs={game.xs}
-									gameTitle={game.gameTitle}
-									gamePrice={game.gamePrice}
-									gameDiscountPrice={game.gameDiscountPrice}
-									imgSrc={game.imgSrc}
-								/>
-								<motion.div
-									onViewportEnter={handleCardEnterViewport}
-									onViewportLeave={handleCardLeaveViewport}
-									style={
-										i % 2 === 0
-											? { height: 0 }
-											: { height: 0, transform: 'translateY(-70px)' }
-									}
-								/>
-							</div>
-						))}
-					</div>
+					<div className={cls.allGamesCont}>{content.current}</div>
 				</div>
-				
+
 				<motion.div
 					onViewportEnter={() => setIsEnd(true)}
 					onViewportLeave={() => setIsEnd(false)}
@@ -196,13 +201,41 @@ const AllGames = ({ sectionTitle, inBottomSheet, scrollContainerRef }) => {
 				<div className={cls.gameFilters}>
 					<h3 className='section-title'>Сортировка</h3>
 					<div className={cls.filters}>
-						<FilterButton text={'По умолчанию'} isChecked={true} />
-						<FilterButton text={'По названию'} />
-						<FilterButton text={'По алфавиту'} />
-						<FilterButton text={'По дате релиза'} />
-						<FilterButton text={'По популярности'} />
-						<FilterButton text={'Сначала дешевые'} />
-						<FilterButton text={'Сначала дорогие'} />
+						<FilterButton
+							onClick={() => setSortType(null)}
+							text={'По умолчанию'}
+							isChecked={sortType === null}
+						/>
+						<FilterButton
+							onClick={() => setSortType('-title')}
+							text={'A..z по убыванию'}
+							isChecked={sortType === '-title'}
+						/>
+						<FilterButton
+							onClick={() => setSortType('title')}
+							text={'Z..a по возрастанию'}
+							isChecked={sortType === 'title'}
+						/>
+						<FilterButton
+							onClick={() => setSortType('-release_date')}
+							text={'Старые игры'}
+							isChecked={sortType === '-release_date'}
+						/>
+						<FilterButton
+							onClick={() => setSortType('release_date')}
+							text={'Новые игры'}
+							isChecked={sortType === 'release_date'}
+						/>
+						<FilterButton
+							onClick={() => setSortType('-price')}
+							text={'Сначала дешевые'}
+							isChecked={sortType === '-price'}
+						/>
+						<FilterButton
+							onClick={() => setSortType('price')}
+							text={'Сначала дорогие'}
+							isChecked={sortType === 'price'}
+						/>
 					</div>
 				</div>
 			</Modal>

@@ -5,23 +5,28 @@ import { motion } from 'framer-motion';
 import cls from './Categories.module.css';
 import DropdownArrow from '../../assets/icons/dropdown-arrows-icon.svg?react';
 import CategoriesIcon from '../../layout/footer/assets/icons/catalog-icon.svg?react';
-import horrorCategoryBg from '../../assets/imgs/horror-category-bg.jpg';
-import racingCategoryBg from '../../assets/imgs/racing-category-bg.jpg';
-import RPGCategoryBg from '../../assets/imgs/RPG-category-bg.jpg';
-import familyCategoryBg from '../../assets/imgs/family-category-bg.jpg';
-import shootingCategoryBg from '../../assets/imgs/shooting-category-bg.jpg';
 import { useStore } from '../../store';
+import { useQuery } from '@tanstack/react-query';
+import { getAllCategories } from './api/getAllCategories';
 
 const CategoryFilter = () => {
-	const { setCategoryBottomSheetIsOpen } = useStore((state) => state);
+	const { setCategoryBottomSheetIsOpen, setActiveCategory } = useStore(
+		(state) => state
+	);
 	const [isOpen, setIsOpen] = useState(false);
 	const [categoriesContVariants, setCategoriesContVariants] = useState();
 	const categoryCardRef = useRef(null);
+	const content = useRef(null);
+
+	const { data, isLoading, isSuccess, isError } = useQuery({
+		queryKey: ['all-categories'],
+		queryFn: getAllCategories,
+	});
 
 	useEffect(() => {
 		const height =
-			categoryCardRef.current.offsetHeight +
-			categoryCardRef.current.offsetHeight / 2;
+			categoryCardRef.current?.offsetHeight +
+			categoryCardRef.current?.offsetHeight / 2;
 
 		setCategoriesContVariants({
 			open: {
@@ -31,7 +36,33 @@ const CategoryFilter = () => {
 				height: `${height}px`,
 			},
 		});
-	}, []);
+	}, [data]);
+
+	function handleSelectCategory(id, name) {
+		setActiveCategory(id, name);
+		setCategoryBottomSheetIsOpen(true);
+	}
+
+	if (isSuccess) {
+		content.current = data.results.map((category) => (
+			<CategoryCard
+				key={category.id}
+				ref={categoryCardRef}
+				imgSrc={category.image}
+				category={category.name}
+				count={category.product_count}
+				onClick={() => handleSelectCategory(category.id, category.name)}
+			/>
+		));
+	}
+
+	if (isLoading) {
+		content.current = <p>Loading...</p>;
+	}
+
+	if (isError) {
+		content.current = <p>There is some error...</p>;
+	}
 
 	return (
 		<section>
@@ -46,25 +77,7 @@ const CategoryFilter = () => {
 					animate={isOpen ? 'open' : 'close'}
 					variants={categoriesContVariants}
 					className={cls.categoryFilterCards}>
-					<CategoryCard
-						ref={categoryCardRef}
-						imgSrc={horrorCategoryBg}
-						category={'Хоррор'}
-						count={10}
-						onClick={() => setCategoryBottomSheetIsOpen(true)}
-					/>
-					<CategoryCard
-						imgSrc={shootingCategoryBg}
-						category={'Шутеры'}
-						count={1}
-					/>
-					<CategoryCard
-						imgSrc={racingCategoryBg}
-						category={'Спорт'}
-						count={2}
-					/>
-					<CategoryCard imgSrc={RPGCategoryBg} category={'RPG'} count={21} />
-					<CategoryCard imgSrc={familyCategoryBg} category={'Дети'} />
+					{content.current}
 					<div className={cls.shadow} />
 				</motion.div>
 				<button

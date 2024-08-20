@@ -20,7 +20,9 @@ export const BasketCard = ({ adjustPosition }) => {
 				setIsopen={setBasketBottomSheet}>
 				<section className='wrapper'>
 					<div className='section-header'>
-						<h2 style={{marginTop: '10px'}} className='section-title'>Корзина</h2>
+						<h2 style={{ marginTop: '10px' }} className='section-title'>
+							Корзина
+						</h2>
 					</div>
 					{basketGames.length === 0 ? (
 						<p>No games</p>
@@ -31,9 +33,9 @@ export const BasketCard = ({ adjustPosition }) => {
 							))}
 							<div className={cls.priceCont}>
 								{basketPrice !== basketDiscountPrice && (
-									<p className={cls.discount}>{basketDiscountPrice} ₽</p>
+									<p className={cls.discount}>{basketPrice} ₽</p>
 								)}
-								<p className={cls.price}>{basketPrice} ₽</p>
+								<p className={cls.price}>{basketDiscountPrice} ₽</p>
 							</div>
 						</div>
 					)}

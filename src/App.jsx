@@ -14,7 +14,10 @@ const router = createHashRouter([
 		path: '/',
 		element: <Root />,
 		children: [
-			{ path: '/', element: <RentGames /> },
+			{
+				path: '/',
+				element: <RentGames />,
+			},
 			{ path: '/account', element: <Account /> },
 			{ path: '/basket', element: <Basket /> },
 			{ path: '/:category', element: <AllGames /> },
@@ -31,8 +34,22 @@ function App() {
 
 	useEffect(() => {
 		WebApp.ready();
+		WebApp.expand();
 		WebApp.setHeaderColor('#172729');
 		WebApp.disableVerticalSwipes(false);
+
+		function handleOrientationChange() {
+			if (window.orientation === 90) {
+				window.orientation === 0;
+			}
+		}
+
+		document.getElementById('root').style.height = `${WebApp.viewportHeight}px`;
+
+		window.addEventListener('orientationchange', handleOrientationChange);
+
+		return () =>
+			window.removeEventListener('orientationchange', handleOrientationChange);
 	}, []);
 
 	return (

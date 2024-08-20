@@ -2,7 +2,7 @@
 import Button from '../../UI/Button/Button';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay, EffectCoverflow, Navigation } from 'swiper/modules';
-import { useRef, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 
 import cls from './HotNewGames.module.css';
 import FireIcon from '../../assets/icons/fire-icon.svg?react';
@@ -12,9 +12,12 @@ import SliderPrevIcon from '../../assets/icons/slider-prev-icon.svg?react';
 import SearchIcon from '../../assets/icons/search-icon.svg?react';
 import { num_word } from '../../helpers';
 import { Modal, FilterButton } from '../../UI';
+import { useStore } from '../../store';
 
 const HotNewGames = () => {
-	const swiperRef = useRef(null);
+	const swiperRef = useRef(null);	
+
+	const { setDateFilter, dateFilter, gamesCount } = useStore((state) => state);
 	const [filtersByDateIsOpen, setFiltersByDateIsOpen] = useState(false);
 
 	const handlePrev = () => {
@@ -29,6 +32,10 @@ const HotNewGames = () => {
 		}
 	};
 
+	const numWord = useMemo(() => {
+		return num_word(gamesCount, ['позиция', 'позиции', 'позиций']);
+	}, [gamesCount]);
+
 	return (
 		<>
 			<section
@@ -42,18 +49,12 @@ const HotNewGames = () => {
 					<div className='wrapper'>
 						<div className={cls.titleCont}>
 							<h3 className={`${cls.categoryTitle}`}>
-								Аренда игр{' '}
-								<span>
-									(285 {num_word(285, ['позиция', 'позиции', 'позиций'])})
-								</span>
+								Аренда игр <span>(0 {numWord})</span>
 							</h3>
 							<Button component='link' to={'/search'} className={cls.searchBtn}>
 								<SearchIcon width={20} height={20} />
 							</Button>
 						</div>
-						{/* <div className={cls.input}>
-						<SearchInput />
-					</div> */}
 						<div className='section-header'>
 							<h3 style={{ marginBottom: 0 }} className='section-title'>
 								<FireIcon width={20} height={20} />
@@ -64,7 +65,7 @@ const HotNewGames = () => {
 								className={cls.filterBtn}
 								Icon={DropdownIcon}
 								iconSize={16}>
-								За неделю
+								{dateFilter.text}
 							</Button>
 						</div>
 					</div>
@@ -123,10 +124,34 @@ const HotNewGames = () => {
 				<div className={cls.filterByDate}>
 					<h3 className='section-title'>Сортировка</h3>
 					<div className={cls.filters}>
-						<FilterButton text={'За неделю'} isChecked={true} />
-						<FilterButton text={'За месяц'} />
-						<FilterButton text={'За пол года'} />
-						<FilterButton text={'За все время'} />
+						<FilterButton
+							text={'За неделю'}
+							onClick={() =>
+								setDateFilter({ filter: 'week', text: 'За неделю' })
+							}
+							isChecked={dateFilter.filter === 'week'}
+						/>
+						<FilterButton
+							text={'За месяц'}
+							onClick={() =>
+								setDateFilter({ filter: 'month', text: 'За месяц' })
+							}
+							isChecked={dateFilter.filter === 'month'}
+						/>
+						<FilterButton
+							text={'За пол года'}
+							onClick={() =>
+								setDateFilter({ filter: 'half-year', text: 'За пол года' })
+							}
+							isChecked={dateFilter.filter === 'half-year'}
+						/>
+						<FilterButton
+							text={'За все время'}
+							onClick={() =>
+								setDateFilter({ filter: 'all-time', text: 'За все время' })
+							}
+							isChecked={dateFilter.filter === 'all-time'}
+						/>
 					</div>
 				</div>
 			</Modal>

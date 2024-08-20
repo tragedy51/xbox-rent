@@ -19,15 +19,19 @@ export const BasketGameCard = ({ game, className }) => {
 
 	return (
 		<div className={`${cls.BasketGameCard} ${className}`}>
-			<img className={cls.gameImg} src={game.imgSrc} alt='' />
+			<img className={cls.gameImg} src={game.image} alt='' />
 			<div className={cls.gameInfo}>
 				<div className={cls.gameText}>
-					<h3 className={cls.gameTitle}>{game.gameTitle}</h3>
+					<h3 className={cls.gameTitle}>{game.title}</h3>
 					<div className={cls.gamePriceCont}>
-						{game.gameDiscountPrice && (
-							<p className={cls.discount}>{game.gameDiscountPrice} ₽</p>
+						{game.subprice !== '0.00' ? (
+							<>
+								<p className={cls.discount}>{game.price} ₽</p>
+								<p className={cls.price}>{game.subprice} ₽</p>
+							</>
+						) : (
+							<p className={cls.price}>{game.price} ₽</p>
 						)}
-						<p className={cls.price}>{game.gamePrice} ₽</p>
 					</div>
 				</div>
 				<button

@@ -1,0 +1,8 @@
+.allScreens {
+	display: grid;
+	gap: 8px;
+}
+
+.allScreens img {
+    border-radius: 10px;
+}

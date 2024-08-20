@@ -1,26 +1,82 @@
-main .gameInfoCont {
-	height: calc(100% - 30px - 50px - 72px + 40px);
+.gameInfoCont {
+	position: relative;
 }
 
 .gameInfo img {
 	width: 100%;
 }
 
-.gameInfoHeader {
-	padding: 1rem 0 0;
-	border-top-left-radius: 0.75rem;
-	border-top-right-radius: 0.75rem;
-	background: rgb(35 34 34);
-	transform: translateY(-140px);
+.gameInfoMainImg {
+	position: fixed;
 }
 
-.gameInfoHeader p {
+.gamePriceCont {
+	position: absolute;
+	background: #232222c2;
+	border-radius: 1.5rem;
+	padding: 7px 16px;
+	right: 0.5rem;
+	top: 7rem;
+}
+
+.gamePriceCont:has(.discount) {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	gap: 8px;
+}
+
+.gamePriceCont:has(.discount) .discount {
+	color: rgb(239 208 0);
+	font-weight: 600;
+	font-size: 1.5rem;
+	line-height: 2rem;
+}
+
+.gamePriceCont .price {
+	color: #fff;
+	font-weight: 600;
+	font-size: 1.5rem;
+	line-height: 2rem;
+}
+
+.gamePriceCont:has(.discount) .price {
+	text-decoration: line-through;
+	font-size: 1.3rem;
+}
+
+.gameInfoHeader {
+	padding: 1rem 0 0;
+	position: sticky;
+	top: -191px;
+	border-top-left-radius: 0.75rem;
+	border-top-right-radius: 0.75rem;
+	z-index: 1;
+	background: rgb(35 34 34);
+	transform: translateY(181px);
+}
+
+.gameInfoHeaderLinks {
+	display: flex;
+	justify-content: space-between;
+	padding: 0 5px;
+	align-items: center;
+}
+
+.gameInfoHeader .navBtn {
+	text-decoration: none;
+	display: block;
 	font-size: 1rem;
 	line-height: 1.06rem;
 	font-weight: 700;
-	border-bottom: 2px solid white;
 	width: max-content;
 	padding-bottom: 8px;
+	color: #6b7280;
+}
+
+.gameInfoHeader .navBtn.active {
+	border-bottom: 2px solid white;
+	color: #fff;
 }
 
 .gameInfoText {
@@ -29,14 +85,8 @@ main .gameInfoCont {
 
 .gameInfoMain {
 	background: #232222;
-	transform: translateY(-140px);
+	transform: translateY(180px);
 	padding-bottom: 70px;
-	overflow: auto;
-}
-
-.gameInfo {
-	overflow: auto;
-	height: calc(100% - 30px - 50px - 72px);
 }
 
 .gameTitle {
@@ -49,7 +99,7 @@ main .gameInfoCont {
 
 .gameTitle img {
 	width: 100%;
-	height: 100%;
+	height: 72px;
 	border-radius: 0.75rem;
 	object-fit: cover;
 }

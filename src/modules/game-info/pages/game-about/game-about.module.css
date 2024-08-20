@@ -1,0 +1,41 @@
+.gameTitle {
+	display: grid;
+	grid-template-columns: 72px 1fr;
+	align-items: center;
+	gap: 15px;
+	padding: 0 0 15px;
+}
+
+.gameTitle img {
+	width: 100%;
+	height: 72px;
+	border-radius: 0.75rem;
+	object-fit: cover;
+}
+
+.gameTitle h2 {
+	font-size: 1.1rem;
+}
+
+.gameTitle span {
+	font-size: 0.74rem;
+	color: rgb(156 163 175);
+}
+
+.labels {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 1rem;
+	margin: 0 0 1rem;
+}
+
+.label {
+	flex-shrink: 0;
+	background-color: rgb(229 231 235);
+	padding: 0.25rem 0.75rem;
+	border-radius: 999px;
+	color: rgb(55 65 81);
+	font-size: 0.74rem;
+	font-weight: 600;
+	width: max-content;
+}

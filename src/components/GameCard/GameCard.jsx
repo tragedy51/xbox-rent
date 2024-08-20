@@ -2,7 +2,7 @@
 import { forwardRef, memo } from 'react';
 
 import cls from './GameCard.module.css';
-import { XSIcon } from '../../assets';
+import { RussianFlagIcon, XSIcon } from '../../assets';
 import { useStore } from '../../store';
 
 const GameCard = (
@@ -10,16 +10,16 @@ const GameCard = (
 		imgSrc,
 		gameTitle,
 		gamePrice,
-		gameDiscountPrice,
+		subprice,
 		preOrder = false,
 		xs = false,
+		rus = false,
+		size = 'md',
 		...props
 	},
 	ref
 ) => {
-	const { changeXsIsOpen, setXsText } = useStore(
-		(state) => state
-	);
+	const { changeXsIsOpen, setXsText } = useStore((state) => state);
 
 	function handleOpenXsInfo(e, name) {
 		e.stopPropagation();
@@ -41,7 +41,7 @@ const GameCard = (
 
 	return (
 		<>
-			<div className={cls.gameCard} ref={ref} {...props}>
+			<div className={`${cls.gameCard} ${cls[size]}`} ref={ref} {...props}>
 				<div className={cls.imgWrapper}>
 					<img src={imgSrc} alt='' loading='lazy' />
 					{preOrder && (
@@ -51,21 +51,31 @@ const GameCard = (
 							Предзаказ
 						</p>
 					)}
-					{xs && (
-						<div className={cls.XSCont}>
+
+					<div className={cls.XSCont}>
+						{xs && (
 							<button onClick={(e) => handleOpenXsInfo(e, gameTitle)}>
 								<XSIcon width={45} height={35} />
 							</button>
-						</div>
-					)}
+						)}
+						{rus && (
+							<button>
+								<RussianFlagIcon width={25} height={25} />
+							</button>
+						)}
+					</div>
 				</div>
 				<div className={cls.gameInfo}>
 					<h2 className={cls.gameTitle}>{gameTitle}</h2>
 					<div className={cls.gamePriceCont}>
-						{gameDiscountPrice && (
-							<div className={cls.discount}>{gameDiscountPrice} ₽</div>
+						{subprice !== '0.00' ? (
+							<>
+								<div className={cls.discount}>{gamePrice} ₽</div>
+								<p className={cls.price}>{subprice} ₽</p>
+							</>
+						) : (
+							<p className={cls.price}>{gamePrice} ₽</p>
 						)}
-						<p className={cls.price}>{gamePrice} ₽</p>
 					</div>
 				</div>
 			</div>

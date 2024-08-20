@@ -1,0 +1,9 @@
+.allVideos {
+	padding-top: 10px;
+	display: grid;
+	gap: 8px;
+}
+
+.allVideos video {
+	width: 100%;
+}

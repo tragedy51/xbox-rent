@@ -2,6 +2,23 @@
 	border-radius: 0.5rem;
 	backdrop-filter: blur(4px);
 	background-color: rgb(55 65 81 / 0.4);
+	transition: 0.3s;
+	height: 100%;
+	display: grid;
+}
+
+.gameCard.md {
+	max-height: 233px;
+	grid-template-rows: minmax(0, 142px) auto auto;
+}
+
+.gameCard.lg {
+	max-height: 286px;
+	grid-template-rows: minmax(0, 195px) auto auto;
+}
+
+.gameCard:active {
+	transform: scale(0.9);
 }
 
 .banner {
@@ -24,12 +41,16 @@
 	border-top-left-radius: 0.5rem;
 	border-top-right-radius: 0.5rem;
 	object-fit: cover;
+	height: 100%;
 }
 
 .imgWrapper .XSCont {
 	position: absolute;
 	left: 3px;
 	bottom: 0px;
+	display: flex;
+	align-items: center;
+	gap: 5px;
 }
 
 .imgWrapper .XSInfo {

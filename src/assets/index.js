@@ -13,9 +13,11 @@ import InfoIcon from './icons/info-icon.svg?react';
 import DeleteIcon from './icons/delete-icon.svg?react';
 import DollarIcon from './icons/dollar-icon.svg?react';
 import CheckIcon from './icons/check-icon.svg?react';
-import BasketIcon from './icons/basket-icon.svg?react'
+import BasketIcon from './icons/basket-icon.svg?react';
+import RussianFlagIcon from './icons/russian-flag-icon.svg?react';
 
 export {
+	RussianFlagIcon,
 	BasketIcon,
 	CheckIcon,
 	DollarIcon,

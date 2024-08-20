@@ -11,6 +11,7 @@ const NewPredictionGames = () => {
 				backgroundImage: `url(${games[0].imgSrc})`,
 				position: 'relative',
 				zIndex: 2,
+				marginBottom: 0,
 			}}
 			className={cls.NewPredictionGames}>
 			<div className={cls.blurBg}>

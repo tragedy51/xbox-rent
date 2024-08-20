@@ -66,8 +66,8 @@ const Footer = () => {
 					</NavLink>
 				</nav>
 			</footer>
-			<FooterBtns />
 			<UpButtons />
+			<FooterBtns />
 		</>
 	);
 };
