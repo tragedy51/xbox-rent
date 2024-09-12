@@ -50,7 +50,19 @@
 	bottom: 0px;
 	display: flex;
 	align-items: center;
-	gap: 5px;
+}
+
+.XSCont .rusBtn {
+	padding-left: 8px;
+}
+
+.XSCont:not(:has(.xsBtn)) .rusBtn img {
+	margin-bottom: 10px;
+}
+
+.XSCont .rusBtn img {
+	width: 24px;
+	border-radius: 2px;
 }
 
 .imgWrapper .XSInfo {
@@ -61,9 +73,13 @@
 }
 
 .gameInfo {
-	padding: 12px;
+	padding: 12px 6px;
 	display: grid;
 	gap: 8px;
+}
+
+.gameInfo:has(.seriesCardTitle) {
+	gap: 0px;
 }
 
 .gameTitle {
@@ -77,10 +93,15 @@
 	word-break: break-all;
 }
 
+.gameTitle.seriesCardTitle {
+	height: auto;
+}
+
 .gamePriceCont {
 	display: flex;
 	align-items: center;
-	gap: 8px;
+	justify-content: space-between;
+	gap: 4px;
 }
 
 .gamePriceCont:has(.discount) .price {

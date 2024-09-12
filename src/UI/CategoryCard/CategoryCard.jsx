@@ -3,10 +3,7 @@ import cls from './CategoryCard.module.css';
 import { forwardRef } from 'react';
 import { num_word } from '../../helpers';
 
-const CategoryCard = (
-	{ imgSrc, category, count = 0, ...props },
-	ref
-) => {
+const CategoryCard = ({ imgSrc, category, count = 0, ...props }, ref) => {
 	return (
 		<button ref={ref} className={cls.categoryCard} {...props}>
 			<img src={imgSrc} alt={category} />

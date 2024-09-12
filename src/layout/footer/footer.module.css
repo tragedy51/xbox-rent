@@ -22,9 +22,9 @@
 }
 
 .footer nav a.active svg {
-	fill: white;
+	color: white;
 }
 
 .footer nav a svg {
-	fill: rgb(156 163 175);
+	color: rgb(156 163 175);
 }

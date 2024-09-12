@@ -1,20 +1,29 @@
-import { Outlet } from 'react-router-dom';
+import { Outlet, useLocation } from 'react-router-dom';
 import Footer from '../footer/footer';
 import MainBg from '../../assets/main-bg.jpg';
 import { useStore } from '../../store';
 import { Modal } from '../../UI';
-import { GameInfo } from '../../modules/game-info/game-info';
-import { BasketCard } from '../../modules/BasketCard/basket-card';
-import { CategoryBottomSheet } from '../../modules/CategoryBottomSheet/CategoryBottomSheet';
+import { useEffect } from 'react';
 
 const Root = () => {
 	const {
 		XsIsOpen,
 		changeXsIsOpen,
 		XsText,
-		gameInfoBottomSheetIsOpen,
-		basketBottomSheet,
+		setBasketBottomSheet,
 	} = useStore((state) => state);
+
+	const location = useLocation();
+
+	useEffect(() => {
+		switch (location.pathname) {
+			case '/basket':
+				setBasketBottomSheet(true);
+				return;
+			default:
+				return;
+		}
+	}, [location, setBasketBottomSheet]);
 
 	return (
 		<>
@@ -27,11 +36,6 @@ const Root = () => {
 					<p>{XsText}</p>
 				</div>
 			</Modal>
-			<CategoryBottomSheet
-				adjustPosition={gameInfoBottomSheetIsOpen || basketBottomSheet}
-			/>
-			<GameInfo adjustPosition={basketBottomSheet} />
-			<BasketCard />
 		</>
 	);
 };

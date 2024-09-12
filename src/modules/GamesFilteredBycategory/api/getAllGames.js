@@ -1,10 +1,16 @@
-export async function getFilteredGames(categoryId) {
+export async function getFilteredGames(categoryId, serieId, voiceActing) {
 	let queries = '';
 
-	queries += categoryId ? `categories=${categoryId}` : '';
+	queries += categoryId
+		? `categories=${categoryId}`
+		: serieId
+		? `series=${serieId}`
+		: '';
 
 	const response = await fetch(
-		`${import.meta.env.VITE_API_URL}/catalog/?${queries}`
+		`${
+			import.meta.env.VITE_API_URL
+		}/catalog/?${queries}&voice_acting=${voiceActing}`
 	);
 	const result = await response.json();
 

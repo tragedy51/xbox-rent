@@ -1,3 +1,27 @@
+.bigImage {
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	z-index: 3;
+}
+
+.bigImage img {
+	width: 250px;
+	height: 250px;
+	object-fit: cover;
+	border-radius: 10px;
+}
+
+.backdrop {
+	position: fixed;
+	inset: 0;
+	background: #00000081;
+	backdrop-filter: blur(3px);
+	z-index: 2;
+}
+
+
 .gameInfoCont {
 	position: relative;
 }
@@ -6,8 +30,16 @@
 	width: 100%;
 }
 
-.gameInfoMainImg {
+.gameInfoMainImgCont {
 	position: fixed;
+	max-height: 250px;
+	height: 100%;
+	width: 100%;
+}
+
+.gameInfoMainImg {
+	height: 100%;
+	object-fit: cover;
 }
 
 .gamePriceCont {
@@ -15,8 +47,9 @@
 	background: #232222c2;
 	border-radius: 1.5rem;
 	padding: 7px 16px;
-	right: 0.5rem;
-	top: 7rem;
+	right: 1rem;
+	bottom: 5rem;
+	width: max-content;
 }
 
 .gamePriceCont:has(.discount) {
@@ -29,20 +62,26 @@
 .gamePriceCont:has(.discount) .discount {
 	color: rgb(239 208 0);
 	font-weight: 600;
-	font-size: 1.5rem;
+	font-size: 1.3rem;
 	line-height: 2rem;
 }
 
 .gamePriceCont .price {
 	color: #fff;
 	font-weight: 600;
-	font-size: 1.5rem;
+	font-size: 1.3rem;
 	line-height: 2rem;
 }
 
 .gamePriceCont:has(.discount) .price {
 	text-decoration: line-through;
-	font-size: 1.3rem;
+	font-size: 1.1rem;
+}
+
+.XSBtn {
+	position: absolute;
+	left: 15px;
+	bottom: 5rem;
 }
 
 .gameInfoHeader {
@@ -59,14 +98,14 @@
 .gameInfoHeaderLinks {
 	display: flex;
 	justify-content: space-between;
-	padding: 0 5px;
+	padding: 0 9px;
 	align-items: center;
 }
 
 .gameInfoHeader .navBtn {
 	text-decoration: none;
 	display: block;
-	font-size: 1rem;
+	font-size: 0.85rem;
 	line-height: 1.06rem;
 	font-weight: 700;
 	width: max-content;

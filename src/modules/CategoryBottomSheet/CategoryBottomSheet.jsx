@@ -5,18 +5,27 @@ import cls from './CategoryBottomSheet.module.css';
 import GamesFilteredBycategory from '../GamesFilteredBycategory/GamesFilteredBycategory';
 
 export const CategoryBottomSheet = ({ adjustPosition }) => {
-	// const scrollContainerRef = useRef(null);
 	const {
 		categoryBottomSheetIsOpen,
 		setCategoryBottomSheetIsOpen,
 		activeCategory,
+		setActiveCategory,
+		setActiveSeries,
+		setVoiceActing
 	} = useStore((state) => state);
+
+	function handleCloseCategoryBottomSheet(isOpen) {
+		setCategoryBottomSheetIsOpen(isOpen);
+		setActiveCategory(null);
+		setActiveSeries(null);
+		setVoiceActing('')
+	}
 
 	return (
 		<CustomBottomSheet
 			adjustPosition={adjustPosition}
 			isOpen={categoryBottomSheetIsOpen}
-			setIsopen={setCategoryBottomSheetIsOpen}
+			setIsopen={handleCloseCategoryBottomSheet}
 			bottomSheetHeader={
 				<div style={{ marginTop: 0 }} className={cls.sectionHeader}>
 					<h2 style={{ fontWeight: 500 }} className='section-title'>

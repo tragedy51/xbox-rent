@@ -6,18 +6,19 @@ export const Modal = ({ children, isOpen, setIsopen, className }) => {
 		<>
 			<AnimatePresence>
 				{isOpen && (
-					<motion.div
-						initial={{
-							opacity: 0,
-						}}
-						exit={{
-							opacity: 0,
-						}}
-						animate={{
-							opacity: 1,
-						}}
-						className={`${cls.backdrop}`}
-						onClick={() => setIsopen(false)}>
+					<>
+						<motion.div
+							initial={{
+								opacity: 0,
+							}}
+							exit={{
+								opacity: 0,
+							}}
+							animate={{
+								opacity: 1,
+							}}
+							className={`${cls.backdrop}`}
+							onClick={() => setIsopen(false)}></motion.div>
 						<motion.div
 							initial={{
 								translateY: '100%',
@@ -39,7 +40,7 @@ export const Modal = ({ children, isOpen, setIsopen, className }) => {
 								Закрыть
 							</button>
 						</motion.div>
-					</motion.div>
+					</>
 				)}
 			</AnimatePresence>
 		</>

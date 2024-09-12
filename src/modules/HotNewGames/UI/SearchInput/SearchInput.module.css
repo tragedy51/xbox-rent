@@ -5,7 +5,7 @@
 
 .inputCont svg {
 	position: absolute;
-	left: 1rem;
+	left: 17px;
 	top: 50%;
 	transform: translateY(-50%);
 	fill: rgb(156 163 175);

@@ -1,8 +1,14 @@
-import { motion, useAnimation, useMotionValue } from 'framer-motion';
+import {
+	AnimatePresence,
+	motion,
+	useAnimation,
+	useMotionValue,
+} from 'framer-motion';
 import cls from './BottomSheet.module.css';
 import { useEffect, useRef, useState } from 'react';
 import useScrollDirection from '../../hooks/useScrollDirection';
 import { useStore } from '../../store';
+import { IphoneShareIcon } from '../../assets';
 
 export const CustomBottomSheet = ({
 	sheetBgColor,
@@ -10,7 +16,9 @@ export const CustomBottomSheet = ({
 	setIsopen,
 	children,
 	adjustPosition,
+	shareIcon,
 	bottomSheetHeader,
+	onClose = () => {},
 }) => {
 	const y = useMotionValue(0);
 	const [onTheTop, setOnTheTop] = useState(true);
@@ -35,12 +43,13 @@ export const CustomBottomSheet = ({
 		}
 	}
 
-	function handleTouchEnd() {
+	async function handleTouchEnd() {
 		const modalHeight = modalRef.current.offsetHeight - 30 - 48 - 72;
 
 		if (y.current > modalHeight / 4) {
-			controls.start({ y: modalRef.current.offsetHeight });
+			await controls.start({ y: modalRef.current.offsetHeight });
 			setIsopen(false);
+			onClose();
 		} else {
 			controls.start({ y: 0 });
 		}
@@ -49,82 +58,86 @@ export const CustomBottomSheet = ({
 	useEffect(() => {
 		if (isOpen) {
 			controls.start({
-				y: adjustPosition ? -20 : 0,
+				y: adjustPosition ? -15 : 0,
 				width: adjustPosition ? '90%' : '100%',
 				marginInline: 'auto',
-			});
-
-			backdropControls.set({
-				opacity: 1,
-				y: 0,
-			});
-		} else {
-			controls.start({
-				y: modalRef.current.offsetHeight,
-			});
-			backdropControls.start({
-				opacity: 0,
-				y: modalRef.current.offsetHeight,
 			});
 		}
 	}, [controls, isOpen, adjustPosition, backdropControls]);
 
 	return (
-		<>
-			<motion.div
-				ref={modalRef}
-				animate={controls}
-				transition={{
-					duration: 0.4,
-					ease: 'easeInOut',
-				}}
-				style={sheetBgColor ? { y, background: sheetBgColor } : { y }}
-				className={`${cls.sheet} ${isOpen ? cls.open : ''}`}>
-				<div className={cls.sheetBody}>
-					<header
-						onTouchStart={(e) => {
-							touchStartPoint.current = e.touches[0].clientY;
+		<AnimatePresence>
+			{isOpen && (
+				<>
+					<motion.div
+						ref={modalRef}
+						initial={{ y: window.innerHeight }}
+						animate={controls}
+						exit={{ y: window.innerHeight }}
+						transition={{
+							duration: 0.4,
+							ease: 'easeInOut',
 						}}
-						onTouchMove={handleTouchMove}
-						onTouchEnd={handleTouchEnd}
-						className={cls.sheetHeader}>
-						<div className='wrapper'>
-							<button className={cls.closeBtn} onClick={() => setIsopen(false)}>
-								Закрыть
-							</button>
-							{bottomSheetHeader && (
-								<div className={cls.sheetHeaderContent}>
-									{bottomSheetHeader}
+						style={sheetBgColor ? { y, background: sheetBgColor } : { y }}
+						className={`${cls.sheet} ${isOpen ? cls.open : ''}`}>
+						<div className={cls.sheetBody}>
+							<header
+								onTouchStart={(e) => {
+									touchStartPoint.current = e.touches[0].clientY;
+								}}
+								onTouchMove={handleTouchMove}
+								onTouchEnd={handleTouchEnd}
+								className={cls.sheetHeader}>
+								<div className={`wrapper ${cls.sheetHeaderCont}`}>
+									<button
+										className={cls.closeBtn}
+										onClick={() => {
+											setIsopen(false);
+											onClose();
+										}}>
+										Закрыть
+									</button>
+									{bottomSheetHeader && (
+										<div className={cls.sheetHeaderContent}>
+											{bottomSheetHeader}
+										</div>
+									)}
+									{!bottomSheetHeader && <div className={cls.line} />}
+									{shareIcon && (
+										<button className={cls.shareBtn}>
+											<IphoneShareIcon width={25} height={25} />
+										</button>
+									)}
 								</div>
-							)}
-							{!bottomSheetHeader && <div className={cls.line} />}
+							</header>
+							<motion.main
+								onTouchStart={(e) => {
+									touchStartPoint.current = e.touches[0].clientY;
+								}}
+								onTouchMove={handleTouchMove}
+								onTouchEnd={handleTouchEnd}
+								style={{ overflowY: 'auto' }}
+								ref={mainRef}
+								className={cls.sheetMain}>
+								<motion.div
+									onViewportEnter={() => setOnTheTop(true)}
+									onViewportLeave={() => setOnTheTop(false)}
+									style={{ height: 0 }}
+								/>
+								{children}
+							</motion.main>
 						</div>
-					</header>
-					<motion.main
-						onTouchStart={(e) => {
-							touchStartPoint.current = e.touches[0].clientY;
-						}}
-						onTouchMove={handleTouchMove}
-						onTouchEnd={handleTouchEnd}
-						style={{ overflowY: 'auto' }}
-						ref={mainRef}
-						className={cls.sheetMain}>
-						<motion.div
-							onViewportEnter={() => setOnTheTop(true)}
-							onViewportLeave={() => setOnTheTop(false)}
-							style={{ height: 0 }}
-						/>
-						{children}
-					</motion.main>
-				</div>
-			</motion.div>
-			<motion.div
-				onClick={() => setIsopen(false)}
-				initial={{ opacity: 0 }}
-				animate={backdropControls}
-				className={cls.backdrop}
-			/>
-		</>
+					</motion.div>
+					<motion.div
+						initial={{ opacity: 0 }}
+						animate={{ opacity: 1 }}
+						exit={{ opacity: 0 }}
+						onClick={() => setIsopen(false)}
+						className={cls.backdrop}
+					/>
+				</>
+			)}
+		</AnimatePresence>
 	);
 };
 

@@ -29,11 +29,18 @@ const GamesFilteredBycategory = ({ inBottomSheet, scrollContainerRef }) => {
 		setActiveGame,
 		setIsEnd,
 		activeCategory,
+		activeSeries,
+		voiceActing,
 	} = useStore((state) => state);
 
 	const { data, isLoading, isSuccess, isError } = useQuery({
-		queryKey: [`categories-${activeCategory.id}`],
-		queryFn: () => getFilteredGames(activeCategory.id),
+		queryKey: [
+			`categories-${activeCategory.id}`,
+			`series-${activeSeries.id}`,
+			`voice_acting_${voiceActing}`,
+		],
+		queryFn: () =>
+			getFilteredGames(activeCategory.id, activeSeries.id, voiceActing),
 	});
 
 	useScrollDirection(inBottomSheet ? scrollContainerRef : undefined);
@@ -76,6 +83,7 @@ const GamesFilteredBycategory = ({ inBottomSheet, scrollContainerRef }) => {
 					gamePrice={game.price}
 					subprice={game.subprice}
 					imgSrc={game.image}
+					rus={game.voice_acting === 'russian'}
 				/>
 				<motion.div
 					onViewportEnter={handleCardEnterViewport}
@@ -114,20 +122,22 @@ const GamesFilteredBycategory = ({ inBottomSheet, scrollContainerRef }) => {
 							</h2>
 						</div>
 					)} */}
-					<div className={cls.filterButtons}>
-						<Button
-							onClick={() => setSortIsOpen(true)}
-							Icon={DropdownIcon}
-							iconSize={16}>
-							По умолчанию
-						</Button>
-						<Button
-							onClick={() => setFiltersIsOpen(true)}
-							Icon={FilterIcon}
-							iconSize={16}>
-							Все игры
-						</Button>
-					</div>
+					{!activeSeries && (
+						<div className={cls.filterButtons}>
+							<Button
+								onClick={() => setSortIsOpen(true)}
+								Icon={DropdownIcon}
+								iconSize={16}>
+								По умолчанию
+							</Button>
+							<Button
+								onClick={() => setFiltersIsOpen(true)}
+								Icon={FilterIcon}
+								iconSize={16}>
+								Все игры
+							</Button>
+						</div>
+					)}
 					<motion.div
 						style={{
 							position: 'absolute',

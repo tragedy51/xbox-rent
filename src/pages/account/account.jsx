@@ -28,7 +28,7 @@ const settings1 = [
 		Icon: QuestionIcon,
 	},
 	{
-		text: 'Поддержка PG Store',
+		text: 'Поддержка',
 		iconContBg: '#3b82f6',
 		Icon: InfoIcon,
 	},

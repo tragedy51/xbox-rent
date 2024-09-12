@@ -1,8 +1,12 @@
 .allScreens {
 	display: grid;
 	gap: 8px;
+	padding-top: 10px;
+	padding-bottom: 20px;
 }
 
 .allScreens img {
     border-radius: 10px;
+	height: 200px;
+	object-fit: cover;
 }

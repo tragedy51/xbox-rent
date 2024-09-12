@@ -1,9 +1,18 @@
 .allVideos {
 	padding-top: 10px;
 	display: grid;
-	gap: 8px;
+	gap: 12px;
+	padding-bottom: 20px;
 }
 
 .allVideos video {
 	width: 100%;
+}
+
+.video {
+	width: 100%;
+	border-radius: 10px;
+	height: 200px;
+	object-fit: cover;
+	border: 0;
 }

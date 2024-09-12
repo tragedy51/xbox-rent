@@ -2,6 +2,10 @@ import cls from './basket-game-card.module.css';
 import { DeleteIcon } from '../../../../assets';
 import { useStore } from '../../../../store';
 
+const gameType = {
+	rent: 'Аренда',
+};
+
 export const BasketGameCard = ({ game, className }) => {
 	const {
 		deleteGameFromBasket,
@@ -33,6 +37,7 @@ export const BasketGameCard = ({ game, className }) => {
 							<p className={cls.price}>{game.price} ₽</p>
 						)}
 					</div>
+					<div className={cls.label}>{gameType[game.type]}</div>
 				</div>
 				<button
 					className={cls.deleteBtn}

@@ -2,7 +2,8 @@
 import { forwardRef, memo } from 'react';
 
 import cls from './GameCard.module.css';
-import { RussianFlagIcon, XSIcon } from '../../assets';
+import { XSIcon } from '../../assets';
+import russianFlagImg from '../../assets/icons/russian-flag-icon.svg';
 import { useStore } from '../../store';
 
 const GameCard = (
@@ -14,6 +15,7 @@ const GameCard = (
 		preOrder = false,
 		xs = false,
 		rus = false,
+		seriesCard,
 		size = 'md',
 		...props
 	},
@@ -54,27 +56,34 @@ const GameCard = (
 
 					<div className={cls.XSCont}>
 						{xs && (
-							<button onClick={(e) => handleOpenXsInfo(e, gameTitle)}>
+							<button
+								className={cls.xsBtn}
+								onClick={(e) => handleOpenXsInfo(e, gameTitle)}>
 								<XSIcon width={45} height={35} />
 							</button>
 						)}
 						{rus && (
-							<button>
-								<RussianFlagIcon width={25} height={25} />
+							<button className={cls.rusBtn}>
+								<img src={russianFlagImg} alt='' />
 							</button>
 						)}
 					</div>
 				</div>
 				<div className={cls.gameInfo}>
-					<h2 className={cls.gameTitle}>{gameTitle}</h2>
+					<h2
+						className={`${cls.gameTitle} ${
+							seriesCard ? cls.seriesCardTitle : ''
+						}`}>
+						{gameTitle}
+					</h2>
 					<div className={cls.gamePriceCont}>
-						{subprice !== '0.00' ? (
+						{subprice && subprice !== '0.00' ? (
 							<>
 								<div className={cls.discount}>{gamePrice} ₽</div>
 								<p className={cls.price}>{subprice} ₽</p>
 							</>
 						) : (
-							<p className={cls.price}>{gamePrice} ₽</p>
+							gamePrice && <p className={cls.price}>{gamePrice} ₽</p>
 						)}
 					</div>
 				</div>

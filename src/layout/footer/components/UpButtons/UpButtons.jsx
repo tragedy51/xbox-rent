@@ -3,7 +3,6 @@ import cls from './UpButtons.module.css';
 import Button from '../../../../UI/Button/Button';
 import { useStore } from '../../../../store';
 import { BasketIcon, DropdownArrowIcon } from '../../../../assets';
-import { games } from '../../../../consts/games';
 
 const MotionButton = motion(Button);
 
@@ -16,13 +15,16 @@ export const UpButtons = () => {
 		XsIsOpen,
 		counter,
 		isEnd,
+		setDirection,
+		gameInfoBottomSheetIsOpen,
+		gamesCount
 	} = useStore((state) => state);
 
 	const variants = [
 		{
 			up: {
 				y: '0%',
-				bottom: countButtonUpIsShown ? '135px' : '85px',
+				bottom: countButtonUpIsShown || gameInfoBottomSheetIsOpen ? '135px' : '85px',
 				opacity: XsIsOpen || basketBottomSheet ? '0' : '1',
 			},
 			down: {
@@ -44,7 +46,10 @@ export const UpButtons = () => {
 	];
 
 	function handleScrollToTop() {
-		document.getElementById('root').scrollIntoView({ behavior: 'smooth' });
+		setDirection('up');
+		document
+			.getElementById('hot-new-games')
+			.scrollIntoView({ behavior: 'smooth' });
 	}
 
 	return (
@@ -72,7 +77,7 @@ export const UpButtons = () => {
 							animate={{ opacity: 1 }}
 							initial={{ opacity: 0 }}
 							exit={{ opacity: 0 }}>
-							{counter}/{games.length}
+							{counter}/{gamesCount}
 						</motion.p>
 					) : (
 						<motion.p

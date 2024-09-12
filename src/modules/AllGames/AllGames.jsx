@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 
 import cls from './AllGames.module.css';
 import FilterIcon from '../../assets/icons/filter-icon.svg?react';
-import DropdownIcon from '../../assets/icons/dropdown-arrows-icon.svg?react';
+// import DropdownIcon from '../../assets/icons/dropdown-arrows-icon.svg?react';
 import { useEffect, useRef, useState } from 'react';
 import { useStore } from '../../store';
 import { useQuery } from '@tanstack/react-query';
@@ -12,12 +12,24 @@ import { getAllGames } from './api/getAllGames';
 import { FilterButton, Modal } from '../../UI';
 import useScrollDirection from '../../hooks/useScrollDirection';
 import { useShallow } from 'zustand/react/shallow';
+import {
+	AlphabetIcon,
+	DiscountIcon,
+	DollarincircleIcon,
+	KeyboardIcon,
+	StarIcon,
+	TimeIcon,
+	TwoArrowsIcon,
+} from '../../assets';
+import { Icon } from '@iconify/react/dist/iconify.js';
 
 const MotionGameCard = motion(GameCard);
 
 const AllGames = ({ inBottomSheet, scrollContainerRef }) => {
 	const [filtersIsOpen, setFiltersIsOpen] = useState(false);
 	const [sortIsOpen, setSortIsOpen] = useState(false);
+	const [page, setPage] = useState(1);
+	const [totalGames, setTotalGames] = useState(0);
 	const content = useRef(null);
 
 	const {
@@ -29,20 +41,22 @@ const AllGames = ({ inBottomSheet, scrollContainerRef }) => {
 		setCountButtonUpIsShown,
 		setActiveGame,
 		setIsEnd,
-		dateFilter,
 		setGamesCount,
 		gamesCount,
 	} = useStore(useShallow((state) => state));
 
-	const [sortType, setSortType] = useState(null);
+	const [sortType, setSortType] = useState({
+		type: '',
+		text: 'По умолчанию',
+		icon: TwoArrowsIcon,
+	});
 
-	const { data, isLoading, isSuccess, isError } = useQuery({
-		queryKey: [
-			'all-games',
-			`all-games-sorted-${sortType}`,
-			`all-games-filtered-by-${dateFilter.filter}`,
-		],
-		queryFn: () => getAllGames(sortType, dateFilter.filter),
+	const { data, isSuccess, isError, isFetching } = useQuery({
+		queryKey: [`all-games-${page}`, `all-games-sorted-${sortType.type}`],
+		queryFn: () => getAllGames(sortType.type, page),
+		getNextPageParam: (lastPage, allPages) => {
+			return lastPage.length ? allPages.length + 1 : undefined;
+		},
 	});
 
 	useScrollDirection(inBottomSheet ? scrollContainerRef : undefined);
@@ -75,13 +89,35 @@ const AllGames = ({ inBottomSheet, scrollContainerRef }) => {
 	}
 
 	useEffect(() => {
-		if (gamesCount !== data?.results?.length) {
-			setGamesCount(data?.results?.length);
+		if (gamesCount !== data?.count) {
+			setGamesCount(data?.count);
 		}
-	}, [data?.results?.length, gamesCount, setGamesCount]);
+	}, [data?.count, gamesCount, setGamesCount]);
+
+	const allGames = useRef([]);
+
+	useEffect(() => {
+		if (data) {
+			allGames.current = [...allGames.current, ...data.results];
+		}
+	}, [data]);
+
+	useEffect(() => {
+		if (isSuccess) {
+			setTotalGames(data.count);
+		}
+	}, [data?.count, isSuccess]);
+
+	function changePage() {
+		const maxPageCount = Math.ceil(totalGames / 10);
+
+		if (page < maxPageCount) {
+			setPage((prev) => prev + 1);
+		}
+	}
 
 	if (isSuccess) {
-		content.current = data.results.map((game, i) => (
+		content.current = allGames.current.map((game, i) => (
 			<div className={cls.gameCarCont} key={game.id}>
 				<MotionGameCard
 					onClick={() => handleOpenGameInfoBottomSheet(game)}
@@ -104,10 +140,6 @@ const AllGames = ({ inBottomSheet, scrollContainerRef }) => {
 				/>
 			</div>
 		));
-	}
-
-	if (isLoading) {
-		content.current = <p>Loading...</p>;
 	}
 
 	if (isError) {
@@ -133,9 +165,9 @@ const AllGames = ({ inBottomSheet, scrollContainerRef }) => {
 					<div className={cls.filterButtons}>
 						<Button
 							onClick={() => setSortIsOpen(true)}
-							Icon={DropdownIcon}
+							Icon={sortType.icon}
 							iconSize={16}>
-							По умолчанию
+							{sortType.text}
 						</Button>
 						<Button
 							onClick={() => setFiltersIsOpen(true)}
@@ -158,6 +190,23 @@ const AllGames = ({ inBottomSheet, scrollContainerRef }) => {
 						onViewportLeave={leaveAllGamesSection}
 					/>
 					<div className={cls.allGamesCont}>{content.current}</div>
+					{isFetching && (
+						<Icon
+							style={{ margin: '0 auto', display: 'block' }}
+							width={55}
+							icon='eos-icons:three-dots-loading'
+						/>
+					)}
+					<motion.div
+						style={{
+							position: 'absolute',
+							bottom: 0,
+							width: '100%',
+							height: '2px',
+							background: 'transparent',
+						}}
+						onViewportEnter={changePage}
+					/>
 				</div>
 
 				<motion.div
@@ -173,7 +222,11 @@ const AllGames = ({ inBottomSheet, scrollContainerRef }) => {
 				<div className={cls.gameFilters}>
 					<h3 className='section-title'>Фильтры</h3>
 					<div className={cls.filters}>
-						<FilterButton text={'Все игры'} isChecked={true} />
+						<FilterButton
+							onClick={(e) => e.stopPropagation()}
+							text={'Все игры'}
+							isChecked={true}
+						/>
 						<FilterButton text={'Полностью русские'} />
 						<FilterButton text={'Версия для Series X/S'} />
 						<FilterButton text={'Версия для Xbox One'} />
@@ -202,39 +255,88 @@ const AllGames = ({ inBottomSheet, scrollContainerRef }) => {
 					<h3 className='section-title'>Сортировка</h3>
 					<div className={cls.filters}>
 						<FilterButton
-							onClick={() => setSortType(null)}
+							onClick={() =>
+								setSortType({
+									type: '',
+									text: 'По умолчанию',
+									icon: TwoArrowsIcon,
+								})
+							}
 							text={'По умолчанию'}
-							isChecked={sortType === null}
+							isChecked={sortType.type === ''}
+							Icon={TwoArrowsIcon}
 						/>
 						<FilterButton
-							onClick={() => setSortType('-title')}
+							onClick={() =>
+								setSortType({
+									type: 'title',
+									text: 'A..z по убыванию',
+									icon: AlphabetIcon,
+								})
+							}
 							text={'A..z по убыванию'}
-							isChecked={sortType === '-title'}
+							isChecked={sortType.type === 'title'}
+							Icon={AlphabetIcon}
 						/>
 						<FilterButton
-							onClick={() => setSortType('title')}
+							onClick={() =>
+								setSortType({
+									type: '-title',
+									text: 'Z..a по возрастанию',
+									icon: KeyboardIcon,
+								})
+							}
 							text={'Z..a по возрастанию'}
-							isChecked={sortType === 'title'}
+							isChecked={sortType.type === '-title'}
+							Icon={KeyboardIcon}
 						/>
 						<FilterButton
-							onClick={() => setSortType('-release_date')}
-							text={'Старые игры'}
-							isChecked={sortType === '-release_date'}
-						/>
-						<FilterButton
-							onClick={() => setSortType('release_date')}
+							onClick={() =>
+								setSortType({
+									type: '-release_date',
+									text: 'Новые игры',
+									icon: StarIcon,
+								})
+							}
 							text={'Новые игры'}
-							isChecked={sortType === 'release_date'}
+							isChecked={sortType.type === '-release_date'}
+							Icon={StarIcon}
 						/>
 						<FilterButton
-							onClick={() => setSortType('-price')}
+							onClick={() =>
+								setSortType({
+									type: 'release_date',
+									text: 'Старые игры',
+									icon: TimeIcon,
+								})
+							}
+							text={'Старые игры'}
+							isChecked={sortType.type === 'release_date'}
+							Icon={TimeIcon}
+						/>
+						<FilterButton
+							onClick={() =>
+								setSortType({
+									type: 'price',
+									text: 'Сначала дешевые',
+									icon: DiscountIcon,
+								})
+							}
 							text={'Сначала дешевые'}
-							isChecked={sortType === '-price'}
+							isChecked={sortType.type === 'price'}
+							Icon={DiscountIcon}
 						/>
 						<FilterButton
-							onClick={() => setSortType('price')}
+							onClick={() =>
+								setSortType({
+									type: '-price',
+									text: 'Сначала дорогие',
+									icon: DollarincircleIcon,
+								})
+							}
 							text={'Сначала дорогие'}
-							isChecked={sortType === 'price'}
+							isChecked={sortType.type === '-price'}
+							Icon={DollarincircleIcon}
 						/>
 					</div>
 				</div>

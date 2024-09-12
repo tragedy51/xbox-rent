@@ -4,7 +4,7 @@ import 'swiper/css';
 import 'swiper/css/effect-coverflow';
 import 'swiper/css/navigation';
 import Root from './layout/root/root';
-import { Account, Basket, RentGames, Search } from './pages';
+import { Account, RentGames, Search } from './pages';
 import AllGames from './modules/AllGames/AllGames';
 import { useEffect } from 'react';
 import WebApp from '@twa-dev/sdk';
@@ -19,8 +19,32 @@ const router = createHashRouter([
 				element: <RentGames />,
 			},
 			{ path: '/account', element: <Account /> },
-			{ path: '/basket', element: <Basket /> },
+			{ path: '/basket', element: <RentGames /> },
 			{ path: '/:category', element: <AllGames /> },
+			{
+				path: '/buy-games',
+				element: (
+					<h2 className='wrapper' style={{ paddingTop: '10px' }}>
+						В разработке
+					</h2>
+				),
+			},
+			{
+				path: '/subscriptions',
+				element: (
+					<h2 className='wrapper' style={{ paddingTop: '10px' }}>
+						В разработке
+					</h2>
+				),
+			},
+			{
+				path: '/currency',
+				element: (
+					<h2 className='wrapper' style={{ paddingTop: '10px' }}>
+						В разработке
+					</h2>
+				),
+			},
 		],
 	},
 	{

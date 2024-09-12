@@ -13,12 +13,33 @@
 
 .searchBtn {
 	padding: 0.7rem;
+	position: relative;
+}
+
+.motionSearchBtn {
+	position: relative;
+	width: 53.6px;
+	height: 53.6px;
+	backdrop-filter: blur(4px);
+	background-color: rgb(55 65 81 / 0.4);
+	border-radius: 50px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
 
 .categoryTitle {
 	margin: 1rem 0;
 	font-size: 1.7rem;
 	line-height: 2rem;
+	overflow: hidden;
+	text-wrap: nowrap;
+	width: 0;
+}
+
+.categoryTitle.active {
+	width: 100%;
+	transition: 0.3s;
 }
 
 .categoryTitle span {
@@ -96,4 +117,6 @@
 
 .sliderImg {
 	border-radius: 0.5rem;
+	height: 300px;
+	object-fit: cover;
 }

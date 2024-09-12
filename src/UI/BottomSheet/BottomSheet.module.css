@@ -24,6 +24,16 @@ body:has(.sheet.open) {
 	padding: 15px 0;
 }
 
+.sheetHeaderCont {
+	display: flex;
+	justify-content: space-between;
+}
+
+.shareBtn path {
+	/* stroke: rgb(96 165 250); */
+	stroke: #fff;
+}
+
 .sheetHeader:has(.sheetHeaderContent) {
 	position: relative;
 	padding: 15px 0;

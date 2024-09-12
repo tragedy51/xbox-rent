@@ -2,6 +2,7 @@ export const layoutSlice = (set) => ({
 	XsIsOpen: false,
 	categoryBottomSheetIsOpen: false,
 	gameInfoBottomSheetIsOpen: false,
+	searchBottomSheetIsOpen: false,
 	basketBottomSheet: false,
 	XsGameName: '',
 	productAddToCardIsVisiible: false,
@@ -14,6 +15,8 @@ export const layoutSlice = (set) => ({
 		set(() => ({ categoryBottomSheetIsOpen: bool })),
 	setGameInfoBottomSheetIsOpen: (bool) =>
 		set(() => ({ gameInfoBottomSheetIsOpen: bool })),
+	setSearchBottomSheetIsOpen: (bool) =>
+		set(() => ({ searchBottomSheetIsOpen: bool })),
 	setBasketBottomSheet: (bool) => set(() => ({ basketBottomSheet: bool })),
 	setXsGameName: (name) => set(() => ({ XsGameName: name })),
 	setProductAddToCardIsVisiible: (bool) =>
