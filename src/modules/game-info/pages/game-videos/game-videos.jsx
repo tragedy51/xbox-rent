@@ -7,7 +7,13 @@ function sliceVideoSrc(url) {
 const GameVideos = ({ videos, trailer }) => {
 	return (
 		<div className='wrapper'>
-			<div style={{ display: 'grid', gap: '12px', marginBottom: '16px' }}>
+			<div
+				style={{
+					display: 'grid',
+					gap: '12px',
+					marginBottom: '16px',
+					paddingTop: '20px',
+				}}>
 				<h3 className='section-title'>Официальный трейлер</h3>
 				<iframe
 					className={cls.video}

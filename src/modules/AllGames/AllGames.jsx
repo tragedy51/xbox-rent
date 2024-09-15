@@ -54,9 +54,6 @@ const AllGames = ({ inBottomSheet, scrollContainerRef }) => {
 	const { data, isSuccess, isError, isFetching } = useQuery({
 		queryKey: [`all-games-${page}`, `all-games-sorted-${sortType.type}`],
 		queryFn: () => getAllGames(sortType.type, page),
-		getNextPageParam: (lastPage, allPages) => {
-			return lastPage.length ? allPages.length + 1 : undefined;
-		},
 	});
 
 	useScrollDirection(inBottomSheet ? scrollContainerRef : undefined);
@@ -97,6 +94,10 @@ const AllGames = ({ inBottomSheet, scrollContainerRef }) => {
 	const allGames = useRef([]);
 
 	useEffect(() => {
+		allGames.current = [];
+	}, [sortType]);
+
+	useEffect(() => {
 		if (data) {
 			allGames.current = [...allGames.current, ...data.results];
 		}
@@ -116,10 +117,17 @@ const AllGames = ({ inBottomSheet, scrollContainerRef }) => {
 		}
 	}
 
+	function handleSortGames(sort) {
+		setPage(1);
+		setSortType(sort);
+	}
+
 	if (isSuccess) {
 		content.current = allGames.current.map((game, i) => (
 			<div className={cls.gameCarCont} key={game.id}>
 				<MotionGameCard
+					release_date={game.release_date}
+					preOrder={game.pre_order}
 					onClick={() => handleOpenGameInfoBottomSheet(game)}
 					game={game}
 					xs={game.compatibility === 'xbox_series_x_s'}
@@ -200,9 +208,9 @@ const AllGames = ({ inBottomSheet, scrollContainerRef }) => {
 					<motion.div
 						style={{
 							position: 'absolute',
-							bottom: 0,
+							bottom: '-100px',
 							width: '100%',
-							height: '2px',
+							height: '1px',
 							background: 'transparent',
 						}}
 						onViewportEnter={changePage}
@@ -256,7 +264,7 @@ const AllGames = ({ inBottomSheet, scrollContainerRef }) => {
 					<div className={cls.filters}>
 						<FilterButton
 							onClick={() =>
-								setSortType({
+								handleSortGames({
 									type: '',
 									text: 'По умолчанию',
 									icon: TwoArrowsIcon,
@@ -268,7 +276,7 @@ const AllGames = ({ inBottomSheet, scrollContainerRef }) => {
 						/>
 						<FilterButton
 							onClick={() =>
-								setSortType({
+								handleSortGames({
 									type: 'title',
 									text: 'A..z по убыванию',
 									icon: AlphabetIcon,
@@ -280,7 +288,7 @@ const AllGames = ({ inBottomSheet, scrollContainerRef }) => {
 						/>
 						<FilterButton
 							onClick={() =>
-								setSortType({
+								handleSortGames({
 									type: '-title',
 									text: 'Z..a по возрастанию',
 									icon: KeyboardIcon,
@@ -292,7 +300,7 @@ const AllGames = ({ inBottomSheet, scrollContainerRef }) => {
 						/>
 						<FilterButton
 							onClick={() =>
-								setSortType({
+								handleSortGames({
 									type: '-release_date',
 									text: 'Новые игры',
 									icon: StarIcon,
@@ -304,7 +312,7 @@ const AllGames = ({ inBottomSheet, scrollContainerRef }) => {
 						/>
 						<FilterButton
 							onClick={() =>
-								setSortType({
+								handleSortGames({
 									type: 'release_date',
 									text: 'Старые игры',
 									icon: TimeIcon,
@@ -316,7 +324,7 @@ const AllGames = ({ inBottomSheet, scrollContainerRef }) => {
 						/>
 						<FilterButton
 							onClick={() =>
-								setSortType({
+								handleSortGames({
 									type: 'price',
 									text: 'Сначала дешевые',
 									icon: DiscountIcon,
@@ -328,7 +336,7 @@ const AllGames = ({ inBottomSheet, scrollContainerRef }) => {
 						/>
 						<FilterButton
 							onClick={() =>
-								setSortType({
+								handleSortGames({
 									type: '-price',
 									text: 'Сначала дорогие',
 									icon: DollarincircleIcon,

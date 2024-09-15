@@ -1,4 +1,4 @@
-body:has(.sheet.open) {
+#root:has(.sheet) {
 	overflow: hidden;
 }
 

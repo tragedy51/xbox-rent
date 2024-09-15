@@ -48,6 +48,8 @@ const SectionWithSlide = ({
 					{slides.map((game) => (
 						<SwiperSlide key={game.id}>
 							<GameCard
+								release_date={game.release_date}
+								preOrder={game.pre_order}
 								onClick={() => handleOpenGameInfoBottomSheet(game)}
 								game={game}
 								xs={game.compatibility === 'xbox_series_x_s'}

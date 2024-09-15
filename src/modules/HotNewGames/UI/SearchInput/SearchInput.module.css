@@ -5,19 +5,22 @@
 
 .inputCont svg {
 	position: absolute;
-	left: 17px;
+	left: 12.5px;
 	top: 50%;
 	transform: translateY(-50%);
 	fill: rgb(156 163 175);
+	z-index: 1;
 }
 
 .inputCont input {
-	padding: 12px 12px 12px 40px;
+	padding: 7px 2px 7px 40px;
 	color: rgb(156 163 175);
 	border: 1px solid rgb(75 85 99);
-	border-radius: 99px;
+	border-radius: 10px;
 	width: 100%;
-	background: rgb(35 34 34);
+	/* background: rgb(35 34 34); */
+	backdrop-filter: blur(4px);
+    background-color: rgb(55 65 81 / 0.4);
 	font-size: 1.125rem;
 	line-height: 1.75rem;
 	outline: none;

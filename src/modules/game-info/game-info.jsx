@@ -79,7 +79,17 @@ export const GameInfo = ({ adjustPosition }) => {
 								<XSIcon width={45} height={35} />
 							</button>
 						)}
-						{data.voice_acting === 'russian' && <RussianFlagIcon width={50} style={{position: 'absolute', top: '10px', left: '5px'}} />}
+						{data.voice_acting === 'russian' && (
+							<RussianFlagIcon
+								width={35}
+								style={{
+									position: 'absolute',
+									top: '18px',
+									left: '18px',
+									borderRadius: '3px',
+								}}
+							/>
+						)}
 					</div>
 					<header className={cls.gameInfoHeader}>
 						<div className='wrapper'>

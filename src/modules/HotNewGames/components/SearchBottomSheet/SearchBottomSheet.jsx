@@ -12,7 +12,7 @@ const SearchBottomSheet = ({ adjustPosition, isOpen, setIsOpen, games }) => {
 			bottomSheetHeader={
 				<div style={{ marginTop: 0 }} className={cls.sectionHeader}>
 					<h2 style={{ fontWeight: 500 }} className='section-title'>
-						Search
+						Результат поиска
 					</h2>
 				</div>
 			}>

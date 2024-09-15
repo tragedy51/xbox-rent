@@ -8,6 +8,7 @@ import { useStore } from '../../store';
 
 const GameCard = (
 	{
+		release_date,
 		imgSrc,
 		gameTitle,
 		gamePrice,
@@ -36,7 +37,13 @@ const GameCard = (
 	function handleOpenPreOrder(e, name) {
 		e.stopPropagation();
 		setXsText(
-			`Иконка Предзаказ обозначает что игра ${name} еще не вышла, а выйдет она ХХ.ХХ.ХХХХ, но вы уже можете ее приобрести!`
+			`Игра ${name} еще не вышла, но вы уже можете ее приобрести! Дата релиза игры: ${new Date(
+				release_date
+			).toLocaleDateString('ru-Ru', {
+				day: '2-digit',
+				month: '2-digit',
+				year: 'numeric',
+			})}г`
 		);
 		changeXsIsOpen(true);
 	}

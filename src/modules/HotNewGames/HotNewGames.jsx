@@ -22,6 +22,7 @@ import SearchBottomSheet from './components/SearchBottomSheet/SearchBottomSheet'
 
 const HotNewGames = () => {
 	const swiperRef = useRef(null);
+	const searchInputRef = useRef(null);
 	const content = useRef(null);
 	const {
 		setDateFilter,
@@ -63,6 +64,9 @@ const HotNewGames = () => {
 		e.preventDefault();
 		mutate({ search: searchValue });
 		setSearchBottomSheetIsOpen(true);
+		searchInputRef.current.blur();
+		setSearchValue('');
+		setSearchIsActive(false);
 	}
 
 	function handleClose(isOpen) {
@@ -141,17 +145,24 @@ const HotNewGames = () => {
 				<div className={cls.blurBg}>
 					<div className='wrapper'>
 						<form className={cls.titleCont} onSubmit={handleSearch}>
-							<h3	
-								className={`${cls.categoryTitle} ${!searchIsActive ? cls.active : ''}`}>
+							<h3
+								className={`${cls.categoryTitle} ${
+									!searchIsActive ? cls.active : ''
+								}`}>
 								Аренда игр{' '}
 								<span>
 									({allGames?.count || 0} {numWord})
 								</span>
 							</h3>
 							<SearchInput
+								ref={searchInputRef}
 								searchIsActive={searchIsActive}
-								onBlur={() => setSearchIsActive(false)}
-								onFocus={() => setSearchIsActive(true)}
+								onFocus={(e) => {
+									if (!searchIsActive) {
+										e.currentTarget.blur();
+									}
+									setSearchIsActive(true);
+								}}
 								value={searchValue}
 								onChange={(e) => setSearchValue(e.target.value)}
 							/>

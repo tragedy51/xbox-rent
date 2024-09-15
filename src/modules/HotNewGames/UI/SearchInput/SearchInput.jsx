@@ -2,6 +2,7 @@ import { motion } from 'framer-motion';
 import SearchIcon from '../../../../assets/icons/search-icon.svg?react';
 
 import cls from './SearchInput.module.css';
+import { forwardRef } from 'react';
 
 const searchInputVariants = {
 	open: {
@@ -12,7 +13,10 @@ const searchInputVariants = {
 	},
 };
 
-export const SearchInput = ({ searchIsActive, ...props }) => {
+export const SearchInput = forwardRef(function SearchInput(
+	{ searchIsActive, ...props },
+	ref
+) {
 	return (
 		<motion.div
 			initial={'close'}
@@ -22,7 +26,13 @@ export const SearchInput = ({ searchIsActive, ...props }) => {
 			<label htmlFor='search'>
 				<SearchIcon width={18} height={18} />
 			</label>
-			<input id='search' placeholder='Search...' type='text' {...props} />
+			<input
+				ref={ref}
+				id='search'
+				placeholder='Какую игру будем искать?'
+				type='text'
+				{...props}
+			/>
 		</motion.div>
 	);
-};
+});
