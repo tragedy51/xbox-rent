@@ -4,14 +4,12 @@ import MainBg from '../../assets/main-bg.jpg';
 import { useStore } from '../../store';
 import { Modal } from '../../UI';
 import { useEffect } from 'react';
+import ScrollToTop from '../../components/ScrollToTop';
 
 const Root = () => {
-	const {
-		XsIsOpen,
-		changeXsIsOpen,
-		XsText,
-		setBasketBottomSheet,
-	} = useStore((state) => state);
+	const { XsIsOpen, changeXsIsOpen, XsText, setBasketBottomSheet } = useStore(
+		(state) => state
+	);
 
 	const location = useLocation();
 
@@ -27,6 +25,7 @@ const Root = () => {
 
 	return (
 		<>
+			<ScrollToTop />
 			<img className='main-bg' src={MainBg} alt='Main bg' />
 			<Outlet />
 			<Footer />
