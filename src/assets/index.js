@@ -25,8 +25,20 @@ import DollarincircleIcon from './icons/dollarincircle-icon.svg?react';
 import IphoneShareIcon from './icons/iphone-share-icon.svg?react';
 import CoinsIcon from './icons/coins-icon.svg?react';
 import CalendarIcon from './icons/calendar-icon.svg?react';
+import XboxOne from './imgs/xbox-one.svg?react';
+import XboxSeries from './imgs/xbox-series.svg?react';
+import TGIcon from './icons/tg-icon.svg?react'
+import VKIcon from './icons/vk-icon.svg?react'
+import YoutubeIcon from './icons/youtube-icon.svg?react'
+import SettingsIcon from './icons/settings-icon.svg?react'
 
 export {
+	SettingsIcon,
+	YoutubeIcon,
+	VKIcon,
+	TGIcon,
+	XboxOne,
+	XboxSeries,
 	CalendarIcon,
 	CoinsIcon,
 	IphoneShareIcon,

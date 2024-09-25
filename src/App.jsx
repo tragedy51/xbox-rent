@@ -60,6 +60,8 @@ function App() {
 		WebApp.ready();
 		WebApp.expand();
 		WebApp.setHeaderColor('#172729');
+		if (window?.telegram?.WebApp)
+			window?.telegram?.WebApp?.setBottomBarColor('#172729');
 		WebApp.disableVerticalSwipes(false);
 
 		function handleOrientationChange() {

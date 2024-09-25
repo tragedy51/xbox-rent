@@ -7,21 +7,26 @@ export const AccountButton = ({
 	text,
 	iconContBg,
 	className,
+	subText,
+	onClick = () => {},
 }) => {
 	if (component === 'button') {
 		return (
-			<button className={`${cls.button} ${className}`}>
+			<button onClick={onClick} className={`${cls.button} ${className}`}>
 				<div style={{ background: iconContBg }} className={cls.iconCont}>
-					<Icon width={16} height={16} />
+					<Icon width={18} height={18} />
 				</div>
 				<div className={cls.buttonContent}>
 					<p className={cls.btnText}>{text}</p>
-					<RightArrowIcon
-						className={cls.arrow}
-						width={14}
-						height={14}
-						fill={'rgb(107 114 128)'}
-					/>
+					<div className={cls.buttonSubTextCont}>
+						{(subText || subText === 0) && <p>{subText}</p>}
+						<RightArrowIcon
+							className={cls.arrow}
+							width={14}
+							height={14}
+							fill={'rgb(107 114 128)'}
+						/>
+					</div>
 				</div>
 			</button>
 		);

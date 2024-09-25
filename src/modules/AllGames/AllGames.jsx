@@ -110,10 +110,12 @@ const AllGames = ({ inBottomSheet, scrollContainerRef }) => {
 	}, [data?.count, isSuccess]);
 
 	function changePage() {
-		const maxPageCount = Math.ceil(totalGames / 10);
+		if (!isFetching) {
+			const maxPageCount = Math.ceil(totalGames / 10);
 
-		if (page < maxPageCount) {
-			setPage((prev) => prev + 1);
+			if (page < maxPageCount) {
+				setPage((prev) => prev + 1);
+			}
 		}
 	}
 
@@ -210,7 +212,7 @@ const AllGames = ({ inBottomSheet, scrollContainerRef }) => {
 							position: 'absolute',
 							bottom: '-100px',
 							width: '100%',
-							height: '1px',
+							height: '100px',
 							background: 'transparent',
 						}}
 						onViewportEnter={changePage}

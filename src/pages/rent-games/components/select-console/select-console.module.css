@@ -1,0 +1,43 @@
+.selectConsole {
+	padding: 15px;
+	border-radius: 10px;
+	background: #273446;
+    display: grid;
+    gap: 15px;
+}
+
+.consoleCards {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 0.75rem;
+}
+
+.consoleCard {
+	border: 2px solid #9ca3af;
+	border-radius: 0.375rem;
+	padding: 0.5rem;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+}
+
+.consoleCard.active {
+	border-color: #16a34a;
+}
+
+.consoleCard span {
+	font-size: 0.75rem;
+	line-height: 1rem;
+	font-weight: 600;
+}
+
+.saveBtn {
+	background: #15803d;
+	border-radius: 0.75rem;
+	padding: 0.5rem 1rem;
+	font-size: 0.85rem;
+	line-height: 1.275rem;
+	font-weight: 700;
+	color: #fff;
+}

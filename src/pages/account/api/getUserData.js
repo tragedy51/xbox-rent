@@ -1,4 +1,4 @@
-export async function checkUserConsole({ token, id }) {
+export async function getUserData({ token, id }) {
 	const response = await fetch(
 		`${import.meta.env.VITE_API_URL}/clients/${id}`,
 		{

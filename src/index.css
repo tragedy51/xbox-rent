@@ -80,6 +80,7 @@ a {
 	min-height: calc(100vh - env(safe-area-inset-bottom));
 	min-height: calc(100dvh - env(safe-area-inset-bottom));
 	overflow: auto;
+	overflow-x: hidden;
 }
 
 img {

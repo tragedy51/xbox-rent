@@ -1,7 +1,3 @@
-#root:has(.sheet) {
-	overflow: hidden;
-}
-
 .sheet {
 	height: 100vh;
 	height: 100dvh;
