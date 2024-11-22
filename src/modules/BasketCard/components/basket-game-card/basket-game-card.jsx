@@ -1,24 +1,50 @@
 import cls from './basket-game-card.module.css';
-import { DeleteIcon } from '../../../../assets';
+import { BasketIcon, DeleteIcon } from '../../../../assets';
 import { useStore } from '../../../../store';
+import WebApp from '@twa-dev/sdk';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { addGameToBasket } from '../../../../layout/footer/api/addGameToBasket';
+import { removeGameFromBasket } from '../../../../layout/footer/api/removeGameFromBasket';
 
 const gameType = {
 	rent: 'Аренда',
 };
 
-export const BasketGameCard = ({ game, className }) => {
-	const {
-		deleteGameFromBasket,
-		games: basketGames,
-		setBasketBottomSheet,
-	} = useStore((state) => state);
+export const BasketGameCard = ({ game, className, recommendation }) => {
+	const queryClient = useQueryClient();
+	const { basketGamesCount, setBasketBottomSheet, basketId } = useStore(
+		(state) => state
+	);
+	const { mutate: addGameToBasketMutate } = useMutation({
+		mutationFn: addGameToBasket,
+		onSuccess: () => {
+			queryClient.invalidateQueries('create-basket');
+		},
+	});
+	const { mutate: removeGameFromBasketMutate } = useMutation({
+		mutationFn: removeGameFromBasket,
+		onSuccess: () => {
+			queryClient.invalidateQueries('create-basket');
+		},
+	});
 
 	function handleDeleteGameFromBasket(game) {
-		deleteGameFromBasket(game);
+		removeGameFromBasketMutate({
+			product_id: game.id,
+			basket_id: basketId,
+		});
 
-		if (basketGames.length === 1) {
+		if (basketGamesCount === 1) {
 			setBasketBottomSheet(false);
 		}
+	}
+
+	function handleAddGameToBasket() {
+		WebApp.HapticFeedback.impactOccurred('light');
+		addGameToBasketMutate({
+			product_id: game.id,
+			basket_id: basketId,
+		});
 	}
 
 	return (
@@ -28,7 +54,7 @@ export const BasketGameCard = ({ game, className }) => {
 				<div className={cls.gameText}>
 					<h3 className={cls.gameTitle}>{game.title}</h3>
 					<div className={cls.gamePriceCont}>
-						{game.subprice !== '0.00' ? (
+						{game.subprice && game.subprice !== '0.00' ? (
 							<>
 								<p className={cls.discount}>{game.price} ₽</p>
 								<p className={cls.price}>{game.subprice} ₽</p>
@@ -39,11 +65,19 @@ export const BasketGameCard = ({ game, className }) => {
 					</div>
 					<div className={cls.label}>{gameType[game.type]}</div>
 				</div>
-				<button
-					className={cls.deleteBtn}
-					onClick={() => handleDeleteGameFromBasket(game)}>
-					<DeleteIcon width={16} height={16} />
-				</button>
+				{!recommendation ? (
+					<button
+						className={cls.deleteBtn}
+						onClick={() => handleDeleteGameFromBasket(game)}>
+						<DeleteIcon width={16} height={16} />
+					</button>
+				) : (
+					<button
+						className={cls.deleteBtn}
+						onClick={() => handleAddGameToBasket(game)}>
+						<BasketIcon width={24} height={24} />
+					</button>
+				)}
 			</div>
 		</div>
 	);

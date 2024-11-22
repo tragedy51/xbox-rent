@@ -28,6 +28,7 @@
 	height: 100px;
 	border-radius: 100px;
 	object-fit: cover;
+	margin: 0 auto 10px;
 }
 
 .buttons {
@@ -45,37 +46,8 @@
 	gap: 1rem;
 }
 
-
-.selectConsole {
-	padding: 15px;
-	border-radius: 10px;
-	background: #273446;
-    display: grid;
-    gap: 15px;
-}
-
-.consoleCards {
-	display: grid;
-	grid-template-columns: 1fr 1fr;
-	gap: 0.75rem;
-}
-
-.consoleCard {
-	border: 2px solid #9ca3af;
-	border-radius: 0.375rem;
-	padding: 0.5rem;
+.consoleButton {
 	display: flex;
-	justify-content: center;
-	align-items: center;
-	flex-direction: column;
-}
-
-.consoleCard.active {
-	border-color: #16a34a;
-}
-
-.consoleCard span {
-	font-size: 0.75rem;
-	line-height: 1rem;
-	font-weight: 600;
+	justify-content: space-between;
+	padding-right: 10px;
 }

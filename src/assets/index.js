@@ -27,12 +27,18 @@ import CoinsIcon from './icons/coins-icon.svg?react';
 import CalendarIcon from './icons/calendar-icon.svg?react';
 import XboxOne from './imgs/xbox-one.svg?react';
 import XboxSeries from './imgs/xbox-series.svg?react';
-import TGIcon from './icons/tg-icon.svg?react'
-import VKIcon from './icons/vk-icon.svg?react'
-import YoutubeIcon from './icons/youtube-icon.svg?react'
-import SettingsIcon from './icons/settings-icon.svg?react'
+import TGIcon from './icons/tg-icon.svg?react';
+import VKIcon from './icons/vk-icon.svg?react';
+import YoutubeIcon from './icons/youtube-icon.svg?react';
+import SettingsIcon from './icons/settings-icon.svg?react';
+import MenuIcon from './icons/menu-icon.svg?react';
+import WatchIcon from './icons/watch-icon.svg?react';
+import IphoneSettingsIcon from './icons/iphone-settings-icon.svg?react';
 
 export {
+	IphoneSettingsIcon,
+	WatchIcon,
+	MenuIcon,
 	SettingsIcon,
 	YoutubeIcon,
 	VKIcon,

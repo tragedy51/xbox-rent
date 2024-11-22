@@ -6,6 +6,7 @@ export const counterSlice = (set) => ({
 	setGamesCount: (num) => set(() => ({ gamesCount: num })),
 	setIsEnd: (bool) => set(() => ({ isEnd: bool })),
 	setActiveGame: (game) => set(() => ({ activeGame: game })),
+	setCounter: (count) => set(() => ({ counter: count })),
 	increaseCounter: () => set((state) => ({ counter: state.counter + 1 })),
 	emptyCounter: () => set(() => ({ counter: 0 })),
 	decreaseCounter: () => set((state) => ({ counter: state.counter - 1 })),

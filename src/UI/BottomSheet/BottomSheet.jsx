@@ -9,6 +9,7 @@ import { useEffect, useRef, useState } from 'react';
 import useScrollDirection from '../../hooks/useScrollDirection';
 import { useStore } from '../../store';
 import { IphoneShareIcon } from '../../assets';
+import { handleTelegramShare } from '../../helpers/handleTelegramShare';
 
 export const CustomBottomSheet = ({
 	sheetBgColor,
@@ -26,7 +27,7 @@ export const CustomBottomSheet = ({
 	const controls = useAnimation();
 	const backdropControls = useAnimation();
 	const mainRef = useRef(null);
-	const { direction } = useStore((state) => state);
+	const { direction, activeGame } = useStore((state) => state);
 	const touchStartPoint = useRef(0);
 
 	useScrollDirection(mainRef);
@@ -104,7 +105,7 @@ export const CustomBottomSheet = ({
 									)}
 									{!bottomSheetHeader && <div className={cls.line} />}
 									{shareIcon && (
-										<button className={cls.shareBtn}>
+										<button onClick={() => handleTelegramShare(activeGame)} className={cls.shareBtn}>
 											<IphoneShareIcon width={25} height={25} />
 										</button>
 									)}
@@ -118,7 +119,8 @@ export const CustomBottomSheet = ({
 								onTouchEnd={handleTouchEnd}
 								style={{ overflowY: 'auto' }}
 								ref={mainRef}
-								className={cls.sheetMain}>
+								className={cls.sheetMain}
+								id='main-sheet'>
 								<motion.div
 									onViewportEnter={() => setOnTheTop(true)}
 									onViewportLeave={() => setOnTheTop(false)}

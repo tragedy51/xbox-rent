@@ -4,13 +4,12 @@ import {
 	ChatIcon,
 	QuestionIcon,
 	OrdersIcon,
-	InfoIcon,
-	XboxSeries,
-	XboxOne,
 	TGIcon,
 	VKIcon,
 	YoutubeIcon,
-	SettingsIcon,
+	WifiIcon,
+	IphoneSettingsIcon,
+	InfoIcon,
 } from '../../assets';
 import cls from './account.module.css';
 import { AccountButton } from './UI';
@@ -19,14 +18,14 @@ import WebApp from '@twa-dev/sdk';
 import { hashString } from '../../helpers/hashString';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { getUserData } from './api/getUserData';
-import AlertMessage from './UI/alert/alert-message';
 import { changeConsole } from '../rent-games/components/select-console/api/changeConsole';
 import { Icon } from '@iconify/react/dist/iconify.js';
-import { AnimatePresence } from 'framer-motion';
+import ConsolesModal from './component/ConsolesModal/ConsolesModal';
+import { useStore } from '../../store';
 
 const settings1 = [
 	{
-		text: 'Мои заказы',
+		text: 'Мои покупки',
 		iconContBg: '#0284c7',
 		Icon: OrdersIcon,
 		onClick: () => {
@@ -37,7 +36,7 @@ const settings1 = [
 	{
 		text: 'Статьи',
 		iconContBg: '#0284c7',
-		Icon: OrdersIcon,
+		Icon: InfoIcon,
 		onClick: () => {
 			window.location = 'https://t.me/XboxRent_Bot?start=my_purchases_webapp';
 			WebApp.close();
@@ -55,7 +54,8 @@ const settings1 = [
 	{
 		text: 'Настройки',
 		iconContBg: '#3b82f6',
-		Icon: InfoIcon,
+		Icon: IphoneSettingsIcon,
+		fullIcon: true,
 		onClick: () => {
 			window.location = 'https://t.me/XboxRent_Bot?start=cabinet_webapp';
 			WebApp.close();
@@ -65,7 +65,7 @@ const settings1 = [
 
 const settings2 = [
 	{
-		text: 'Сообщество Xbox в Telegram',
+		text: 'Telegram канал XboxRent',
 		iconContBg: '#05a2f3',
 		Icon: TGIcon,
 		onClick: () => {
@@ -79,7 +79,6 @@ const settings2 = [
 		Icon: VKIcon,
 		onClick: () => {
 			window.location = 'https://vk.com/xbox_one_g';
-			WebApp.close();
 		},
 	},
 	{
@@ -97,20 +96,26 @@ const settings2 = [
 		Icon: YoutubeIcon,
 		onClick: () => {
 			window.location = 'https://youtube.com/@xbox_one_g?si=yYOwRnE5jBAco38H';
-			WebApp.close();
 		},
 	},
 	{
 		text: 'Настройка DNS',
-		iconContBg: '#4f46e5',
-		Icon: SettingsIcon,
+		iconContBg: '#929198',
+		Icon: WifiIcon,
 	},
 ];
+
+const consoles = {
+	xbox_series_x_s: 'Xbox Series X|S',
+	xbox_one: 'Xbox One',
+};
 
 export const Account = () => {
 	const [hash, setHash] = useState();
 	const [alertIsOpen, setAlertIsOpen] = useState(false);
 	const queryClient = useQueryClient();
+	const [isOpen, setIsOpen] = useState(false);
+	const { setLoading } = useStore((state) => state);
 
 	const { data, isLoading, isSuccess } = useQuery({
 		queryKey: [`user-info`],
@@ -175,6 +180,12 @@ export const Account = () => {
 		}
 	}, []);
 
+	useEffect(() => {
+		if (isSuccess) {
+			setLoading(false);
+		}
+	}, [isSuccess, setLoading]);
+
 	if (isLoading) {
 		return (
 			<Icon
@@ -189,19 +200,10 @@ export const Account = () => {
 	return (
 		<main className={`${cls.accountMain}`}>
 			<div className='wrapper'>
-				<AnimatePresence>
-					{alertIsOpen && (
-						<AlertMessage
-							message={'Сохранено'}
-							isOpen={alertIsOpen}
-							setIsOpen={setAlertIsOpen}
-						/>
-					)}
-				</AnimatePresence>
-				{WebApp?.initDataUnsafe?.user?.photo_url && (
+				{isSuccess && data.user_image && (
 					<img
 						className={cls.userPhoto}
-						src={WebApp?.initDataUnsafe?.user?.photo_url}
+						src={`data:image/png;base64, ${data.user_image}`}
 						alt=''
 					/>
 				)}
@@ -210,31 +212,36 @@ export const Account = () => {
 						? `${WebApp.initDataUnsafe.user.first_name} ${WebApp.initDataUnsafe.user.last_name}`
 						: 'User'}
 				</h2>
-				<p className={cls.userName}>{isSuccess ? data.balance : '0'} ₽</p>
+				<p className={cls.userName}>
+					Ваш баланс: {isSuccess ? data.balance : '0'} ₽
+				</p>
+				<div className={cls.consoleButton}>
+					<h2 style={{ fontSize: '1.15rem' }} className='section-title'>
+						Ваша консоль - {consoles[data?.console]}
+					</h2>
+					<button onClick={() => setIsOpen(true)}>
+						<Icon
+							style={{ display: 'block' }}
+							width={25}
+							height={25}
+							icon='cuida:edit-outline'
+						/>
+					</button>
+				</div>
 				<div className={cls.allButtons}>
-					<h2 className='section-title'>Выберите вашу консоль</h2>
-					<div className={cls.consoleCards}>
-						<div
-							onClick={() => handleSelectConsole('xbox_series_x_s')}
-							className={`${cls.consoleCard} ${
-								data?.console === 'xbox_series_x_s' ? cls.active : ''
-							}`}>
-							<XboxSeries width={48} height={64} />
-							<span>Xbox Series</span>
-						</div>
-						<div
-							onClick={() => handleSelectConsole('xbox_one')}
-							className={`${cls.consoleCard} ${
-								data?.console === 'xbox_one' ? cls.active : ''
-							}`}>
-							<XboxOne width={64} height={64} />
-							<span>Xbox One</span>
-						</div>
-					</div>
+					<ConsolesModal
+						handleSelectConsole={handleSelectConsole}
+						data={data}
+						setIsOpen={setIsOpen}
+						isOpen={isOpen}
+						alertIsOpen={alertIsOpen}
+						setAlertIsOpen={setAlertIsOpen}
+					/>
 					<div className={cls.buttons}>
 						{settings1.map((s, i) => (
 							<AccountButton
 								key={i}
+								fullIcon={s.fullIcon}
 								onClick={s.onClick}
 								className={cls.accountBtn}
 								Icon={s.Icon}

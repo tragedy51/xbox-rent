@@ -50,9 +50,13 @@ const GameCard = (
 
 	return (
 		<>
-			<div className={`${cls.gameCard} ${cls[size]}`} ref={ref} {...props}>
+			<div className={`${cls.gameCard} ${cls[size]} ${seriesCard ? cls.seriesCard : ''}`} ref={ref} {...props}>
 				<div className={cls.imgWrapper}>
-					<img src={imgSrc} alt='' loading='lazy' />
+					<img
+						src={imgSrc}
+						alt=''
+						loading='lazy'
+					/>
 					{preOrder && (
 						<p
 							onClick={(e) => handleOpenPreOrder(e, gameTitle)}
@@ -76,24 +80,26 @@ const GameCard = (
 						)}
 					</div>
 				</div>
-				<div className={cls.gameInfo}>
-					<h2
-						className={`${cls.gameTitle} ${
-							seriesCard ? cls.seriesCardTitle : ''
-						}`}>
-						{gameTitle}
-					</h2>
-					<div className={cls.gamePriceCont}>
-						{subprice && subprice !== '0.00' ? (
-							<>
-								<div className={cls.discount}>{gamePrice} ₽</div>
-								<p className={cls.price}>{subprice} ₽</p>
-							</>
-						) : (
-							gamePrice && <p className={cls.price}>{gamePrice} ₽</p>
-						)}
+				{!seriesCard && (
+					<div className={cls.gameInfo}>
+						<h2
+							className={`${cls.gameTitle} ${
+								seriesCard ? cls.seriesCardTitle : ''
+							}`}>
+							{gameTitle}
+						</h2>
+						<div className={cls.gamePriceCont}>
+							{subprice && subprice !== '0.00' ? (
+								<>
+									<div className={cls.discount}>{gamePrice} ₽</div>
+									<p className={cls.price}>{subprice} ₽</p>
+								</>
+							) : (
+								gamePrice && <p className={cls.price}>{gamePrice} ₽</p>
+							)}
+						</div>
 					</div>
-				</div>
+				)}
 			</div>
 		</>
 	);

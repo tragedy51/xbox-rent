@@ -1,11 +1,10 @@
 import { motion } from 'framer-motion';
 import cls from './FooterBtns.module.css';
 import { useStore } from '../../../../store';
-import { useMemo } from 'react';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { checkoutBasket } from '../../api/checkoutBasket';
 import WebApp from '@twa-dev/sdk';
-// import { HeartIcon } from '../../../../assets';
+import { addGameToBasket } from '../../api/addGameToBasket';
 
 const footerBtnsVariants = {
 	up: {
@@ -17,12 +16,13 @@ const footerBtnsVariants = {
 };
 
 export const FooterBtns = () => {
+	const queryClient = useQueryClient();
 	const {
 		basketBottomSheet,
 		productAddToCardIsVisiible,
-		addGameToBasket,
-		games: basketGames,
+		basketId,
 		activeGame,
+		gameInfoBottomSheetIsOpen,
 		basketGamesId,
 	} = useStore((state) => state);
 
@@ -33,28 +33,29 @@ export const FooterBtns = () => {
 		},
 	});
 
-	const gameInBasket = useMemo(() => {
-		return basketGames.find((bgame) => bgame.id === activeGame.id);
-	}, [activeGame, basketGames]);
+	const { mutate: addGameToBasketMutate, isPending } = useMutation({
+		mutationFn: addGameToBasket,
+		onSuccess: () => {
+			queryClient.invalidateQueries('create-basket');
+		},
+	});
+
+	const gameInBasket = basketGamesId.includes(activeGame?.id);
 
 	function handleAddGameToBasket() {
 		if (!gameInBasket) {
-			navigator.vibrate =
-				navigator.vibrate ||
-				navigator.webkitVibrate ||
-				navigator.mozVibrate ||
-				navigator.msVibrator;
-			if (navigator.vibrate) {
-				navigator.vibrate(400);
-			}
-			addGameToBasket(activeGame);
+			WebApp.HapticFeedback.impactOccurred('light');
+			addGameToBasketMutate({
+				product_id: activeGame.id,
+				basket_id: basketId,
+			});
 		}
 	}
 
 	function handleCheckout() {
 		mutate({
 			telegramId: WebApp?.initDataUnsafe?.user?.id,
-			basketGamesId,
+			basket_id: basketId,
 		});
 	}
 
@@ -63,12 +64,20 @@ export const FooterBtns = () => {
 			<motion.div
 				initial={{ transform: 'translateY(-110%)' }}
 				animate={
-					productAddToCardIsVisiible && !basketBottomSheet ? 'up' : 'down'
+					productAddToCardIsVisiible &&
+					!basketBottomSheet &&
+					gameInfoBottomSheetIsOpen
+						? 'up'
+						: 'down'
 				}
 				variants={footerBtnsVariants}
 				className={cls.footerBtns}>
 				<button onClick={handleAddGameToBasket} className={cls.addToCart}>
-					{gameInBasket ? 'Добавлено' : 'Добавить в корзину'}
+					{isPending
+						? 'Загрузка...'
+						: gameInBasket
+						? 'Добавлено'
+						: 'Добавить в корзину'}
 				</button>
 				{/* <button className={cls.likeBtn}>
 					<HeartIcon width={20} height={20} />

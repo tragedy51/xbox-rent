@@ -1,18 +1,9 @@
 import { IphoneShareIcon } from '../../../../assets';
+import { handleTelegramShare } from '../../../../helpers/handleTelegramShare';
 import SimilarGames from './components/similar-games/similar-games';
 import cls from './game-about.module.css';
 
 const GameAbout = ({ data, setBigImage }) => {
-	const url = window.location.href;
-	const text = `Check this out!`;
-
-	const handleTelegramShare = () => {
-		const telegramUrl = `https://t.me/share/url?url=${encodeURIComponent(
-			url
-		)}&text=${encodeURIComponent(text)}`;
-		window.open(telegramUrl, '_blank');
-	};
-
 	return (
 		<>
 			<div className='wrapper'>
@@ -25,10 +16,10 @@ const GameAbout = ({ data, setBigImage }) => {
 					<div>
 						<h2>{data.title}</h2>
 						<span>
-							{new Date(data.release_date)
-								.toLocaleDateString()
-								.replace(/\//g, '.')}{' '}
-							•{' '}
+							{data.release_date &&
+								`${new Date(data.release_date)
+									.toLocaleDateString()
+									.replace(/\//g, '.')} • `}
 							{data.categories.map(
 								(category, i, categories) =>
 									`${category.name} ${i < categories.length - 1 ? '& ' : ''}`
@@ -38,24 +29,49 @@ const GameAbout = ({ data, setBigImage }) => {
 				</div>
 				<div className={cls.labelsCont}>
 					<div className={cls.labels}>
-						<div className={cls.label}>Xbox Live</div>
-						<div className={cls.label}>4K</div>
-						<div className={cls.label}>1 игрок</div>
-						<div className={cls.label}>HDR</div>
+						<div className={cls.label}>
+							Язык озвучки{' '}
+							{data.voice_acting === 'russian' ? 'Русский' : 'Английский'}
+						</div>
+						<div className={cls.label}>
+							Язык субтитров{' '}
+							{data.subtitles === 'russian' ? 'Русский' : 'Английский'}
+						</div>
+						{data.has_hdr && <div className={cls.label}>Поддержка HDR</div>}
+						<div className={cls.label}>Разрешение {data.resolution}</div>
+						{data.publisher && (
+							<div className={cls.label}>Издатель {data.publisher}</div>
+						)}
+						{data.developer && (
+							<div className={cls.label}>Разработчик {data.developer}</div>
+						)}
 					</div>
 					{/* <button className={cls.sharebtnIcon}>
 						<IphoneShareIcon width={25} height={25} />
 					</button> */}
 				</div>
+				{data.pre_order && (
+					<p className={cls.subText}>
+						Дата выхода игры{' '}
+						{new Date(data.release_date).toLocaleDateString('ru-Ru', {
+							day: '2-digit',
+							month: '2-digit',
+							year: 'numeric',
+						})}
+						г
+					</p>
+				)}
 				<p style={{ whiteSpace: 'pre-wrap' }} className={cls.gameInfoText}>
 					{data.description}
 				</p>
-				<button onClick={handleTelegramShare} className={cls.sharebtn}>
+				<button
+					onClick={() => handleTelegramShare(data)}
+					className={cls.sharebtn}>
 					<IphoneShareIcon width={20} height={20} />
 					Поделиться карточкой
 				</button>
 			</div>
-			<SimilarGames categoryId={data.categories[0].id} />
+			<SimilarGames categoryId={data.categories[0].id} currentGame={data} />
 		</>
 	);
 };

@@ -9,11 +9,11 @@ import GameScreens from './pages/game-screens/game-screens';
 import GameDlc from './pages/game-dlc/game-dlc';
 import GameVideos from './pages/game-videos/game-videos';
 import { RussianFlagIcon, XSIcon } from '../../assets';
+import Loading from '../../UI/Loading/Loading';
+import { AnimatePresence, motion } from 'framer-motion';
+import { Icon } from '@iconify/react/dist/iconify.js';
 
 export const GameInfo = ({ adjustPosition }) => {
-	const [page, setPage] = useState('detail');
-	const [bigImage, setBigImage] = useState('');
-
 	const {
 		gameInfoBottomSheetIsOpen,
 		setGameInfoBottomSheetIsOpen,
@@ -21,7 +21,17 @@ export const GameInfo = ({ adjustPosition }) => {
 		activeGame,
 		setXsText,
 		changeXsIsOpen,
+		isAdmin,
 	} = useStore((state) => state);
+	const [page, setPage] = useState('detail');
+	const [bigImage, setBigImage] = useState('');
+
+	useEffect(() => {
+		if (document.getElementById('main-sheet')) {
+			document.getElementById('main-sheet').scrollTo(0, 0);
+		}
+	}, [page, activeGame]);
+
 	const content = useRef(null);
 
 	function handleOpenXsInfo(e, name) {
@@ -34,15 +44,25 @@ export const GameInfo = ({ adjustPosition }) => {
 		changeXsIsOpen(true);
 	}
 
+	function handleOpenPreOrder(e, name) {
+		e.stopPropagation();
+		setXsText(
+			`Игра ${name} еще не вышла, но вы уже можете ее приобрести! Дата релиза игры: ${new Date(
+				data.release_date
+			).toLocaleDateString('ru-Ru', {
+				day: '2-digit',
+				month: '2-digit',
+				year: 'numeric',
+			})}г`
+		);
+		changeXsIsOpen(true);
+	}
+
 	const { data, isLoading, isError, isSuccess } = useQuery({
 		queryKey: [`game-detail-${activeGame?.id}`],
 		queryFn: () => getGameDetail(activeGame?.id),
 		enabled: activeGame?.id !== undefined,
 	});
-
-	if (isLoading) {
-		content.current = <h1>Loading...</h1>;
-	}
 
 	if (isError) {
 		content.current = <h1>There is some error</h1>;
@@ -62,6 +82,15 @@ export const GameInfo = ({ adjustPosition }) => {
 				<div className={cls.gameInfoCont}>
 					<div className={cls.gameInfoMainImgCont}>
 						<img className={cls.gameInfoMainImg} src={data.wallpaper} alt='' />
+						<img
+							style={{
+								filter: 'blur(4px)',
+								transform: 'rotate(180deg) scaleX(-1)',
+							}}
+							className={cls.gameInfoMainImg}
+							src={data.wallpaper}
+							alt=''
+						/>
 						<div className={cls.gamePriceCont}>
 							{data.subprice !== '0.00' ? (
 								<>
@@ -90,55 +119,68 @@ export const GameInfo = ({ adjustPosition }) => {
 								}}
 							/>
 						)}
-					</div>
-					<header className={cls.gameInfoHeader}>
-						<div className='wrapper'>
-							<div className={cls.gameInfoHeaderLinks}>
-								<button
-									className={`${
-										page === 'detail'
-											? `${cls.active} ${cls.navBtn}`
-											: cls.navBtn
-									}`}
-									onClick={() => setPage('detail')}>
-									Об игре
-								</button>
-								{data.screenshots.length !== 0 && (
-									<button
-										className={`${
-											page === 'screens'
-												? `${cls.active} ${cls.navBtn}`
-												: cls.navBtn
-										}`}
-										onClick={() => setPage('screens')}>
-										Скрины
-									</button>
-								)}
-								{data.screenshots.length !== 0 && (
-									<button
-										className={`${
-											page === 'videos'
-												? `${cls.active} ${cls.navBtn}`
-												: cls.navBtn
-										}`}
-										onClick={() => setPage('videos')}>
-										Видео
-									</button>
-								)}
-							</div>
-						</div>
-					</header>
-					<main className={cls.gameInfoMain}>
-						{page === 'detail' ? (
-							<GameAbout setBigImage={setBigImage} data={data} />
-						) : page === 'screens' ? (
-							<GameScreens screens={data.screenshots} />
-						) : page === 'videos' ? (
-							<GameVideos videos={data.videos} trailer={data.trailer} />
-						) : (
-							<GameDlc />
+						{data.pre_order && (
+							<p
+								onClick={(e) => handleOpenPreOrder(e, data.title)}
+								className={cls.banner}>
+								Предзаказ
+							</p>
 						)}
-					</main>
+					</div>
+					<div style={{ background: '#232222' }}>
+						<header className={cls.gameInfoHeader}>
+							<div className='wrapper'>
+								<div className={cls.gameInfoHeaderLinks}>
+									<button
+										className={`${
+											page === 'detail'
+												? `${cls.active} ${cls.navBtn}`
+												: cls.navBtn
+										}`}
+										onClick={() => setPage('detail')}>
+										Об игре
+									</button>
+									{data.screenshots.length !== 0 && (
+										<button
+											className={`${
+												page === 'screens'
+													? `${cls.active} ${cls.navBtn}`
+													: cls.navBtn
+											}`}
+											onClick={() => setPage('screens')}>
+											Скрины
+										</button>
+									)}
+									{data.screenshots.length !== 0 && (
+										<button
+											className={`${
+												page === 'videos'
+													? `${cls.active} ${cls.navBtn}`
+													: cls.navBtn
+											}`}
+											onClick={() => setPage('videos')}>
+											Видео
+										</button>
+									)}
+								</div>
+							</div>
+						</header>
+						<main className={cls.gameInfoMain}>
+							{page === 'detail' ? (
+								<GameAbout setBigImage={setBigImage} data={data} />
+							) : page === 'screens' ? (
+								<GameScreens screens={data.screenshots} />
+							) : page === 'videos' ? (
+								<GameVideos
+									videos={data.videos}
+									trailer={data.trailer}
+									title={data.title}
+								/>
+							) : (
+								<GameDlc />
+							)}
+						</main>
+					</div>
 				</div>
 			</>
 		);
@@ -156,7 +198,32 @@ export const GameInfo = ({ adjustPosition }) => {
 			adjustPosition={adjustPosition}
 			isOpen={gameInfoBottomSheetIsOpen}
 			setIsopen={setGameInfoBottomSheetIsOpen}>
-			{content.current}
+			{isAdmin && (
+				<a
+					target='_blank'
+					href={`https://api.xbox-rent.ru/admin/webapp/product/${activeGame?.id}`}
+					className={cls.editButton}>
+					<Icon
+						style={{ display: 'block' }}
+						width={20}
+						height={20}
+						icon='cuida:edit-outline'
+					/>
+				</a>
+			)}
+			<section style={{ position: 'relative', zIndex: 1, minHeight: '100%' }}>
+				<Loading loading={isLoading} />
+				<AnimatePresence>
+					{!isLoading && (
+						<motion.div
+							initial={{ opacity: 0 }}
+							animate={{ opacity: 1 }}
+							exit={{ opacity: 0 }}>
+							{content.current}
+						</motion.div>
+					)}
+				</AnimatePresence>
+			</section>
 		</CustomBottomSheet>
 	);
 };

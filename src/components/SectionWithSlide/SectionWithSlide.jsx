@@ -16,6 +16,7 @@ const SectionWithSlide = ({
 	withFilter = false,
 	bigCards = false,
 	withAllBtn = false,
+	filterId = 0,
 }) => {
 	const { setGameInfoBottomSheetIsOpen, setActiveGame } = useStore(
 		useShallow((state) => state)
@@ -45,23 +46,26 @@ const SectionWithSlide = ({
 					className={`swiper swiper-initialized swiper-horizontal ${cls.slider}`}
 					spaceBetween={15}
 					slidesPerView={2.3}>
-					{slides.map((game) => (
-						<SwiperSlide key={game.id}>
-							<GameCard
-								release_date={game.release_date}
-								preOrder={game.pre_order}
-								onClick={() => handleOpenGameInfoBottomSheet(game)}
-								game={game}
-								xs={game.compatibility === 'xbox_series_x_s'}
-								gameTitle={game.title}
-								gamePrice={game.price}
-								subprice={game.subprice}
-								imgSrc={game.image}
-								rus={game.voice_acting === 'russian'}
-								size={bigCards ? 'lg' : 'md'}
-							/>
-						</SwiperSlide>
-					))}
+					{slides.map(
+						(game) =>
+							game.id !== filterId && (
+								<SwiperSlide key={game.id}>
+									<GameCard
+										release_date={game.release_date}
+										preOrder={game.pre_order}
+										onClick={() => handleOpenGameInfoBottomSheet(game)}
+										game={game}
+										xs={game.compatibility === 'xbox_series_x_s'}
+										gameTitle={game.title}
+										gamePrice={game.price}
+										subprice={game.subprice}
+										imgSrc={game.image}
+										rus={game.voice_acting === 'russian'}
+										size={bigCards ? 'lg' : 'md'}
+									/>
+								</SwiperSlide>
+							)
+					)}
 				</Swiper>
 			</div>
 		</>

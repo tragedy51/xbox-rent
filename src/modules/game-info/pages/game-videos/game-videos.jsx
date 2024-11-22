@@ -1,10 +1,17 @@
+import { useEffect } from 'react';
 import cls from './game-videos.module.css';
 
 function sliceVideoSrc(url) {
 	return url ? 'https://www.youtube.com/embed/' + url.split('.be/')[1] : '';
 }
 
-const GameVideos = ({ videos, trailer }) => {
+const GameVideos = ({ videos, trailer, title }) => {
+	useEffect(() => {
+		window.scrollTo({
+			top: 0,
+		});
+	}, []);
+
 	return (
 		<div className='wrapper'>
 			<div
@@ -35,6 +42,13 @@ const GameVideos = ({ videos, trailer }) => {
 						referrerPolicy='strict-origin-when-cross-origin'
 						allowfullscreen></iframe>
 				))}
+				<a
+					className={cls.moreVideosLink}
+					href={`https://www.youtube.com/results?search_query=${title
+						.split(' ')
+						.join('+')}+обзор`}>
+					Показать больше видео..
+				</a>
 			</div>
 		</div>
 	);

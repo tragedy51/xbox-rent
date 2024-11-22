@@ -10,21 +10,22 @@ export const UpButtons = () => {
 	const {
 		basketBottomSheet,
 		setBasketBottomSheet,
-		games: basketGames,
 		countButtonUpIsShown,
 		XsIsOpen,
 		counter,
 		isEnd,
 		setDirection,
 		gameInfoBottomSheetIsOpen,
-		gamesCount
+		gamesCount,
+		basketGamesCount,
 	} = useStore((state) => state);
 
 	const variants = [
 		{
 			up: {
 				y: '0%',
-				bottom: countButtonUpIsShown || gameInfoBottomSheetIsOpen ? '135px' : '85px',
+				bottom:
+					countButtonUpIsShown || gameInfoBottomSheetIsOpen ? '135px' : '85px',
 				opacity: XsIsOpen || basketBottomSheet ? '0' : '1',
 			},
 			down: {
@@ -56,7 +57,7 @@ export const UpButtons = () => {
 		<>
 			<MotionButton
 				variants={variants[0]}
-				animate={basketGames.length >= 1 ? 'up' : 'down'}
+				animate={basketGamesCount >= 1 ? 'up' : 'down'}
 				transition={{
 					duration: 0.3,
 					ease: 'linear',
@@ -64,7 +65,7 @@ export const UpButtons = () => {
 				onClick={() => setBasketBottomSheet(true)}
 				className={cls.basketBtn}>
 				<BasketIcon width={23} height={23} />
-				<span className={cls.basketBtnSpan}>{basketGames.length}</span>
+				<span className={cls.basketBtnSpan}>{basketGamesCount}</span>
 			</MotionButton>
 			<MotionButton
 				onClick={handleScrollToTop}

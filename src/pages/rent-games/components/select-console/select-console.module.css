@@ -1,7 +1,8 @@
 .selectConsole {
 	padding: 15px;
 	border-radius: 10px;
-	background: #273446;
+	/* background: #273446; */
+	background: transparent;
     display: grid;
     gap: 15px;
 }

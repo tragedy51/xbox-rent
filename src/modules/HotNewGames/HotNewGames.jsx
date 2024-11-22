@@ -2,7 +2,7 @@
 import Button from '../../UI/Button/Button';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay, EffectCoverflow, Navigation } from 'swiper/modules';
-import { useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 
 import cls from './HotNewGames.module.css';
 import FireIcon from '../../assets/icons/fire-icon.svg?react';
@@ -19,6 +19,7 @@ import { Icon } from '@iconify/react/dist/iconify.js';
 import { SearchInput } from './UI';
 import { searchGames } from './api/searchGames';
 import SearchBottomSheet from './components/SearchBottomSheet/SearchBottomSheet';
+import { MenuIcon, StarIcon, TimeIcon, WatchIcon } from '../../assets';
 
 const HotNewGames = () => {
 	const swiperRef = useRef(null);
@@ -33,6 +34,7 @@ const HotNewGames = () => {
 		gameInfoBottomSheetIsOpen,
 		searchBottomSheetIsOpen,
 		setSearchBottomSheetIsOpen,
+		setLoading,
 	} = useStore((state) => state);
 
 	const [searchIsActive, setSearchIsActive] = useState(false);
@@ -73,6 +75,16 @@ const HotNewGames = () => {
 		setSearchBottomSheetIsOpen(isOpen);
 	}
 
+	useEffect(() => {
+		if (isLoading) {
+			setLoading(true);
+		}
+
+		if (isSuccess) {
+			setLoading(false);
+		}
+	}, [isLoading, setLoading, isSuccess]);
+
 	if (isLoading) {
 		content.current = (
 			<Icon
@@ -82,6 +94,44 @@ const HotNewGames = () => {
 			/>
 		);
 	}
+
+	useEffect(() => {
+		function handleClickOutside(event) {
+			if (
+				searchInputRef.current &&
+				!searchInputRef.current.contains(event.target)
+			) {
+				setSearchIsActive(false);
+				setSearchValue('');
+			}
+		}
+
+		document.addEventListener('mousedown', handleClickOutside);
+
+		return () => {
+			document.removeEventListener('mousedown', handleClickOutside);
+		};
+	}, []);
+
+	const [filtersByDateIsOpen, setFiltersByDateIsOpen] = useState(false);
+
+	const handlePrev = () => {
+		if (swiperRef.current && swiperRef.current.swiper) {
+			swiperRef.current.swiper.slidePrev();
+		}
+	};
+
+	const handleNext = () => {
+		if (swiperRef.current && swiperRef.current.swiper) {
+			swiperRef.current.swiper.slideNext();
+		}
+	};
+
+	const numWord = useMemo(() => {
+		if (allGamesIsSuccess) {
+			return num_word(allGames.count, ['позиция', 'позиции', 'позиций']);
+		}
+	}, [allGames?.count, allGamesIsSuccess]);
 
 	if (isError) {
 		content.current = <p>There is an error</p>;
@@ -109,26 +159,6 @@ const HotNewGames = () => {
 			</Swiper>
 		);
 	}
-
-	const [filtersByDateIsOpen, setFiltersByDateIsOpen] = useState(false);
-
-	const handlePrev = () => {
-		if (swiperRef.current && swiperRef.current.swiper) {
-			swiperRef.current.swiper.slidePrev();
-		}
-	};
-
-	const handleNext = () => {
-		if (swiperRef.current && swiperRef.current.swiper) {
-			swiperRef.current.swiper.slideNext();
-		}
-	};
-
-	const numWord = useMemo(() => {
-		if (allGamesIsSuccess) {
-			return num_word(allGames.count, ['позиция', 'позиции', 'позиций']);
-		}
-	}, [allGames?.count, allGamesIsSuccess]);
 
 	return (
 		<>
@@ -200,31 +230,39 @@ const HotNewGames = () => {
 					<div className={cls.filters}>
 						<FilterButton
 							text={'За неделю'}
-							onClick={() =>
-								setDateFilter({ filter: 'week', text: 'За неделю' })
-							}
+							onClick={() => {
+								setDateFilter({ filter: 'week', text: 'За неделю' });
+								setFiltersByDateIsOpen(false);
+							}}
 							isChecked={dateFilter.filter === 'week'}
+							Icon={MenuIcon}
 						/>
 						<FilterButton
 							text={'За месяц'}
-							onClick={() =>
-								setDateFilter({ filter: 'month', text: 'За месяц' })
-							}
+							onClick={() => {
+								setDateFilter({ filter: 'month', text: 'За месяц' });
+								setFiltersByDateIsOpen(false);
+							}}
 							isChecked={dateFilter.filter === 'month'}
+							Icon={TimeIcon}
 						/>
 						<FilterButton
 							text={'За пол года'}
-							onClick={() =>
-								setDateFilter({ filter: 'half-year', text: 'За пол года' })
-							}
+							onClick={() => {
+								setDateFilter({ filter: 'half-year', text: 'За пол года' });
+								setFiltersByDateIsOpen(false);
+							}}
 							isChecked={dateFilter.filter === 'half-year'}
+							Icon={WatchIcon}
 						/>
 						<FilterButton
 							text={'За все время'}
-							onClick={() =>
-								setDateFilter({ filter: 'all-time', text: 'За все время' })
-							}
+							onClick={() => {
+								setDateFilter({ filter: 'all-time', text: 'За все время' });
+								setFiltersByDateIsOpen(false);
+							}}
 							isChecked={dateFilter.filter === 'all-time'}
+							Icon={StarIcon}
 						/>
 					</div>
 				</div>

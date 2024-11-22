@@ -6,7 +6,7 @@
 	bottom: 0;
 	left: 0;
 	right: 0;
-	z-index: 999999999;
+	z-index: 99999999;
 }
 
 .footer nav {
@@ -17,6 +17,7 @@
 .footer nav a {
 	display: flex;
 	justify-content: center;
+	flex-direction: column;
 	align-items: center;
 	height: 40px;
 }
@@ -27,4 +28,18 @@
 
 .footer nav a svg {
 	color: rgb(156 163 175);
+}
+
+.dott {
+	width: 5px;
+	height: 5px;
+	border-radius: 99px;
+	background: white;
+	display: none;
+	margin-bottom: -10px;
+	margin-top: 10px;
+}
+
+.footer nav a.active .dott {
+	display: block;
 }

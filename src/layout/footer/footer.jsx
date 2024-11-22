@@ -11,23 +11,16 @@ import { FooterBtns } from './components/FooterBtns/FooterBtns';
 
 const Footer = () => {
 	const {
-		// closeXsIsOpen,
-		// basketBottomSheet,
 		setBasketBottomSheet,
 		setCategoryBottomSheetIsOpen,
 		setGameInfoBottomSheetIsOpen,
 		changeXsIsOpen,
 	} = useStore((state) => state);
 
-	// function handleOpenBasket() {
-	// 	closeXsIsOpen();
-	// 	setBasketBottomSheet(true);
-	// }
-
 	function closeAllModals() {
+		setGameInfoBottomSheetIsOpen(false);
 		changeXsIsOpen(false);
 		setCategoryBottomSheetIsOpen(false);
-		setGameInfoBottomSheetIsOpen(false);
 		setBasketBottomSheet(false);
 	}
 
@@ -39,30 +32,35 @@ const Footer = () => {
 						to={'/'}
 						className={({ isActive }) => (isActive ? cls.active : '')}>
 						<XboxIcon width={24} height={24} />
+						<div className={cls.dott} />
 					</NavLink>
 					<NavLink
 						onClick={closeAllModals}
 						to={'/buy-games'}
 						className={({ isActive }) => (isActive ? cls.active : '')}>
 						<PresaleIcon width={24} height={24} />
+						<div className={cls.dott} />
 					</NavLink>
 					<NavLink
 						to={'/subscriptions'}
 						// onClick={handleOpenBasket}
 						className={({isActive}) => (isActive ? cls.active : '')}>
 						<CalendarIcon width={24} height={24} />
+						<div className={cls.dott} />
 					</NavLink>
 					<NavLink
 						onClick={closeAllModals}
 						to={'/currency'}
 						className={({ isActive }) => (isActive ? cls.active : '')}>
 						<CoinsIcon width={24} height={24} />
+						<div className={cls.dott} />
 					</NavLink>
 					<NavLink
 						onClick={closeAllModals}
 						to={'/account'}
 						className={({ isActive }) => (isActive ? cls.active : '')}>
 						<AccountIcon width={24} height={24} />
+						<div className={cls.dott} />
 					</NavLink>
 				</nav>
 			</footer>

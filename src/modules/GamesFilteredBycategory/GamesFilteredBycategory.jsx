@@ -5,12 +5,13 @@ import { motion } from 'framer-motion';
 import cls from './GamesFilteredBycategory.module.css';
 import FilterIcon from '../../assets/icons/filter-icon.svg?react';
 import DropdownIcon from '../../assets/icons/dropdown-arrows-icon.svg?react';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useStore } from '../../store';
 import { useQuery } from '@tanstack/react-query';
 import { getFilteredGames } from './api/getAllGames';
 import { FilterButton, Modal } from '../../UI';
 import useScrollDirection from '../../hooks/useScrollDirection';
+import Loading from '../../UI/Loading/Loading';
 
 const MotionGameCard = motion(GameCard);
 
@@ -18,19 +19,18 @@ const GamesFilteredBycategory = ({ inBottomSheet, scrollContainerRef }) => {
 	const [filtersIsOpen, setFiltersIsOpen] = useState(false);
 	const [sortIsOpen, setSortIsOpen] = useState(false);
 	const content = useRef(null);
+	const allGamesContRef = useRef(null);
+	const gameCardRef = useRef(null);
 
 	const {
-		direction,
-		increaseCounter,
-		decreaseCounter,
 		emptyCounter,
 		setGameInfoBottomSheetIsOpen,
-		setCountButtonUpIsShown,
 		setActiveGame,
 		setIsEnd,
 		activeCategory,
 		activeSeries,
 		voiceActing,
+		setCounter,
 	} = useStore((state) => state);
 
 	const { data, isLoading, isSuccess, isError } = useQuery({
@@ -45,25 +45,13 @@ const GamesFilteredBycategory = ({ inBottomSheet, scrollContainerRef }) => {
 
 	useScrollDirection(inBottomSheet ? scrollContainerRef : undefined);
 
-	function handleCardLeaveViewport() {
-		if (direction === 'up') {
-			decreaseCounter();
-		}
-	}
-
-	function handleCardEnterViewport() {
-		if (direction === 'down') {
-			increaseCounter();
-		}
-	}
-
 	function enterAllGamesSection() {
-		setCountButtonUpIsShown(true);
+		// setCountButtonUpIsShown(true);
 		setIsEnd(false);
 	}
 
 	function leaveAllGamesSection() {
-		setCountButtonUpIsShown(false);
+		// setCountButtonUpIsShown(false);
 		emptyCounter();
 	}
 
@@ -72,10 +60,42 @@ const GamesFilteredBycategory = ({ inBottomSheet, scrollContainerRef }) => {
 		setGameInfoBottomSheetIsOpen(true);
 	}
 
+	function handleScroll() {
+		const allGamesContTop =
+			allGamesContRef.current?.getBoundingClientRect().top;
+		const cardHeight = gameCardRef.current?.getBoundingClientRect().height + 16;
+
+		const counterValue = (
+			(allGamesContTop - window.innerHeight) /
+			(cardHeight / 2)
+		).toFixed(0);
+
+		if (counterValue < 0) {
+			setCounter(counterValue * -1);
+		}
+	}
+
+	useEffect(() => {
+		handleScroll();
+		document
+			.getElementById('main-sheet')
+			.addEventListener('scroll', handleScroll);
+
+		// Убираем слушатель события при размонтировании компонента
+		// return () => {
+		// 	if (inBottomSheet) {
+		// 		document
+		// 			.getElementById('main-sheet')
+		// 			.removeEventListener('scroll', handleScroll);
+		// 	}
+		// };
+	}, []);
+
 	if (isSuccess) {
-		content.current = data.results.map((game, i) => (
+		content.current = data.results.map((game) => (
 			<div className={cls.gameCarCont} key={game.id}>
 				<MotionGameCard
+					ref={gameCardRef}
 					onClick={() => handleOpenGameInfoBottomSheet(game)}
 					game={game}
 					xs={game.compatibility === 'xbox_series_x_s'}
@@ -85,21 +105,8 @@ const GamesFilteredBycategory = ({ inBottomSheet, scrollContainerRef }) => {
 					imgSrc={game.image}
 					rus={game.voice_acting === 'russian'}
 				/>
-				<motion.div
-					onViewportEnter={handleCardEnterViewport}
-					onViewportLeave={handleCardLeaveViewport}
-					style={
-						i % 2 === 0
-							? { height: 0 }
-							: { height: 0, transform: 'translateY(-70px)' }
-					}
-				/>
 			</div>
 		));
-	}
-
-	if (isLoading) {
-		content.current = <p>Loading...</p>;
 	}
 
 	if (isError) {
@@ -108,8 +115,9 @@ const GamesFilteredBycategory = ({ inBottomSheet, scrollContainerRef }) => {
 
 	return (
 		<>
-			<section style={{ position: 'relative', zIndex: 1 }}>
-				<div className='wrapper'>
+			<section style={{ position: 'relative', zIndex: 1, minHeight: '100%' }}>
+				<Loading loading={isLoading} />
+				<div className='wrapper' style={{ opacity: isLoading ? 0 : 1 }}>
 					{/* {activeCategory.name && (
 						<div
 							style={inBottomSheet && { marginTop: 0 }}
@@ -139,10 +147,11 @@ const GamesFilteredBycategory = ({ inBottomSheet, scrollContainerRef }) => {
 						</div>
 					)}
 					<motion.div
+						ref={allGamesContRef}
 						style={{
 							position: 'absolute',
 							left: '0',
-							top: '170px',
+							top: '0px',
 							height: inBottomSheet
 								? 'calc(100% - 70px - 170px)'
 								: 'calc(100% - 70px)',

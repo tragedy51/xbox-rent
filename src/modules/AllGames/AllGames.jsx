@@ -31,11 +31,10 @@ const AllGames = ({ inBottomSheet, scrollContainerRef }) => {
 	const [page, setPage] = useState(1);
 	const [totalGames, setTotalGames] = useState(0);
 	const content = useRef(null);
+	const allGamesContRef = useRef(null);
+	const gameCardRef = useRef(null);
 
 	const {
-		direction,
-		increaseCounter,
-		decreaseCounter,
 		emptyCounter,
 		setGameInfoBottomSheetIsOpen,
 		setCountButtonUpIsShown,
@@ -43,6 +42,7 @@ const AllGames = ({ inBottomSheet, scrollContainerRef }) => {
 		setIsEnd,
 		setGamesCount,
 		gamesCount,
+		setCounter,
 	} = useStore(useShallow((state) => state));
 
 	const [sortType, setSortType] = useState({
@@ -50,25 +50,22 @@ const AllGames = ({ inBottomSheet, scrollContainerRef }) => {
 		text: 'По умолчанию',
 		icon: TwoArrowsIcon,
 	});
+	const [filterType, setFilterType] = useState({
+		type: '',
+		text: 'Все игры',
+		icon: TwoArrowsIcon,
+	});
 
 	const { data, isSuccess, isError, isFetching } = useQuery({
-		queryKey: [`all-games-${page}`, `all-games-sorted-${sortType.type}`],
-		queryFn: () => getAllGames(sortType.type, page),
+		queryKey: [
+			`all-games-${page}`,
+			`all-games-sorted-${sortType.type}`,
+			`all-games-sorted-${filterType.type}`,
+		],
+		queryFn: () => getAllGames(sortType.type, page, filterType.type),
 	});
 
 	useScrollDirection(inBottomSheet ? scrollContainerRef : undefined);
-
-	function handleCardLeaveViewport() {
-		if (direction === 'up') {
-			decreaseCounter();
-		}
-	}
-
-	function handleCardEnterViewport() {
-		if (direction === 'down') {
-			increaseCounter();
-		}
-	}
 
 	function enterAllGamesSection() {
 		setCountButtonUpIsShown(true);
@@ -85,6 +82,33 @@ const AllGames = ({ inBottomSheet, scrollContainerRef }) => {
 		setGameInfoBottomSheetIsOpen(true);
 	}
 
+	function handleScroll() {
+		const allGamesContTop =
+			allGamesContRef.current?.getBoundingClientRect().top;
+		const cardHeight = gameCardRef.current?.getBoundingClientRect().height + 16;
+		console.log(allGamesContRef.current?.getBoundingClientRect().top);
+
+		const counterValue = (
+			(allGamesContTop - window.innerHeight) /
+			(cardHeight / 2)
+		).toFixed(0);
+
+		if (counterValue < 0) {
+			setCounter(counterValue * -1);
+		}
+	}
+
+	useEffect(() => {
+		document.getElementById('root').addEventListener('scroll', handleScroll);
+
+		// Убираем слушатель события при размонтировании компонента
+		return () => {
+			document
+				.getElementById('root')
+				.removeEventListener('scroll', handleScroll);
+		};
+	}, []);
+
 	useEffect(() => {
 		if (gamesCount !== data?.count) {
 			setGamesCount(data?.count);
@@ -95,7 +119,7 @@ const AllGames = ({ inBottomSheet, scrollContainerRef }) => {
 
 	useEffect(() => {
 		allGames.current = [];
-	}, [sortType]);
+	}, [sortType, filterType]);
 
 	useEffect(() => {
 		if (data) {
@@ -122,12 +146,20 @@ const AllGames = ({ inBottomSheet, scrollContainerRef }) => {
 	function handleSortGames(sort) {
 		setPage(1);
 		setSortType(sort);
+		setSortIsOpen(false);
+	}
+
+	function handleFilterGames(filter) {
+		setPage(1);
+		setFilterType(filter);
+		setFiltersIsOpen(false);
 	}
 
 	if (isSuccess) {
-		content.current = allGames.current.map((game, i) => (
-			<div className={cls.gameCarCont} key={game.id}>
+		content.current = allGames.current.map((game) => (
+			<div ref={gameCardRef} className={cls.gameCarCont} key={game.id}>
 				<MotionGameCard
+					size={'lg'}
 					release_date={game.release_date}
 					preOrder={game.pre_order}
 					onClick={() => handleOpenGameInfoBottomSheet(game)}
@@ -138,15 +170,6 @@ const AllGames = ({ inBottomSheet, scrollContainerRef }) => {
 					subprice={game.subprice}
 					imgSrc={game.image}
 					rus={game.voice_acting === 'russian'}
-				/>
-				<motion.div
-					onViewportEnter={handleCardEnterViewport}
-					onViewportLeave={handleCardLeaveViewport}
-					style={
-						i % 2 === 0
-							? { height: 0 }
-							: { height: 0, transform: 'translateY(-70px)' }
-					}
 				/>
 			</div>
 		));
@@ -181,23 +204,22 @@ const AllGames = ({ inBottomSheet, scrollContainerRef }) => {
 						</Button>
 						<Button
 							onClick={() => setFiltersIsOpen(true)}
-							Icon={FilterIcon}
+							Icon={filterType.icon}
 							iconSize={16}>
-							Все игры
+							{filterType.text}
 						</Button>
 					</div>
 					<motion.div
 						style={{
 							position: 'absolute',
 							left: '0',
-							top: '170px',
-							height: inBottomSheet
-								? 'calc(100% - 70px - 170px)'
-								: 'calc(100% - 70px)',
+							top: '122px',
+							height: inBottomSheet ? 'calc(100% - 70px)' : 'calc(100% - 70px)',
 							width: '100%',
 						}}
 						onViewportEnter={enterAllGamesSection}
 						onViewportLeave={leaveAllGamesSection}
+						ref={allGamesContRef}
 					/>
 					<div className={cls.allGamesCont}>{content.current}</div>
 					{isFetching && (
@@ -233,27 +255,49 @@ const AllGames = ({ inBottomSheet, scrollContainerRef }) => {
 					<h3 className='section-title'>Фильтры</h3>
 					<div className={cls.filters}>
 						<FilterButton
-							onClick={(e) => e.stopPropagation()}
+							onClick={() =>
+								handleFilterGames({
+									type: '',
+									text: 'Все игры',
+									icon: FilterIcon,
+								})
+							}
 							text={'Все игры'}
-							isChecked={true}
+							isChecked={filterType.type === ''}
 						/>
-						<FilterButton text={'Полностью русские'} />
-						<FilterButton text={'Версия для Series X/S'} />
-						<FilterButton text={'Версия для Xbox One'} />
-					</div>
-				</div>
-			</Modal>
-			<Modal
-				className={inBottomSheet && cls.modal}
-				isOpen={filtersIsOpen}
-				setIsopen={setFiltersIsOpen}>
-				<div className={cls.gameFilters}>
-					<h3 className='section-title'>Фильтры</h3>
-					<div className={cls.filters}>
-						<FilterButton text={'Все игры'} isChecked={true} />
-						<FilterButton text={'Полностью русские'} />
-						<FilterButton text={'Версия для Series X/S'} />
-						<FilterButton text={'Версия для Xbox One'} />
+						<FilterButton
+							onClick={() =>
+								handleFilterGames({
+									type: 'voice_acting=russian',
+									text: 'Полностью русские',
+									icon: FilterIcon,
+								})
+							}
+							text={'Полностью русские'}
+							isChecked={filterType.type === 'voice_acting=russian'}
+						/>
+						<FilterButton
+							onClick={() =>
+								handleFilterGames({
+									type: 'compatibility=xbox_series_x_s',
+									text: 'Версия для Series X/S',
+									icon: FilterIcon,
+								})
+							}
+							text={'Версия для Series X/S'}
+							isChecked={filterType.type === 'compatibility=xbox_series_x_s'}
+						/>
+						<FilterButton
+							onClick={() =>
+								handleFilterGames({
+									type: 'compatibility=xbox_one',
+									text: 'Версия для Xbox One',
+									icon: FilterIcon,
+								})
+							}
+							text={'Версия для Xbox One'}
+							isChecked={filterType.type === 'compatibility=xbox_one'}
+						/>
 					</div>
 				</div>
 			</Modal>

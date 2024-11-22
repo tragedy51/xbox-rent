@@ -10,9 +10,12 @@ import { useQuery } from '@tanstack/react-query';
 import { getAllCategories } from './api/getAllCategories';
 
 const CategoryFilter = () => {
-	const { setCategoryBottomSheetIsOpen, setActiveCategory } = useStore(
-		(state) => state
-	);
+	const {
+		setCategoryBottomSheetIsOpen,
+		setActiveCategory,
+		categoriesHeight,
+		setCategoriesHeight,
+	} = useStore((state) => state);
 	const [isOpen, setIsOpen] = useState(false);
 	const [categoriesContVariants, setCategoriesContVariants] = useState();
 	const categoryCardRef = useRef(null);
@@ -22,6 +25,16 @@ const CategoryFilter = () => {
 		queryKey: ['all-categories'],
 		queryFn: getAllCategories,
 	});
+
+	useEffect(() => {
+		if (!categoriesHeight) {
+			const height =
+				categoryCardRef.current?.offsetHeight +
+				categoryCardRef.current?.offsetHeight / 2;
+
+			setCategoriesHeight(height);
+		}
+	}, [setCategoriesHeight, categoriesHeight]);
 
 	useEffect(() => {
 		const height =
@@ -37,6 +50,21 @@ const CategoryFilter = () => {
 			},
 		});
 	}, [data]);
+
+	// useEffect(() => {
+	// 	const height =
+	// 		categoryCardRef.current?.offsetHeight +
+	// 		categoryCardRef.current?.offsetHeight / 2;
+
+	// 	setCategoriesContVariants({
+	// 		open: {
+	// 			height: 'auto',
+	// 		},
+	// 		close: {
+	// 			height: `${height}px`,
+	// 		},
+	// 	});
+	// }, []);
 
 	function handleSelectCategory(id, name) {
 		setActiveCategory(id, name);
@@ -76,7 +104,10 @@ const CategoryFilter = () => {
 				<motion.div
 					animate={isOpen ? 'open' : 'close'}
 					variants={categoriesContVariants}
-					className={cls.categoryFilterCards}>
+					className={cls.categoryFilterCards}
+					style={{
+						height: categoriesHeight ? `${categoriesHeight}px` : '130px',
+					}}>
 					{content.current}
 					<div className={cls.shadow} />
 				</motion.div>

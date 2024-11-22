@@ -21,13 +21,24 @@
 	z-index: 2;
 }
 
-
 .gameInfoCont {
 	position: relative;
 }
 
 .gameInfo img {
 	width: 100%;
+}
+
+.banner {
+	background: #efd000;
+	color: #000000;
+	position: absolute;
+	padding: 5px;
+	border-radius: 5px;
+	top: 18px;
+	right: 18px;
+	font-size: 14px;
+	font-weight: 600;
 }
 
 .gameInfoMainImgCont {
@@ -125,7 +136,7 @@
 .gameInfoMain {
 	background: #232222;
 	transform: translateY(180px);
-	padding-bottom: 70px;
+	/* padding-bottom: 70px; */
 }
 
 .gameTitle {
@@ -193,4 +204,10 @@
 	position: absolute;
 	right: 5px;
 	top: 10px;
+}
+
+.editButton {
+	position: absolute;
+	top: 19px;
+	right: 50px;
 }

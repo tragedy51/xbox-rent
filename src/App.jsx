@@ -5,9 +5,10 @@ import 'swiper/css/effect-coverflow';
 import 'swiper/css/navigation';
 import Root from './layout/root/root';
 import { Account, RentGames, Search } from './pages';
-import AllGames from './modules/AllGames/AllGames';
 import { useEffect } from 'react';
 import WebApp from '@twa-dev/sdk';
+import BuyGames from './pages/buy-games/BuyGames';
+import NotFound from './pages/404/404';
 
 const router = createHashRouter([
 	{
@@ -20,30 +21,18 @@ const router = createHashRouter([
 			},
 			{ path: '/account', element: <Account /> },
 			{ path: '/basket', element: <RentGames /> },
-			{ path: '/:category', element: <AllGames /> },
+			{ path: '/:anything', element: <NotFound /> },
 			{
 				path: '/buy-games',
-				element: (
-					<h2 className='wrapper' style={{ paddingTop: '10px' }}>
-						В разработке
-					</h2>
-				),
+				element: <BuyGames />,
 			},
 			{
 				path: '/subscriptions',
-				element: (
-					<h2 className='wrapper' style={{ paddingTop: '10px' }}>
-						В разработке
-					</h2>
-				),
+				element: <BuyGames />,
 			},
 			{
 				path: '/currency',
-				element: (
-					<h2 className='wrapper' style={{ paddingTop: '10px' }}>
-						В разработке
-					</h2>
-				),
+				element: <BuyGames />,
 			},
 		],
 	},
@@ -60,9 +49,9 @@ function App() {
 		WebApp.ready();
 		WebApp.expand();
 		WebApp.setHeaderColor('#172729');
+		WebApp.disableVerticalSwipes(false);
 		if (window?.telegram?.WebApp)
 			window?.telegram?.WebApp?.setBottomBarColor('#172729');
-		WebApp.disableVerticalSwipes(false);
 
 		function handleOrientationChange() {
 			if (window.orientation === 90) {

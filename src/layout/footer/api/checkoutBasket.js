@@ -1,4 +1,4 @@
-export async function checkoutBasket({ basketGamesId, telegramId }) {
+export async function checkoutBasket({ telegramId, basket_id }) {
 	const response = await fetch(
 		`${import.meta.env.VITE_API_URL}/order_checkout/`,
 		{
@@ -8,7 +8,7 @@ export async function checkoutBasket({ basketGamesId, telegramId }) {
 			},
 			body: JSON.stringify({
 				telegram_id: telegramId,
-				game_ids: basketGamesId,
+				basket_id,
 			}),
 		}
 	);

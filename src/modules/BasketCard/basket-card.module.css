@@ -2,7 +2,6 @@
 	padding: 1rem;
 	background-color: rgb(35 34 34);
 	border-radius: 0.75rem;
-	margin-bottom: 88px;
 }
 
 .priceCont {
@@ -35,4 +34,9 @@
 	border-radius: 0.5rem;
 	background-color: rgb(21 128 61);
 	width: 100%;
+}
+
+.recommendedGame {
+	margin-bottom: 88px;
+	margin-top: 20px;
 }

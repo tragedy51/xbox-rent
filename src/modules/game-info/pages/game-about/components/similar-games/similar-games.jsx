@@ -4,7 +4,7 @@ import { getSimilarGames } from './api/getSimilarGames';
 import { useRef } from 'react';
 import SectionWithSlide from '../../../../../../components/SectionWithSlide/SectionWithSlide';
 
-const SimilarGames = ({ categoryId }) => {
+const SimilarGames = ({ categoryId, currentGame }) => {
 	const content = useRef();
 
 	const { data, isSuccess, isLoading, isError } = useQuery({
@@ -22,14 +22,14 @@ const SimilarGames = ({ categoryId }) => {
 
 	if (isSuccess) {
 		content.current = (
-			<SectionWithSlide sectionTitle={'Похожие игры'} slides={data.results} />
+			<SectionWithSlide sectionTitle={'Похожие игры'} slides={data.results} filterId={currentGame.id} />
 		);
 	}
 
 	return (
 		<section
 			className={cls.similarGames}>
-			<div className={cls.blurBg}>{content.current}</div>
+			<div style={{paddingBottom: '80px'}} className={cls.blurBg}>{content.current}</div>
 		</section>
 	);
 };

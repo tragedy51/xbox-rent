@@ -12,6 +12,13 @@
 	grid-template-rows: minmax(0, 142px) auto auto;
 }
 
+.gameCard.md.seriesCard {
+	/* max-height: 250px; */
+	/* grid-template-rows: minmax(0, 250px) auto auto; */
+	max-height: none;
+	display: block;
+}
+
 .gameCard.lg {
 	max-height: 286px;
 	grid-template-rows: minmax(0, 195px) auto auto;
@@ -28,8 +35,8 @@
 	padding: 5px;
 	border-radius: 5px;
 	bottom: 10px;
-	right: 0px;
-	font-size: 12px;
+	right: 5px;
+	font-size: 11px;
 	font-weight: 600;
 }
 
@@ -42,6 +49,15 @@
 	border-top-right-radius: 0.5rem;
 	object-fit: cover;
 	height: 100%;
+}
+
+.gameCard.md.seriesCard .imgWrapper img {
+	height: auto;
+	width: 100%;
+}
+
+.gameCard.md.seriesCard .imgWrapper img {
+	border-radius: 0.5rem;
 }
 
 .imgWrapper .XSCont {

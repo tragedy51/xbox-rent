@@ -6,20 +6,28 @@ import { useMutation } from '@tanstack/react-query';
 
 import { hashString } from '../../../../helpers/hashString';
 import WebApp from '@twa-dev/sdk';
-import { Icon } from '@iconify/react/dist/iconify.js';
+// import { Icon } from '@iconify/react/dist/iconify.js';
 import { changeConsole } from './api/changeConsole';
+import consoleMusic from '../../../../assets/sounds/console-music.mp3';
 
 const SelectConsole = ({ openConsoleModal, setOpenConsoleModal }) => {
 	const [consoleType, setConsoleType] = useState('');
+	const [endAnimation, setEndAnimation] = useState(false);
+	const [startAnimation, setStartAnimation] = useState(false);
 
-	const { mutate, isPending } = useMutation({
+	let audio = new Audio(consoleMusic);
+
+	const { mutate } = useMutation({
 		mutationFn: changeConsole,
 		onSuccess: () => {
-			setOpenConsoleModal(false);
+			setEndAnimation(true);
+			setStartAnimation(false);
 		},
 	});
 
-	function handleSelectCnosole() {
+	function handleSelectCnosole(consoleType) {
+		setConsoleType(consoleType);
+		audio.play();
 		hashString(
 			import.meta.env.VITE_AUTH_TOKEN +
 				(WebApp?.initDataUnsafe?.user?.id || 1147564292)
@@ -33,12 +41,18 @@ const SelectConsole = ({ openConsoleModal, setOpenConsoleModal }) => {
 	}
 
 	return (
-		<ConsoleModal isOpen={openConsoleModal} setIsopen={setOpenConsoleModal}>
+		<ConsoleModal
+			isOpen={openConsoleModal}
+			setIsopen={setOpenConsoleModal}
+			endAnimation={endAnimation}
+			setEndAnimation={setEndAnimation}
+			startAnimation={startAnimation}
+			setStartAnimation={setStartAnimation}>
 			<div className={cls.selectConsole}>
-				<h2 className='section-title'>Выберите консоль</h2>
+				<h2 className='section-title'>Выберите вашу консоль</h2>
 				<div className={cls.consoleCards}>
 					<div
-						onClick={() => setConsoleType('xbox_series_x_s')}
+						onClick={() => handleSelectCnosole('xbox_series_x_s')}
 						className={`${cls.consoleCard} ${
 							consoleType === 'xbox_series_x_s' ? cls.active : ''
 						}`}>
@@ -46,7 +60,7 @@ const SelectConsole = ({ openConsoleModal, setOpenConsoleModal }) => {
 						<span>Xbox Series</span>
 					</div>
 					<div
-						onClick={() => setConsoleType('xbox_one')}
+						onClick={() => handleSelectCnosole('xbox_one')}
 						className={`${cls.consoleCard} ${
 							consoleType === 'xbox_one' ? cls.active : ''
 						}`}>
@@ -54,9 +68,9 @@ const SelectConsole = ({ openConsoleModal, setOpenConsoleModal }) => {
 						<span>Xbox One</span>
 					</div>
 				</div>
-				<button onClick={handleSelectCnosole} className={cls.saveBtn}>
+				{/* <button onClick={handleSelectCnosole} className={cls.saveBtn}>
 					{isPending ? <Icon icon='eos-icons:loading' /> : 'Сохранить'}
-				</button>
+				</button> */}
 			</div>
 		</ConsoleModal>
 	);

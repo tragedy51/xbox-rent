@@ -2,7 +2,7 @@
 	padding-top: 10px;
 	display: grid;
 	gap: 12px;
-	padding-bottom: 20px;
+	padding-bottom: 90px;
 }
 
 .allVideos video {
@@ -15,4 +15,17 @@
 	height: 200px;
 	object-fit: cover;
 	border: 0;
+}
+
+.moreVideosLink {
+	color: rgb(96 165 250);
+	font-size: 1rem;
+	line-height: 1.5rem;
+	padding-bottom: 0.75rem;
+	padding-top: 0.75rem;
+	display: flex;
+	gap: 0.5rem;
+	justify-content: center;
+	align-items: center;
+	margin: 0 auto;
 }

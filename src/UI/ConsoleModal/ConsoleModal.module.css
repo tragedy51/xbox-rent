@@ -1,15 +1,35 @@
 .backdrop {
 	position: fixed;
 	inset: 0;
-	z-index: 99999999;
+	z-index: 9999999999;
 	backdrop-filter: blur(4px);
-	background-color: rgb(17 24 39 / 0.5);
+	background-color: rgba(0, 0, 0, 0.9);
 }
 
 .modal {
 	position: fixed;
 	top: 50%;
 	left: 50%;
+	transform: translateX(-50%) translateY(calc(-50% - 12px));
+	z-index: 9999999999;
+}
+
+.welcomeTitle {
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	transform: translateX(-50%) translateY(calc(-50% - 12px));
+	z-index: 9999999999;
+}
+
+.startButton {
+	position: fixed;
+	top: 50%;
+	left: 50%;
 	transform: translateX(-50%) translateY(-50%);
-	z-index: 99999999;
+	z-index: 9999999999;
+}
+
+.startButton:active {
+	transform: scale(1) translateX(-50%) translateY(-50%);
 }
