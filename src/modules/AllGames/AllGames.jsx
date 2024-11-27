@@ -86,7 +86,6 @@ const AllGames = ({ inBottomSheet, scrollContainerRef }) => {
 		const allGamesContTop =
 			allGamesContRef.current?.getBoundingClientRect().top;
 		const cardHeight = gameCardRef.current?.getBoundingClientRect().height + 16;
-		console.log(allGamesContRef.current?.getBoundingClientRect().top);
 
 		const counterValue = (
 			(allGamesContTop - window.innerHeight) /

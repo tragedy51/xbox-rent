@@ -5,9 +5,11 @@ import WebApp from '@twa-dev/sdk';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { addGameToBasket } from '../../../../layout/footer/api/addGameToBasket';
 import { removeGameFromBasket } from '../../../../layout/footer/api/removeGameFromBasket';
+import { removeSubFromBasket } from '../../../../layout/footer/api/removeSubFromBasket';
 
 const gameType = {
 	rent: 'Аренда',
+	sub: 'Подписки',
 };
 
 export const BasketGameCard = ({ game, className, recommendation }) => {
@@ -28,11 +30,25 @@ export const BasketGameCard = ({ game, className, recommendation }) => {
 		},
 	});
 
+	const { mutate: removeSubFromBasketMutate } = useMutation({
+		mutationFn: removeSubFromBasket,
+		onSuccess: () => {
+			queryClient.invalidateQueries('create-basket');
+		},
+	});
+
 	function handleDeleteGameFromBasket(game) {
-		removeGameFromBasketMutate({
-			product_id: game.id,
-			basket_id: basketId,
-		});
+		if (game.type === 'sub') {
+			removeSubFromBasketMutate({
+				period_id: game.id,
+				basket_id: basketId,
+			});
+		} else {
+			removeGameFromBasketMutate({
+				product_id: game.id,
+				basket_id: basketId,
+			});
+		}
 
 		if (basketGamesCount === 1) {
 			setBasketBottomSheet(false);

@@ -41,9 +41,12 @@ const SectionWithSlide = ({
 				)}
 				{withAllBtn && <Button onClick={allBtnOnClick}>Все</Button>}
 			</div>
-			<div className='wrapper-left'>
+			<div>
 				<Swiper
 					className={`swiper swiper-initialized swiper-horizontal ${cls.slider}`}
+					style={{
+						padding: '0 1rem',
+					}}
 					spaceBetween={15}
 					slidesPerView={2.3}>
 					{slides.map(

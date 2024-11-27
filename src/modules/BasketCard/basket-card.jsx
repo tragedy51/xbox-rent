@@ -65,12 +65,15 @@ export const BasketCard = ({ adjustPosition }) => {
 	}
 	if (basketGamesIsSuccess) {
 		basketGamesContent.current =
-			basketGames.items === 0 ? (
+			basketGames.items.length === 0 && basketGames.subs.length === 0 ? (
 				<p>No games</p>
 			) : (
 				<div className={cls.BasketCard}>
 					{basketGames.items.map((game) => (
 						<BasketGameCard key={game.id} game={game} />
+					))}
+					{basketGames.subs.map((sub) => (
+						<BasketGameCard key={sub.id} game={{ type: 'sub', ...sub }} />
 					))}
 					<div className={cls.priceCont}>
 						{/* {basketPrice !== basketDiscountPrice && (

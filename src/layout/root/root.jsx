@@ -64,7 +64,7 @@ const Root = () => {
 	useEffect(() => {
 		if (basketCreateIsSuccess && basket) {
 			setBasketId(basket.basket_id);
-			setBasketGamesCount(basket.items.length);
+			setBasketGamesCount(basket.items.length + basket.subs.length);
 			setBasketGamesId(basket.current_item_ids);
 		}
 	}, [

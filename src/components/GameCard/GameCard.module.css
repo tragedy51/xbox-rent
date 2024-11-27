@@ -143,3 +143,33 @@
 	right: 0;
 	padding: 5px;
 }
+
+@media (max-width: 405px) {
+	.price {
+		font-size: 15px;
+	}
+
+	.discount {
+		font-size: 15px;
+	}
+}
+
+@media (max-width: 385px) {
+	.price {
+		font-size: 14px;
+	}
+
+	.discount {
+		font-size: 14px;
+	}
+}
+
+@media (max-width: 368px) {
+	.price {
+		font-size: 13px;
+	}
+
+	.discount {
+		font-size: 13px;
+	}
+}

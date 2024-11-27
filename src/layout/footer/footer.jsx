@@ -44,7 +44,8 @@ const Footer = () => {
 					<NavLink
 						to={'/subscriptions'}
 						// onClick={handleOpenBasket}
-						className={({isActive}) => (isActive ? cls.active : '')}>
+						onClick={closeAllModals}
+						className={({ isActive }) => (isActive ? cls.active : '')}>
 						<CalendarIcon width={24} height={24} />
 						<div className={cls.dott} />
 					</NavLink>

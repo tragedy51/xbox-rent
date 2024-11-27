@@ -50,6 +50,9 @@ const SeriesGames = () => {
 		content.current = (
 			<Swiper
 				className={`swiper swiper-initialized swiper-horizontal ${cls.slider}`}
+				style={{
+					padding: '0 1rem',
+				}}
 				spaceBetween={20}
 				slidesPerView={2.3}>
 				{copyOfGames.current.map((serie) => (
@@ -83,7 +86,7 @@ const SeriesGames = () => {
 						<XboxIcon /> Серии игр
 					</h3>
 				</div>
-				<div className='wrapper-left'>{content.current}</div>
+				{content.current}
 			</div>
 		</section>
 	);

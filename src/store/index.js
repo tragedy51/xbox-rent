@@ -5,6 +5,7 @@ import { layoutSlice } from '../layout/store';
 import { categoriesSlice } from '../modules/Categories/store/categories-slice';
 import { filterSlice } from '../filters/filters-slice';
 import { userSlice } from './userSlice';
+import { subsSlice } from '../pages/subscriptions/store/subsSlice';
 
 export const useStore = create((...a) => ({
 	...counterSlice(...a),
@@ -13,4 +14,5 @@ export const useStore = create((...a) => ({
 	...categoriesSlice(...a),
 	...filterSlice(...a),
 	...userSlice(...a),
+	...subsSlice(...a),
 }));

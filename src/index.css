@@ -179,3 +179,11 @@ section .section-header {
 		opacity: 0.6;
 	}
 }
+
+.category-title {
+	margin: 1rem 0;
+	font-size: 1.7rem;
+	line-height: 2rem;
+	overflow: hidden;
+	text-wrap: nowrap;
+}
