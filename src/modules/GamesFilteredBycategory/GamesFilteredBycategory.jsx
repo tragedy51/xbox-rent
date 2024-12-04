@@ -12,15 +12,19 @@ import { getFilteredGames } from './api/getAllGames';
 import { FilterButton, Modal } from '../../UI';
 import useScrollDirection from '../../hooks/useScrollDirection';
 import Loading from '../../UI/Loading/Loading';
+import { Icon } from '@iconify/react/dist/iconify.js';
 
 const MotionGameCard = motion(GameCard);
 
 const GamesFilteredBycategory = ({ inBottomSheet, scrollContainerRef }) => {
 	const [filtersIsOpen, setFiltersIsOpen] = useState(false);
 	const [sortIsOpen, setSortIsOpen] = useState(false);
+	const [page, setPage] = useState(1);
+	const [totalGames, setTotalGames] = useState(0);
 	const content = useRef(null);
 	const allGamesContRef = useRef(null);
 	const gameCardRef = useRef(null);
+	const isFirstLoading = useRef(true);
 
 	const {
 		emptyCounter,
@@ -30,17 +34,16 @@ const GamesFilteredBycategory = ({ inBottomSheet, scrollContainerRef }) => {
 		activeCategory,
 		activeSeries,
 		voiceActing,
-		setCounter,
 	} = useStore((state) => state);
 
-	const { data, isLoading, isSuccess, isError } = useQuery({
+	const { data, isLoading, isSuccess, isError, isFetching } = useQuery({
 		queryKey: [
-			`categories-${activeCategory.id}`,
+			`categories-${activeCategory.id}-${page}`,
 			`series-${activeSeries.id}`,
 			`voice_acting_${voiceActing}`,
 		],
 		queryFn: () =>
-			getFilteredGames(activeCategory.id, activeSeries.id, voiceActing),
+			getFilteredGames(activeCategory.id, activeSeries.id, voiceActing, page),
 	});
 
 	useScrollDirection(inBottomSheet ? scrollContainerRef : undefined);
@@ -60,39 +63,38 @@ const GamesFilteredBycategory = ({ inBottomSheet, scrollContainerRef }) => {
 		setGameInfoBottomSheetIsOpen(true);
 	}
 
-	function handleScroll() {
-		const allGamesContTop =
-			allGamesContRef.current?.getBoundingClientRect().top;
-		const cardHeight = gameCardRef.current?.getBoundingClientRect().height + 16;
+	function changePage() {
+		if (!isFetching) {
+			const maxPageCount = Math.ceil(totalGames / 10);
 
-		const counterValue = (
-			(allGamesContTop - window.innerHeight) /
-			(cardHeight / 2)
-		).toFixed(0);
-
-		if (counterValue < 0) {
-			setCounter(counterValue * -1);
+			if (page < maxPageCount) {
+				isFirstLoading.current = false;
+				setPage((prev) => prev + 1);
+			}
 		}
 	}
 
-	useEffect(() => {
-		handleScroll();
-		document
-			.getElementById('main-sheet')
-			.addEventListener('scroll', handleScroll);
+	const allGames = useRef([]);
 
-		// Убираем слушатель события при размонтировании компонента
-		// return () => {
-		// 	if (inBottomSheet) {
-		// 		document
-		// 			.getElementById('main-sheet')
-		// 			.removeEventListener('scroll', handleScroll);
-		// 	}
-		// };
-	}, []);
+	useEffect(() => {
+		if (data) {
+			allGames.current = [...allGames.current, ...data.results];
+		}
+
+		return () => {
+			// allGames.current = [];
+			// isFirstLoading.current = true;
+		};
+	}, [data]);
+
+	useEffect(() => {
+		if (isSuccess) {
+			setTotalGames(data.count);
+		}
+	}, [data?.count, isSuccess]);
 
 	if (isSuccess) {
-		content.current = data.results.map((game) => (
+		content.current = allGames.current.map((game) => (
 			<div className={cls.gameCarCont} key={game.id}>
 				<MotionGameCard
 					ref={gameCardRef}
@@ -103,7 +105,8 @@ const GamesFilteredBycategory = ({ inBottomSheet, scrollContainerRef }) => {
 					gamePrice={game.price}
 					subprice={game.subprice}
 					imgSrc={game.image}
-					rus={game.voice_acting === 'russian'}
+					lang={game.voice_acting}
+					in_game_pass={game.in_game_pass}
 				/>
 			</div>
 		));
@@ -116,20 +119,10 @@ const GamesFilteredBycategory = ({ inBottomSheet, scrollContainerRef }) => {
 	return (
 		<>
 			<section style={{ position: 'relative', zIndex: 1, minHeight: '100%' }}>
-				<Loading loading={isLoading} />
-				<div className='wrapper' style={{ opacity: isLoading ? 0 : 1 }}>
-					{/* {activeCategory.name && (
-						<div
-							style={inBottomSheet && { marginTop: 0 }}
-							className={cls.sectionHeader}>
-							<h2 className='section-title'>
-								{activeCategory.name}{' '}
-								<span style={{ fontSize: '14px' }}>
-									({data?.count} {numWordWithMemo})
-								</span>
-							</h2>
-						</div>
-					)} */}
+				<Loading loading={isLoading && isFirstLoading.current} />
+				<div
+					className='wrapper'
+					style={{ opacity: isLoading && isFirstLoading.current ? 0 : 1 }}>
 					{!activeSeries && (
 						<div className={cls.filterButtons}>
 							<Button
@@ -151,16 +144,31 @@ const GamesFilteredBycategory = ({ inBottomSheet, scrollContainerRef }) => {
 						style={{
 							position: 'absolute',
 							left: '0',
-							top: '0px',
-							height: inBottomSheet
-								? 'calc(100% - 70px - 170px)'
-								: 'calc(100% - 70px)',
+							top: '122px',
+							height: inBottomSheet ? 'calc(100% - 70px)' : 'calc(100% - 70px)',
 							width: '100%',
 						}}
 						onViewportEnter={enterAllGamesSection}
 						onViewportLeave={leaveAllGamesSection}
 					/>
 					<div className={cls.allGamesCont}>{content.current}</div>
+					{isFetching && (
+						<Icon
+							style={{ margin: '0 auto', display: 'block' }}
+							width={55}
+							icon='eos-icons:three-dots-loading'
+						/>
+					)}
+					<motion.div
+						style={{
+							position: 'absolute',
+							bottom: '-100px',
+							width: '100%',
+							height: '100vh',
+							background: 'transparent',
+						}}
+						onViewportEnter={changePage}
+					/>
 				</div>
 
 				<motion.div

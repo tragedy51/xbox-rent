@@ -6,13 +6,17 @@ import { useQuery } from '@tanstack/react-query';
 import { getSeriesGames } from './api/getSeriesGames';
 import { useEffect, useRef } from 'react';
 import { useStore } from '../../store';
+import Button from '../../UI/Button/Button';
 
 const SeriesGames = () => {
 	const content = useRef();
 	const copyOfGames = useRef([]);
-	const { setActiveSeries, setCategoryBottomSheetIsOpen } = useStore(
-		(state) => state
-	);
+	const {
+		setActiveSeries,
+		setCategoryBottomSheetIsOpen,
+		changeXsIsOpen,
+		setXsText,
+	} = useStore((state) => state);
 
 	const { data, isLoading, isError, isSuccess } = useQuery({
 		queryKey: ['get-series-games'],
@@ -30,6 +34,11 @@ const SeriesGames = () => {
 	function handleOpenSeries(id, name) {
 		setActiveSeries(id, name);
 		setCategoryBottomSheetIsOpen(true);
+	}
+
+	function handleOpenInfo() {
+		setXsText('Подсказка');
+		changeXsIsOpen(true);
 	}
 
 	useEffect(() => {
@@ -87,6 +96,14 @@ const SeriesGames = () => {
 					</h3>
 				</div>
 				{content.current}
+				<div className='wrapper'>
+					<Button
+						style={{ width: '100%', justifyContent: 'center' }}
+						onClick={handleOpenInfo}
+						className={cls.aboutRentBtn}>
+						Информация о прокате игр!
+					</Button>
+				</div>
 			</div>
 		</section>
 	);

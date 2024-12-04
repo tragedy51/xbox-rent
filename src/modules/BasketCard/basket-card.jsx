@@ -4,7 +4,7 @@ import { CustomBottomSheet } from '../../UI/BottomSheet/BottomSheet';
 import cls from './basket-card.module.css';
 import { BasketGameCard } from './components';
 import { getRecommendedGame } from './api/getRecommendedGame';
-import { useRef } from 'react';
+import { useMemo, useRef } from 'react';
 import { Icon } from '@iconify/react/dist/iconify.js';
 import { getAndCreateBasket } from '../../layout/root/api/getAndCreateBasket';
 import WebApp from '@twa-dev/sdk';
@@ -35,6 +35,10 @@ export const BasketCard = ({ adjustPosition }) => {
 			}),
 	});
 
+	const recomendedInBasket = useMemo(() => {
+		return basketGames?.current_item_ids?.includes(data.id);
+	}, [basketGames, data]);
+
 	if (isLoading) {
 		content.current = (
 			<Icon
@@ -60,6 +64,7 @@ export const BasketCard = ({ adjustPosition }) => {
 				recommendation={true}
 				key={data.id}
 				game={{ ...data, image: 'http://api.xbox-rent.ru' + data.image }}
+				inBasket={recomendedInBasket}
 			/>
 		);
 	}

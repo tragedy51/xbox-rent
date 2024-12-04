@@ -3,8 +3,6 @@ import Button from '../../UI/Button/Button';
 import { motion } from 'framer-motion';
 
 import cls from './AllGames.module.css';
-import FilterIcon from '../../assets/icons/filter-icon.svg?react';
-// import DropdownIcon from '../../assets/icons/dropdown-arrows-icon.svg?react';
 import { useEffect, useRef, useState } from 'react';
 import { useStore } from '../../store';
 import { useQuery } from '@tanstack/react-query';
@@ -17,9 +15,12 @@ import {
 	DiscountIcon,
 	DollarincircleIcon,
 	KeyboardIcon,
+	RussianFlagIcon,
 	StarIcon,
 	TimeIcon,
 	TwoArrowsIcon,
+	XboxIcon,
+	XSIcon,
 } from '../../assets';
 import { Icon } from '@iconify/react/dist/iconify.js';
 
@@ -109,7 +110,7 @@ const AllGames = ({ inBottomSheet, scrollContainerRef }) => {
 	}, []);
 
 	useEffect(() => {
-		if (gamesCount !== data?.count) {
+		if (gamesCount !== data?.count && data?.count) {
 			setGamesCount(data?.count);
 		}
 	}, [data?.count, gamesCount, setGamesCount]);
@@ -168,7 +169,8 @@ const AllGames = ({ inBottomSheet, scrollContainerRef }) => {
 					gamePrice={game.price}
 					subprice={game.subprice}
 					imgSrc={game.image}
-					rus={game.voice_acting === 'russian'}
+					lang={game.voice_acting}
+					in_game_pass={game.in_game_pass}
 				/>
 			</div>
 		));
@@ -209,6 +211,7 @@ const AllGames = ({ inBottomSheet, scrollContainerRef }) => {
 						</Button>
 					</div>
 					<motion.div
+						ref={allGamesContRef}
 						style={{
 							position: 'absolute',
 							left: '0',
@@ -218,7 +221,6 @@ const AllGames = ({ inBottomSheet, scrollContainerRef }) => {
 						}}
 						onViewportEnter={enterAllGamesSection}
 						onViewportLeave={leaveAllGamesSection}
-						ref={allGamesContRef}
 					/>
 					<div className={cls.allGamesCont}>{content.current}</div>
 					{isFetching && (
@@ -233,7 +235,7 @@ const AllGames = ({ inBottomSheet, scrollContainerRef }) => {
 							position: 'absolute',
 							bottom: '-100px',
 							width: '100%',
-							height: '100px',
+							height: '100vh',
 							background: 'transparent',
 						}}
 						onViewportEnter={changePage}
@@ -258,44 +260,48 @@ const AllGames = ({ inBottomSheet, scrollContainerRef }) => {
 								handleFilterGames({
 									type: '',
 									text: 'Все игры',
-									icon: FilterIcon,
+									icon: TwoArrowsIcon,
 								})
 							}
 							text={'Все игры'}
 							isChecked={filterType.type === ''}
+							Icon={TwoArrowsIcon}
 						/>
 						<FilterButton
 							onClick={() =>
 								handleFilterGames({
 									type: 'voice_acting=russian',
-									text: 'Полностью русские',
-									icon: FilterIcon,
+									text: 'Полностью Русские',
+									icon: RussianFlagIcon,
 								})
 							}
-							text={'Полностью русские'}
+							text={'Полностью Русские'}
 							isChecked={filterType.type === 'voice_acting=russian'}
+							Icon={RussianFlagIcon}
 						/>
 						<FilterButton
 							onClick={() =>
 								handleFilterGames({
 									type: 'compatibility=xbox_series_x_s',
 									text: 'Версия для Series X/S',
-									icon: FilterIcon,
+									icon: XSIcon,
 								})
 							}
 							text={'Версия для Series X/S'}
 							isChecked={filterType.type === 'compatibility=xbox_series_x_s'}
+							Icon={XSIcon}
 						/>
 						<FilterButton
 							onClick={() =>
 								handleFilterGames({
 									type: 'compatibility=xbox_one',
 									text: 'Версия для Xbox One',
-									icon: FilterIcon,
+									icon: XboxIcon,
 								})
 							}
 							text={'Версия для Xbox One'}
 							isChecked={filterType.type === 'compatibility=xbox_one'}
+							Icon={XboxIcon}
 						/>
 					</div>
 				</div>

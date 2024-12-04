@@ -2,6 +2,7 @@
 	padding: 1rem;
 	background-color: rgb(35 34 34);
 	border-radius: 0.75rem;
+	min-height: 352px;
 }
 
 .priceCont {
@@ -10,6 +11,7 @@
 	align-items: center;
 	justify-content: end;
 	margin-bottom: 0.75rem;
+	align-self: end;
 }
 
 .priceCont p {

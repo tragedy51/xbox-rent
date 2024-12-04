@@ -241,6 +241,7 @@ export const Account = () => {
 						{settings1.map((s, i) => (
 							<AccountButton
 								key={i}
+								isLast={i === settings1.length - 1}
 								fullIcon={s.fullIcon}
 								onClick={s.onClick}
 								className={cls.accountBtn}
@@ -261,6 +262,7 @@ export const Account = () => {
 						{settings2.map((s, i) => (
 							<AccountButton
 								key={i}
+								isLast={i === settings2.length - 1}
 								className={cls.accountBtn}
 								onClick={s.onClick}
 								Icon={s.Icon}

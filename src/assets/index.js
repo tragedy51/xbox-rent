@@ -34,8 +34,10 @@ import SettingsIcon from './icons/settings-icon.svg?react';
 import MenuIcon from './icons/menu-icon.svg?react';
 import WatchIcon from './icons/watch-icon.svg?react';
 import IphoneSettingsIcon from './icons/iphone-settings-icon.svg?react';
+import GamePassIcon from './icons/gamepass-icon.svg?react';
 
 export {
+	GamePassIcon,
 	IphoneSettingsIcon,
 	WatchIcon,
 	MenuIcon,

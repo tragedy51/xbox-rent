@@ -6,13 +6,19 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { addGameToBasket } from '../../../../layout/footer/api/addGameToBasket';
 import { removeGameFromBasket } from '../../../../layout/footer/api/removeGameFromBasket';
 import { removeSubFromBasket } from '../../../../layout/footer/api/removeSubFromBasket';
+import { Icon } from '@iconify/react/dist/iconify.js';
 
 const gameType = {
 	rent: 'Аренда',
 	sub: 'Подписки',
 };
 
-export const BasketGameCard = ({ game, className, recommendation }) => {
+export const BasketGameCard = ({
+	game,
+	className,
+	recommendation,
+	inBasket,
+}) => {
 	const queryClient = useQueryClient();
 	const { basketGamesCount, setBasketBottomSheet, basketId } = useStore(
 		(state) => state
@@ -63,12 +69,18 @@ export const BasketGameCard = ({ game, className, recommendation }) => {
 		});
 	}
 
+	console.log(inBasket);
+
 	return (
 		<div className={`${cls.BasketGameCard} ${className}`}>
 			<img className={cls.gameImg} src={game.image} alt='' />
 			<div className={cls.gameInfo}>
 				<div className={cls.gameText}>
-					<h3 className={cls.gameTitle}>{game.title}</h3>
+					<h3 className={cls.gameTitle}>
+						{game.title}{' '}
+						<span className={cls.label}>{gameType[game.type]}</span>
+					</h3>
+
 					<div className={cls.gamePriceCont}>
 						{game.subprice && game.subprice !== '0.00' ? (
 							<>
@@ -79,13 +91,16 @@ export const BasketGameCard = ({ game, className, recommendation }) => {
 							<p className={cls.price}>{game.price} ₽</p>
 						)}
 					</div>
-					<div className={cls.label}>{gameType[game.type]}</div>
 				</div>
 				{!recommendation ? (
 					<button
 						className={cls.deleteBtn}
 						onClick={() => handleDeleteGameFromBasket(game)}>
 						<DeleteIcon width={16} height={16} />
+					</button>
+				) : inBasket ? (
+					<button className={cls.deleteBtn}>
+						<Icon icon='mdi:success-bold' width='24' height='24' />
 					</button>
 				) : (
 					<button

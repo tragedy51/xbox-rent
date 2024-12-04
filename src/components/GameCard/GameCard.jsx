@@ -2,7 +2,7 @@
 import { forwardRef, memo } from 'react';
 
 import cls from './GameCard.module.css';
-import { XSIcon } from '../../assets';
+import { GamePassIcon, XSIcon } from '../../assets';
 import russianFlagImg from '../../assets/icons/russian-flag-icon.svg';
 import { useStore } from '../../store';
 
@@ -15,9 +15,10 @@ const GameCard = (
 		subprice,
 		preOrder = false,
 		xs = false,
-		rus = false,
+		lang,
 		seriesCard,
 		size = 'md',
+		in_game_pass,
 		...props
 	},
 	ref
@@ -50,13 +51,14 @@ const GameCard = (
 
 	return (
 		<>
-			<div className={`${cls.gameCard} ${cls[size]} ${seriesCard ? cls.seriesCard : ''}`} ref={ref} {...props}>
+			<div
+				className={`${cls.gameCard} ${cls[size]} ${
+					seriesCard ? cls.seriesCard : ''
+				}`}
+				ref={ref}
+				{...props}>
 				<div className={cls.imgWrapper}>
-					<img
-						src={imgSrc}
-						alt=''
-						loading='lazy'
-					/>
+					<img src={imgSrc} alt='' loading='lazy' />
 					{preOrder && (
 						<p
 							onClick={(e) => handleOpenPreOrder(e, gameTitle)}
@@ -66,6 +68,12 @@ const GameCard = (
 					)}
 
 					<div className={cls.XSCont}>
+						{in_game_pass && (
+							<button className={cls.rusBtn}>
+								{/* <img src={russianFlagImg} alt='' /> */}
+								<GamePassIcon width={35} height={25} />
+							</button>
+						)}
 						{xs && (
 							<button
 								className={cls.xsBtn}
@@ -73,7 +81,9 @@ const GameCard = (
 								<XSIcon width={45} height={35} />
 							</button>
 						)}
-						{rus && (
+					</div>
+					<div className={cls.flagCont}>
+						{lang === 'russian' && (
 							<button className={cls.rusBtn}>
 								<img src={russianFlagImg} alt='' />
 							</button>

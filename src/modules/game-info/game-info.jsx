@@ -8,7 +8,7 @@ import GameAbout from './pages/game-about/game-about';
 import GameScreens from './pages/game-screens/game-screens';
 import GameDlc from './pages/game-dlc/game-dlc';
 import GameVideos from './pages/game-videos/game-videos';
-import { RussianFlagIcon, XSIcon } from '../../assets';
+import { GamePassIcon, RussianFlagIcon, XSIcon } from '../../assets';
 import Loading from '../../UI/Loading/Loading';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Icon } from '@iconify/react/dist/iconify.js';
@@ -125,6 +125,18 @@ export const GameInfo = ({ adjustPosition }) => {
 								className={cls.banner}>
 								Предзаказ
 							</p>
+						)}
+						{data.in_game_pass && (
+							<GamePassIcon
+								style={{
+									position: 'absolute',
+									bottom: '80px',
+									left: '18px',
+									borderRadius: '3px',
+								}}
+								width={45}
+								height={45}
+							/>
 						)}
 					</div>
 					<div style={{ background: '#232222' }}>

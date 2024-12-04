@@ -10,6 +10,7 @@ export const AccountButton = ({
 	subText,
 	fullIcon,
 	onClick = () => {},
+	isLast,
 }) => {
 	if (component === 'button') {
 		return (
@@ -21,7 +22,9 @@ export const AccountButton = ({
 				) : (
 					<Icon width={36} height={36} />
 				)}
-				<div className={cls.buttonContent}>
+				<div
+					style={{ borderBottomWidth: isLast ? '0px' : '1px' }}
+					className={cls.buttonContent}>
 					<p className={cls.btnText}>{text}</p>
 					<div className={cls.buttonSubTextCont}>
 						{(subText || subText === 0) && <p>{subText}</p>}

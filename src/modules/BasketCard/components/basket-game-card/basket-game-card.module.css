@@ -60,11 +60,12 @@
 
 .label {
 	flex-shrink: 0;
-	background-color: rgb(229 231 235);
-	padding: 0.2rem 0.7rem;
-	border-radius: 999px;
+	background-color: #efd700;
+	padding: 0.1rem 0.5rem;
+	border-radius: 5px;
 	color: rgb(55 65 81);
 	font-size: 0.6rem;
 	font-weight: 600;
-	width: max-content;
+	position: relative;
+	bottom: 3px;
 }

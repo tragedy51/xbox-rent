@@ -99,7 +99,8 @@ const GamesCont = ({ inBottomSheet, scrollContainerRef, games }) => {
 										gamePrice={game.price}
 										subprice={game.subprice}
 										imgSrc={game.image}
-										rus={game.voice_acting === 'russian'}
+										lang={game.voice_acting}
+										in_game_pass={game.in_game_pass}
 									/>
 									<motion.div
 										onViewportEnter={handleCardEnterViewport}

@@ -7,6 +7,7 @@ import SeriesGames from '../../modules/series-games/series-games';
 import { CategoryBottomSheet } from '../../modules/CategoryBottomSheet/CategoryBottomSheet';
 import { GameInfo } from '../../modules/game-info/game-info';
 import { useStore } from '../../store';
+import GameOfDay from './sections/GameOfDay/GameOfDay';
 
 export const RentGames = () => {
 	const { gameInfoBottomSheetIsOpen, basketBottomSheet } = useStore(
@@ -21,6 +22,7 @@ export const RentGames = () => {
 				<NewPredictionGames />
 				<SeriesGames />
 				<RussianLangGames />
+				<GameOfDay />
 				<AllGames />
 			</main>
 			<CategoryBottomSheet
