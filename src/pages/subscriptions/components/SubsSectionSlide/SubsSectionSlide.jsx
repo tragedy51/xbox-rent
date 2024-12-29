@@ -15,7 +15,9 @@ const SubsSectionSlide = ({
 	additionalInfo,
 	sectionIcon,
 }) => {
-	const { basketId, changeXsIsOpen, setXsText } = useStore((state) => state);
+	const { basketId, changeXsIsOpen, setXsText, setXsTitle } = useStore(
+		(state) => state
+	);
 
 	const { mutate } = useMutation({
 		mutationFn: addSubToBasket,
@@ -27,6 +29,7 @@ const SubsSectionSlide = ({
 
 	function handleOpenInfo() {
 		changeXsIsOpen(true);
+		setXsTitle('Подсказка');
 		setXsText(additionalInfo);
 	}
 

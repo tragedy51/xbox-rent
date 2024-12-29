@@ -33,9 +33,25 @@ export const FooterBtns = () => {
 		},
 	});
 
-	const { mutate: addGameToBasketMutate, isPending } = useMutation({
+	const { mutate: addGameToBasketMutate } = useMutation({
 		mutationFn: addGameToBasket,
-		onSuccess: () => {
+		onMutate: async ({ product_id, game }) => {
+			await queryClient.cancelQueries({ queryKey: ['create-basket'] });
+
+			const previousBasket = queryClient.getQueryData(['create-basket']);
+
+			queryClient.setQueryData(['create-basket'], (old) => ({
+				...old,
+				items: [...old.items, game],
+				current_item_ids: [...old.current_item_ids, product_id],
+			}));
+
+			return { previousBasket };
+		},
+		onError: (_, __, context) => {
+			queryClient.setQueryData(['create-basket'], context.previousBasket);
+		},
+		onSettled: () => {
 			queryClient.invalidateQueries('create-basket');
 		},
 	});
@@ -48,6 +64,7 @@ export const FooterBtns = () => {
 			addGameToBasketMutate({
 				product_id: activeGame.id,
 				basket_id: basketId,
+				game: activeGame,
 			});
 		}
 	}
@@ -73,11 +90,7 @@ export const FooterBtns = () => {
 				variants={footerBtnsVariants}
 				className={cls.footerBtns}>
 				<button onClick={handleAddGameToBasket} className={cls.addToCart}>
-					{isPending
-						? 'Загрузка...'
-						: gameInBasket
-						? 'Добавлено'
-						: 'Добавить в корзину'}
+					{gameInBasket ? 'Добавлено' : 'Добавить в корзину'}
 				</button>
 				{/* <button className={cls.likeBtn}>
 					<HeartIcon width={20} height={20} />

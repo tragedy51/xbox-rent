@@ -1,7 +1,8 @@
-export async function getRussianGames() {
+export async function getButtonInfoById(id) {
 	const response = await fetch(
-		`${import.meta.env.VITE_API_URL}/catalog/?voice_acting=russian&limit=12`
+		`${import.meta.env.VITE_API_URL}/template_page/${id}/`
 	);
+
 	const result = await response.json();
 
 	if (!response.ok) {

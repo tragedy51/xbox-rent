@@ -1,5 +1,6 @@
 .gameCard {
 	border-radius: 0.5rem;
+	-webkit-backdrop-filter: blur(4px);
 	backdrop-filter: blur(4px);
 	background-color: rgb(55 65 81 / 0.4);
 	transition: 0.3s;
@@ -24,6 +25,14 @@
 	grid-template-rows: minmax(0, 195px) auto auto;
 }
 
+.gameCard.dayGame {
+	position: relative;
+	max-height: none;
+	grid-template-rows: auto;
+	border-radius: 0.5rem;
+	overflow: hidden;
+}
+
 .gameCard:active {
 	transform: scale(0.9);
 }
@@ -42,6 +51,10 @@
 
 .imgWrapper {
 	position: relative;
+}
+
+.gameCard.dayGame .imgWrapper {
+	max-height: 350px;
 }
 
 .imgWrapper img {
@@ -68,6 +81,10 @@
 	align-items: center;
 }
 
+.gameCard.dayGame .imgWrapper .XSCont {
+	bottom: 95px;
+}
+
 .imgWrapper .flagCont {
 	position: absolute;
 	left: 3px;
@@ -78,6 +95,10 @@
 
 .XSCont .rusBtn {
 	padding-left: 8px;
+}
+
+.XSCont .xsBtn {
+	margin-left: 5px;
 }
 
 .XSCont:not(:has(.xsBtn)) .rusBtn img {
@@ -98,6 +119,7 @@
 .imgWrapper .XSInfo {
 	position: absolute;
 	left: 0;
+	-webkit-backdrop-filter: blur(4px);
 	backdrop-filter: blur(4px);
 	background-color: rgb(55 65 81 / 0.4);
 }
@@ -106,6 +128,15 @@
 	padding: 12px;
 	display: grid;
 	gap: 8px;
+}
+
+.gameCard.dayGame .gameInfo {
+	position: absolute;
+	width: 100%;
+	-webkit-backdrop-filter: blur(4px);
+	backdrop-filter: blur(4px);
+	background-color: rgb(55 65 81 / 0.4);
+	bottom: 0;
 }
 
 .gameInfo:has(.seriesCardTitle) {
@@ -123,6 +154,10 @@
 	word-break: break-all;
 }
 
+.gameCard.dayGame .gameTitle {
+	font-size: 1.25rem;
+}
+
 .gameTitle.seriesCardTitle {
 	height: auto;
 }
@@ -132,6 +167,11 @@
 	align-items: center;
 	justify-content: space-between;
 	gap: 4px;
+}
+
+.gameCard.dayGame .gamePriceCont {
+	justify-content: flex-start;
+	gap: 14px;
 }
 
 .gamePriceCont:has(.discount) .price {

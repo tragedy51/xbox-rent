@@ -8,11 +8,15 @@ import { useMemo, useRef } from 'react';
 import { Icon } from '@iconify/react/dist/iconify.js';
 import { getAndCreateBasket } from '../../layout/root/api/getAndCreateBasket';
 import WebApp from '@twa-dev/sdk';
+// import AllGames from '../AllGames/AllGames';
 
 export const BasketCard = ({ adjustPosition }) => {
-	const { basketBottomSheet, setBasketBottomSheet } = useStore(
-		(state) => state
-	);
+	const {
+		basketBottomSheet,
+		setBasketBottomSheet,
+		setActiveGame,
+		setGameInfoBottomSheetIsOpen,
+	} = useStore((state) => state);
 
 	const content = useRef(null);
 	const basketGamesContent = useRef(null);
@@ -34,6 +38,11 @@ export const BasketCard = ({ adjustPosition }) => {
 				id: WebApp?.initDataUnsafe?.user?.id || 1147564292,
 			}),
 	});
+
+	function handleOpenGameInfoBottomSheet(game) {
+		setActiveGame(game);
+		setGameInfoBottomSheetIsOpen(true);
+	}
 
 	const recomendedInBasket = useMemo(() => {
 		return basketGames?.current_item_ids?.includes(data.id);
@@ -61,13 +70,15 @@ export const BasketCard = ({ adjustPosition }) => {
 	if (isSuccess) {
 		content.current = (
 			<BasketGameCard
+				onClick={() => handleOpenGameInfoBottomSheet(data)}
 				recommendation={true}
 				key={data.id}
-				game={{ ...data, image: 'http://api.xbox-rent.ru' + data.image }}
+				game={data}
 				inBasket={recomendedInBasket}
 			/>
 		);
 	}
+	
 	if (basketGamesIsSuccess) {
 		basketGamesContent.current =
 			basketGames.items.length === 0 && basketGames.subs.length === 0 ? (
@@ -112,11 +123,17 @@ export const BasketCard = ({ adjustPosition }) => {
 					{basketGamesContent.current}
 					<div className={cls.recommendedGame}>
 						<h2 style={{ marginBottom: '20px' }} className='section-title'>
-							Мы рекомендуем поиграть
+							Игра дня в пол цены
 						</h2>
 						{content.current}
 					</div>
 				</section>
+				{/* <div className='wrapper'>
+					<h2 style={{ marginBottom: '20px' }} className='section-title'>
+						Мы рекомендуем поиграть
+					</h2>
+				</div>
+				<AllGames withFilters={false} /> */}
 			</CustomBottomSheet>
 		</>
 	);

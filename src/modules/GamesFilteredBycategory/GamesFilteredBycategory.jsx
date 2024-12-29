@@ -65,7 +65,7 @@ const GamesFilteredBycategory = ({ inBottomSheet, scrollContainerRef }) => {
 
 	function changePage() {
 		if (!isFetching) {
-			const maxPageCount = Math.ceil(totalGames / 10);
+			const maxPageCount = Math.ceil(totalGames / 20);
 
 			if (page < maxPageCount) {
 				isFirstLoading.current = false;
@@ -166,6 +166,7 @@ const GamesFilteredBycategory = ({ inBottomSheet, scrollContainerRef }) => {
 							width: '100%',
 							height: '100vh',
 							background: 'transparent',
+							pointerEvents: 'none'
 						}}
 						onViewportEnter={changePage}
 					/>

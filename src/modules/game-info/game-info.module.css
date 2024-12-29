@@ -17,6 +17,7 @@
 	position: fixed;
 	inset: 0;
 	background: #00000081;
+	-webkit-backdrop-filter: blur(3px);
 	backdrop-filter: blur(3px);
 	z-index: 2;
 }
@@ -91,7 +92,7 @@
 
 .XSBtn {
 	position: absolute;
-	left: 15px;
+	left: 66px;
 	bottom: 5rem;
 }
 

@@ -60,11 +60,17 @@ const RussianLangGames = () => {
 	return (
 		<section
 			style={{
-				backgroundImage: `url(${copyOfGames.current[0]?.image})`,
+				// backgroundImage: `url(${copyOfGames.current[0]?.image})`,
 				position: 'relative',
 				zIndex: 2,
 			}}
 			className={cls.NewPredictionGames}>
+			<img
+				className={cls.backGroundImage}
+				src={copyOfGames.current[0]?.image}
+				alt=''
+			/>
+			<div className={cls.blurBgAbsolute} />
 			<div className={cls.blurBg}>{content.current}</div>
 		</section>
 	);

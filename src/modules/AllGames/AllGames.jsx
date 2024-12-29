@@ -26,7 +26,11 @@ import { Icon } from '@iconify/react/dist/iconify.js';
 
 const MotionGameCard = motion(GameCard);
 
-const AllGames = ({ inBottomSheet, scrollContainerRef }) => {
+const AllGames = ({
+	inBottomSheet,
+	scrollContainerRef,
+	withFilters = true,
+}) => {
 	const [filtersIsOpen, setFiltersIsOpen] = useState(false);
 	const [sortIsOpen, setSortIsOpen] = useState(false);
 	const [page, setPage] = useState(1);
@@ -196,20 +200,22 @@ const AllGames = ({ inBottomSheet, scrollContainerRef }) => {
 							</h2>
 						</div>
 					)} */}
-					<div className={cls.filterButtons}>
-						<Button
-							onClick={() => setSortIsOpen(true)}
-							Icon={sortType.icon}
-							iconSize={16}>
-							{sortType.text}
-						</Button>
-						<Button
-							onClick={() => setFiltersIsOpen(true)}
-							Icon={filterType.icon}
-							iconSize={16}>
-							{filterType.text}
-						</Button>
-					</div>
+					{withFilters && (
+						<div className={cls.filterButtons}>
+							<Button
+								onClick={() => setSortIsOpen(true)}
+								Icon={sortType.icon}
+								iconSize={16}>
+								{sortType.text}
+							</Button>
+							<Button
+								onClick={() => setFiltersIsOpen(true)}
+								Icon={filterType.icon}
+								iconSize={16}>
+								{filterType.text}
+							</Button>
+						</div>
+					)}
 					<motion.div
 						ref={allGamesContRef}
 						style={{
@@ -237,6 +243,7 @@ const AllGames = ({ inBottomSheet, scrollContainerRef }) => {
 							width: '100%',
 							height: '100vh',
 							background: 'transparent',
+							pointerEvents: 'none',
 						}}
 						onViewportEnter={changePage}
 					/>

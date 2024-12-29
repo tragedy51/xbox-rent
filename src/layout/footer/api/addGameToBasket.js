@@ -1,4 +1,4 @@
-export async function addGameToBasket({ product_id, basket_id }) {
+export async function addGameToBasket({ product_id, basket_id, game }) {
 	const response = await fetch(
 		`${import.meta.env.VITE_API_URL}/basket/add_product/`,
 		{

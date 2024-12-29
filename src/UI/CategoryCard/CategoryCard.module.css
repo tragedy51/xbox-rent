@@ -47,6 +47,7 @@
 
 .count {
 	background: #00000066;
+	-webkit-backdrop-filter: blur(4px);
 	backdrop-filter: blur(4px);
 	transform: skew(0) translateX(-50%) translateY(-100%);
 	position: absolute;

@@ -10,8 +10,8 @@ export async function getFilteredGames(categoryId, serieId, voiceActing, page) {
 	const response = await fetch(
 		`${
 			import.meta.env.VITE_API_URL
-		}/catalog/?${queries}&voice_acting=${voiceActing}&limit=10&offset=${
-			(page - 1) * 10
+		}/catalog/?${queries}&voice_acting=${voiceActing}&limit=20&offset=${
+			(page - 1) * 20
 		}`
 	);
 	const result = await response.json();

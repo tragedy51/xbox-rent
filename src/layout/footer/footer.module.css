@@ -1,5 +1,6 @@
 .footer {
 	background: rgb(35 34 34 / 96%);
+	-webkit-backdrop-filter: blur(8px);
 	backdrop-filter: blur(8px);
 	padding: 8px 0 24px;
 	position: fixed;

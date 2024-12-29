@@ -9,6 +9,7 @@ import { useEffect } from 'react';
 import WebApp from '@twa-dev/sdk';
 import BuyGames from './pages/buy-games/BuyGames';
 import NotFound from './pages/404/404';
+import WorkInProgress from './pages/work-in-progress/WorkInProgress';
 // import Subscriptions from './pages/subscriptions/Subscriptions';
 
 const router = createHashRouter([
@@ -25,7 +26,7 @@ const router = createHashRouter([
 			{ path: '/:anything', element: <NotFound /> },
 			{
 				path: '/buy-games',
-				element: <BuyGames title='Покупки' />,
+				element: <WorkInProgress title='Покупки' />,
 			},
 			// {
 			// 	path: '/subscriptions',
@@ -37,7 +38,7 @@ const router = createHashRouter([
 			},
 			{
 				path: '/currency',
-				element: <BuyGames title='Валюта' />,
+				element: <WorkInProgress title='Валюта' />,
 			},
 		],
 	},

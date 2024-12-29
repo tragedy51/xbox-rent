@@ -18,6 +18,7 @@ export const BasketGameCard = ({
 	className,
 	recommendation,
 	inBasket,
+	onClick,
 }) => {
 	const queryClient = useQueryClient();
 	const { basketGamesCount, setBasketBottomSheet, basketId } = useStore(
@@ -25,13 +26,49 @@ export const BasketGameCard = ({
 	);
 	const { mutate: addGameToBasketMutate } = useMutation({
 		mutationFn: addGameToBasket,
-		onSuccess: () => {
+		onMutate: async ({ product_id, game }) => {
+			await queryClient.cancelQueries({ queryKey: ['create-basket'] });
+
+			const previousBasket = queryClient.getQueryData(['create-basket']);
+
+			queryClient.setQueryData(['create-basket'], (old) => ({
+				...old,
+				amount: old.amount + +game.price,
+				items: [...old.items, { ...game, subprice: undefined }],
+				current_item_ids: [...old.current_item_ids, product_id],
+			}));
+
+			return { previousBasket };
+		},
+		onError: (_, __, context) => {
+			queryClient.setQueryData(['create-basket'], context.previousBasket);
+		},
+		onSettled: () => {
 			queryClient.invalidateQueries('create-basket');
 		},
 	});
 	const { mutate: removeGameFromBasketMutate } = useMutation({
 		mutationFn: removeGameFromBasket,
-		onSuccess: () => {
+		onMutate: async ({ product_id, game }) => {
+			await queryClient.cancelQueries({ queryKey: ['create-basket'] });
+
+			const previousBasket = queryClient.getQueryData(['create-basket']);
+
+			queryClient.setQueryData(['create-basket'], (old) => ({
+				...old,
+				amount: old.amount - +game.price,
+				items: [...old.items].filter((oldGame) => oldGame.id !== product_id),
+				current_item_ids: old.current_item_ids.filter(
+					(itemId) => itemId !== product_id
+				),
+			}));
+
+			return { previousBasket };
+		},
+		onError: (_, __, context) => {
+			queryClient.setQueryData(['create-basket'], context.previousBasket);
+		},
+		onSettled: () => {
 			queryClient.invalidateQueries('create-basket');
 		},
 	});
@@ -53,6 +90,7 @@ export const BasketGameCard = ({
 			removeGameFromBasketMutate({
 				product_id: game.id,
 				basket_id: basketId,
+				game,
 			});
 		}
 
@@ -66,13 +104,12 @@ export const BasketGameCard = ({
 		addGameToBasketMutate({
 			product_id: game.id,
 			basket_id: basketId,
+			game,
 		});
 	}
 
-	console.log(inBasket);
-
 	return (
-		<div className={`${cls.BasketGameCard} ${className}`}>
+		<div onClick={onClick} className={`${cls.BasketGameCard} ${className}`}>
 			<img className={cls.gameImg} src={game.image} alt='' />
 			<div className={cls.gameInfo}>
 				<div className={cls.gameText}>

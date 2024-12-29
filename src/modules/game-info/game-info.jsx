@@ -22,6 +22,7 @@ export const GameInfo = ({ adjustPosition }) => {
 		setXsText,
 		changeXsIsOpen,
 		isAdmin,
+		setXsTitle,
 	} = useStore((state) => state);
 	const [page, setPage] = useState('detail');
 	const [bigImage, setBigImage] = useState('');
@@ -36,6 +37,7 @@ export const GameInfo = ({ adjustPosition }) => {
 
 	function handleOpenXsInfo(e, name) {
 		e.stopPropagation();
+		setXsTitle('Подсказка')
 		setXsText(
 			`Значок X|S обозначает что игра ${name} работает только на
 						приставке Xbox Series S и Xbox Series X и не работает на приставке
@@ -46,6 +48,7 @@ export const GameInfo = ({ adjustPosition }) => {
 
 	function handleOpenPreOrder(e, name) {
 		e.stopPropagation();
+		setXsTitle('Подсказка')
 		setXsText(
 			`Игра ${name} еще не вышла, но вы уже можете ее приобрести! Дата релиза игры: ${new Date(
 				data.release_date

@@ -105,7 +105,9 @@ export const CustomBottomSheet = ({
 									)}
 									{!bottomSheetHeader && <div className={cls.line} />}
 									{shareIcon && (
-										<button onClick={() => handleTelegramShare(activeGame)} className={cls.shareBtn}>
+										<button
+											onClick={() => handleTelegramShare(activeGame)}
+											className={cls.shareBtn}>
 											<IphoneShareIcon width={25} height={25} />
 										</button>
 									)}
@@ -142,107 +144,3 @@ export const CustomBottomSheet = ({
 		</AnimatePresence>
 	);
 };
-
-// export const CustomBottomSheet = ({
-// 	sheetBgColor,
-// 	isOpen,
-// 	setIsopen,
-// 	children,
-// 	adjustPosition,
-// 	bottomSheetHeader,
-// }) => {
-// 	const modalRef = useRef(null);
-// 	const controls = useAnimation();
-// 	const mainRef = useRef(null);
-// 	const [isScrollable, setIsScrollable] = useState(false);
-// 	const { direction } = useStore((state) => state);
-
-// 	useScrollDirection(mainRef);
-
-// 	function handleDragEnd(_, info) {
-// 		const modalHeight = modalRef.current.offsetHeight - 30 - 48 - 72;
-
-// 		if (info.offset.y > modalHeight / 4) {
-// 			setIsopen(false);
-// 		} else {
-// 			controls.start({ y: 0 });
-// 		}
-
-// 		if (direction === 'down') setIsScrollable(true);
-// 	}
-
-// 	function handleChangeScrollable() {
-// 		if (direction === 'up') {
-// 			setIsScrollable(false);
-// 		}
-// 	}
-
-// 	useEffect(() => {
-// 		if (isOpen) {
-// 			controls.start({
-// 				y: adjustPosition ? -20 : 0,
-// 				width: adjustPosition ? '90%' : '100%',
-// 				marginInline: 'auto',
-// 			});
-// 		}
-// 	}, [controls, isOpen, adjustPosition]);
-
-// 	return (
-// 		<AnimatePresence>
-// 			{isOpen && (
-// 				<>
-// 					<motion.div
-// 						ref={modalRef}
-// 						drag={'y'}
-// 						onDragEnd={handleDragEnd}
-// 						dragConstraints={{ top: 0, bottom: isScrollable ? 0 : 'none' }}
-// 						dragElastic={0}
-// 						initial={{ y: '100%' }}
-// 						animate={controls}
-// 						exit={{ y: '100%' }}
-// 						transition={{
-// 							duration: 0.4,
-// 							ease: 'easeInOut',
-// 						}}
-// 						style={sheetBgColor && { background: sheetBgColor }}
-// 						className={cls.sheet}>
-// 						<div className={cls.sheetBody}>
-// 							<header className={cls.sheetHeader}>
-// 								<div className='wrapper'>
-// 									<button
-// 										className={cls.closeBtn}
-// 										onClick={() => setIsopen(false)}>
-// 										Закрыть
-// 									</button>
-// 									{bottomSheetHeader && (
-// 										<div className={cls.sheetHeaderContent}>
-// 											{bottomSheetHeader}
-// 										</div>
-// 									)}
-// 									{!bottomSheetHeader && <div className={cls.line} />}
-// 								</div>
-// 							</header>
-// 							<motion.main
-// 								style={{ overflowY: isScrollable ? 'auto' : 'clip' }}
-// 								ref={mainRef}
-// 								className={cls.sheetMain}>
-// 								<motion.div
-// 									whileInView={handleChangeScrollable}
-// 									style={{ height: 0 }}
-// 								/>
-// 								{children}
-// 							</motion.main>
-// 						</div>
-// 					</motion.div>
-// 					<motion.div
-// 						onClick={() => setIsopen(false)}
-// 						initial={{ opacity: 0 }}
-// 						animate={{ opacity: 1 }}
-// 						exit={{ opacity: 0 }}
-// 						className={cls.backdrop}
-// 					/>
-// 				</>
-// 			)}
-// 		</AnimatePresence>
-// 	);
-// };

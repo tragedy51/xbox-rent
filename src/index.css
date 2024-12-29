@@ -154,12 +154,17 @@ section .section-header {
 	background: #152727 !important;
 }
 
+.allContent {
+	will-change: opacity !important;
+}
+
 .loading {
 	position: absolute;
 	inset: 0;
 	z-index: 99999999999;
 	display: grid;
 	place-content: center;
+	background: url(/src/assets/main-bg.jpg) center/cover no-repeat;
 }
 
 .loading > p {

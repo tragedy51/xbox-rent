@@ -3,7 +3,11 @@ import Footer from '../footer/footer';
 import MainBg from '../../assets/main-bg.jpg';
 import { useStore } from '../../store';
 import { Modal } from '../../UI';
-import { useEffect, useState } from 'react';
+import {
+	useEffect,
+	// useRef,
+	useState,
+} from 'react';
 import ScrollToTop from '../../components/ScrollToTop';
 import Loading from '../../UI/Loading/Loading';
 import { BasketCard } from '../../modules';
@@ -13,9 +17,20 @@ import WebApp from '@twa-dev/sdk';
 import { checkUserConsole } from '../../pages/rent-games/api/checkConsole';
 import { useQuery } from '@tanstack/react-query';
 import { getAndCreateBasket } from './api/getAndCreateBasket';
+import parse from 'html-react-parser';
+
+// const allContentVariants = {
+// 	isHidden: {
+// 		opacity: 0,
+// 	},
+// 	isVisible: {
+// 		opacity: 1,
+// 	},
+// };
 
 const Root = () => {
 	const [openConsoleModal, setOpenConsoleModal] = useState(false);
+	// const container = useRef();
 
 	const [hash, setHash] = useState();
 	const {
@@ -28,6 +43,7 @@ const Root = () => {
 		setBasketId,
 		setBasketGamesCount,
 		setBasketGamesId,
+		XsTitle,
 	} = useStore((state) => state);
 
 	const location = useLocation();
@@ -102,19 +118,17 @@ const Root = () => {
 				openConsoleModal={openConsoleModal}
 				setOpenConsoleModal={setOpenConsoleModal}
 			/>
-			<div
-				className='allContent'
-				style={{ opacity: loading ? '0' : '1', transition: '.8s' }}>
+			<div style={{ opacity: 1 }} className='allContent'>
 				<Outlet />
 				<Footer />
+				<Modal isOpen={XsIsOpen} setIsopen={changeXsIsOpen}>
+					<div className='xs-info'>
+						<h3 className='xs-title section-title'>{XsTitle}</h3>
+						<p>{parse(XsText)}</p>
+					</div>
+				</Modal>
+				<BasketCard />
 			</div>
-			<Modal isOpen={XsIsOpen} setIsopen={changeXsIsOpen}>
-				<div className='xs-info'>
-					<h3 className='xs-title section-title'>Подсказка</h3>
-					<p>{XsText}</p>
-				</div>
-			</Modal>
-			<BasketCard />
 		</>
 	);
 };

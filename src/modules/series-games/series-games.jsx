@@ -7,6 +7,7 @@ import { getSeriesGames } from './api/getSeriesGames';
 import { useEffect, useRef } from 'react';
 import { useStore } from '../../store';
 import Button from '../../UI/Button/Button';
+import { getButtonInfoById } from '../../layout/root/api/getButtonInfoById';
 
 const SeriesGames = () => {
 	const content = useRef();
@@ -16,11 +17,22 @@ const SeriesGames = () => {
 		setCategoryBottomSheetIsOpen,
 		changeXsIsOpen,
 		setXsText,
+		setXsTitle,
 	} = useStore((state) => state);
 
 	const { data, isLoading, isError, isSuccess } = useQuery({
 		queryKey: ['get-series-games'],
 		queryFn: getSeriesGames,
+	});
+
+	const {
+		data: rentButtonInfo,
+		// isLoading: rentButtonInfoIsLoading,
+		// isError: rentButtonInfoIsError,
+		isSuccess: rentButtonInfoIsSuccess,
+	} = useQuery({
+		queryKey: ['rent-button-info'],
+		queryFn: () => getButtonInfoById(1),
 	});
 
 	if (isLoading) {
@@ -37,7 +49,10 @@ const SeriesGames = () => {
 	}
 
 	function handleOpenInfo() {
-		setXsText('Подсказка');
+		if (rentButtonInfoIsSuccess) {
+			setXsTitle(rentButtonInfo.description);
+			setXsText(rentButtonInfo.text);
+		}
 		changeXsIsOpen(true);
 	}
 
@@ -97,12 +112,12 @@ const SeriesGames = () => {
 				</div>
 				{content.current}
 				<div className='wrapper'>
-					<Button
-						style={{ width: '100%', justifyContent: 'center' }}
-						onClick={handleOpenInfo}
-						className={cls.aboutRentBtn}>
-						Информация о прокате игр!
-					</Button>
+					{rentButtonInfoIsSuccess && (
+						<Button onClick={handleOpenInfo} className={cls.aboutRentBtn}>
+							{/* Информация о прокате игр! */}
+							{rentButtonInfo.title}
+						</Button>
+					)}
 				</div>
 			</div>
 		</section>

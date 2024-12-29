@@ -19,14 +19,16 @@ const GameCard = (
 		seriesCard,
 		size = 'md',
 		in_game_pass,
+		isDayGame,
 		...props
 	},
 	ref
 ) => {
-	const { changeXsIsOpen, setXsText } = useStore((state) => state);
+	const { changeXsIsOpen, setXsText, setXsTitle } = useStore((state) => state);
 
 	function handleOpenXsInfo(e, name) {
 		e.stopPropagation();
+		setXsTitle('Подсказка')
 		setXsText(
 			`Значок X|S обозначает что игра ${name} работает только на
 						приставке Xbox Series S и Xbox Series X и не работает на приставке
@@ -37,6 +39,7 @@ const GameCard = (
 
 	function handleOpenPreOrder(e, name) {
 		e.stopPropagation();
+		setXsTitle('Подсказка')
 		setXsText(
 			`Игра ${name} еще не вышла, но вы уже можете ее приобрести! Дата релиза игры: ${new Date(
 				release_date
@@ -54,7 +57,7 @@ const GameCard = (
 			<div
 				className={`${cls.gameCard} ${cls[size]} ${
 					seriesCard ? cls.seriesCard : ''
-				}`}
+				} ${isDayGame ? cls.dayGame : ''}`}
 				ref={ref}
 				{...props}>
 				<div className={cls.imgWrapper}>

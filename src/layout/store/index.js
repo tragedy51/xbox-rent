@@ -10,9 +10,11 @@ export const layoutSlice = (set) => ({
 	productAddToCardIsVisiible: false,
 	countButtonUpIsShown: false,
 	XsText: '',
+	XsTitle: 'Подсказка',
 	setCategoriesHeight: (height) => set(() => ({ categoriesHeight: height })),
 	setLoading: (value) => set(() => ({ loading: value })),
 	setXsText: (text) => set(() => ({ XsText: text })),
+	setXsTitle: (title) => set(() => ({ XsTitle: title })),
 	changeXsIsOpen: (bool) => set(() => ({ XsIsOpen: bool })),
 	closeXsIsOpen: () => set(() => ({ XsIsOpen: false })),
 	setCategoryBottomSheetIsOpen: (bool) =>
