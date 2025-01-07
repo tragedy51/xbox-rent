@@ -80,12 +80,13 @@ const GamesFilteredBycategory = ({ inBottomSheet, scrollContainerRef }) => {
 		if (data) {
 			allGames.current = [...allGames.current, ...data.results];
 		}
-
-		return () => {
-			// allGames.current = [];
-			// isFirstLoading.current = true;
-		};
 	}, [data]);
+
+	useEffect(() => {
+		return () => {
+			allGames.current = [];
+		};
+	}, []);
 
 	useEffect(() => {
 		if (isSuccess) {
@@ -166,7 +167,7 @@ const GamesFilteredBycategory = ({ inBottomSheet, scrollContainerRef }) => {
 							width: '100%',
 							height: '100vh',
 							background: 'transparent',
-							pointerEvents: 'none'
+							pointerEvents: 'none',
 						}}
 						onViewportEnter={changePage}
 					/>

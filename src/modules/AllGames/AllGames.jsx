@@ -104,7 +104,7 @@ const AllGames = ({
 
 	useEffect(() => {
 		document.getElementById('root').addEventListener('scroll', handleScroll);
-
+		
 		// Убираем слушатель события при размонтировании компонента
 		return () => {
 			document
@@ -123,6 +123,10 @@ const AllGames = ({
 
 	useEffect(() => {
 		allGames.current = [];
+
+		return () => {
+			allGames.current = [];
+		};
 	}, [sortType, filterType]);
 
 	useEffect(() => {

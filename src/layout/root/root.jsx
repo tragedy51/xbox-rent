@@ -1,6 +1,7 @@
 import { Outlet, useLocation } from 'react-router-dom';
 import Footer from '../footer/footer';
-import MainBg from '../../assets/main-bg.jpg';
+// import MainBg from '../../assets/main-bg.jpg';
+import MainBg from '../../assets/main-bg.webp';
 import { useStore } from '../../store';
 import { Modal } from '../../UI';
 import {
@@ -120,7 +121,6 @@ const Root = () => {
 			/>
 			<div style={{ opacity: 1 }} className='allContent'>
 				<Outlet />
-				<Footer />
 				<Modal isOpen={XsIsOpen} setIsopen={changeXsIsOpen}>
 					<div className='xs-info'>
 						<h3 className='xs-title section-title'>{XsTitle}</h3>
@@ -129,6 +129,7 @@ const Root = () => {
 				</Modal>
 				<BasketCard />
 			</div>
+			<Footer />
 		</>
 	);
 };

@@ -68,17 +68,18 @@ export const BasketCard = ({ adjustPosition }) => {
 	}
 
 	if (isSuccess) {
-		content.current = (
-			<BasketGameCard
-				onClick={() => handleOpenGameInfoBottomSheet(data)}
-				recommendation={true}
-				key={data.id}
-				game={data}
-				inBasket={recomendedInBasket}
-			/>
-		);
+		if (data)
+			content.current = (
+				<BasketGameCard
+					onClick={() => handleOpenGameInfoBottomSheet(data)}
+					recommendation={true}
+					key={data.id}
+					game={data}
+					inBasket={recomendedInBasket}
+				/>
+			);
 	}
-	
+
 	if (basketGamesIsSuccess) {
 		basketGamesContent.current =
 			basketGames.items.length === 0 && basketGames.subs.length === 0 ? (

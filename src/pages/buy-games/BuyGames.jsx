@@ -14,6 +14,7 @@ const BuyGames = ({ title }) => {
 		data: buttonInfo,
 		isSuccess: buttonInfoIsSuccess,
 		isLoading,
+		isError
 	} = useQuery({
 		queryKey: ['subs-info-button'],
 		queryFn: () => getButtonInfoById(3),
@@ -58,6 +59,7 @@ const BuyGames = ({ title }) => {
 							<Button className={cls.tgButton}>{buttonInfo.title}</Button>
 						</a>
 					)}
+					{isError && <p>Произошла ошибка при загрузке кнопки</p>}
 				</div>
 			)}
 		</section>

@@ -28,7 +28,7 @@ const SeriesGames = () => {
 	const {
 		data: rentButtonInfo,
 		// isLoading: rentButtonInfoIsLoading,
-		// isError: rentButtonInfoIsError,
+		isError: rentButtonInfoIsError,
 		isSuccess: rentButtonInfoIsSuccess,
 	} = useQuery({
 		queryKey: ['rent-button-info'],
@@ -118,6 +118,7 @@ const SeriesGames = () => {
 							{rentButtonInfo.title}
 						</Button>
 					)}
+					{rentButtonInfoIsError && <p>Произошла ошибка</p>}
 				</div>
 			</div>
 		</section>

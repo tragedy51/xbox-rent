@@ -11,14 +11,15 @@ export const CategoryBottomSheet = ({ adjustPosition }) => {
 		activeCategory,
 		setActiveCategory,
 		setActiveSeries,
-		setVoiceActing
+		setVoiceActing,
+		activeSeries,
 	} = useStore((state) => state);
 
 	function handleCloseCategoryBottomSheet(isOpen) {
 		setCategoryBottomSheetIsOpen(isOpen);
 		setActiveCategory(null);
 		setActiveSeries(null);
-		setVoiceActing('')
+		setVoiceActing('');
 	}
 
 	return (
@@ -29,7 +30,7 @@ export const CategoryBottomSheet = ({ adjustPosition }) => {
 			bottomSheetHeader={
 				<div style={{ marginTop: 0 }} className={cls.sectionHeader}>
 					<h2 style={{ fontWeight: 500 }} className='section-title'>
-						{activeCategory.name}
+						{activeCategory.name} {activeSeries.name}
 					</h2>
 				</div>
 			}>

@@ -106,6 +106,7 @@ export const GameInfo = ({ adjustPosition }) => {
 						</div>
 						{data.compatibility === 'xbox_series_x_s' && (
 							<button
+								style={!data.in_game_pass ? {left: '20px'} : {}}
 								className={cls.XSBtn}
 								onClick={(e) => handleOpenXsInfo(e, data.title)}>
 								<XSIcon width={45} height={35} />

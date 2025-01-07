@@ -23,8 +23,6 @@ const SubsInfo = ({ adjustPosition }) => {
 		queryFn: () => {},
 		enabled: activeGame?.id !== undefined,
 	});
-    
-    
 
 	return (
 		<CustomBottomSheet

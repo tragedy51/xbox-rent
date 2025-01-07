@@ -48,7 +48,11 @@ const HotNewGames = () => {
 		queryFn: () => getPopularGames(dateFilter.filter),
 	});
 
-	const { data: allGames, isSuccess: allGamesIsSuccess } = useQuery({
+	const {
+		data: allGames,
+		isSuccess: allGamesIsSuccess,
+		isError: allGamesIsError,
+	} = useQuery({
 		queryKey: ['all-games-for-count'],
 		queryFn: getAllGames,
 	});
@@ -158,6 +162,10 @@ const HotNewGames = () => {
 				))}
 			</Swiper>
 		);
+	}
+
+	if (allGamesIsError) {
+		return <p>Произошла ошибка</p>;
 	}
 
 	return (

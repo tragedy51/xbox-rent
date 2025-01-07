@@ -23,7 +23,7 @@ const GameOfDay = () => {
 		queryFn: getRecommendedGame,
 	});
 
-	const { data: buttonInfo, isSuccess: buttonInfoIsSuccess } = useQuery({
+	const { data: buttonInfo, isSuccess: buttonInfoIsSuccess, isError: buttonInfoIsError } = useQuery({
 		queryKey: ['game-of-day-button'],
 		queryFn: () => getButtonInfoById(2),
 	});
@@ -51,6 +51,10 @@ const GameOfDay = () => {
 		);
 	}
 
+	if(isError) {
+		return <p>При загрузке произошла ошибка</p>
+	}
+
 	return (
 		<section className='wrapper'>
 			<div className={cls.blurBg}>
@@ -64,6 +68,7 @@ const GameOfDay = () => {
 							{buttonInfo.title}
 						</Button>
 					)}
+					{buttonInfoIsError && <p>Произошла ошибка при загрузке кнопки</p>}
 				</div>
 				<GameCard
 					release_date={data.release_date}

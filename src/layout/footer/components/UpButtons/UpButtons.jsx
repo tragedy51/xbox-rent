@@ -70,16 +70,32 @@ export const UpButtons = () => {
 			<MotionButton
 				onClick={handleScrollToTop}
 				variants={variants[1]}
-				animate={countButtonUpIsShown ? 'up' : 'down'}
+				animate={
+					countButtonUpIsShown && !gameInfoBottomSheetIsOpen ? 'up' : 'down'
+				}
 				className={cls.buttonUp}>
 				<AnimatePresence initial={false}>
 					{!isEnd ? (
-						<motion.p
-							animate={{ opacity: 1 }}
-							initial={{ opacity: 0 }}
-							exit={{ opacity: 0 }}>
-							{counter}/{gamesCount}
-						</motion.p>
+						<div>
+							<motion.p
+								animate={{ opacity: 1 }}
+								initial={{ opacity: 0 }}
+								exit={{ opacity: 0 }}>
+								{counter}
+							</motion.p>
+							<motion.p
+								animate={{ opacity: 1 }}
+								initial={{ opacity: 0 }}
+								exit={{ opacity: 0 }}>
+								__
+							</motion.p>
+							<motion.p
+								animate={{ opacity: 1 }}
+								initial={{ opacity: 0 }}
+								exit={{ opacity: 0 }}>
+								{gamesCount}
+							</motion.p>
+						</div>
 					) : (
 						<motion.p
 							animate={{ opacity: 1 }}

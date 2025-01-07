@@ -1,8 +1,9 @@
+import { createPortal } from 'react-dom';
 import cls from './modal.module.css';
 import { AnimatePresence, motion } from 'framer-motion';
 
 export const Modal = ({ children, isOpen, setIsopen, className }) => {
-	return (
+	return createPortal(
 		<>
 			<AnimatePresence>
 				{isOpen && (
@@ -21,17 +22,18 @@ export const Modal = ({ children, isOpen, setIsopen, className }) => {
 							onClick={() => setIsopen(false)}></motion.div>
 						<motion.div
 							initial={{
-								translateY: '100%',
+								translateY: '120%',
 								translateX: '-50%',
 							}}
 							exit={{
-								translateY: '100%',
+								translateY: '120%',
 								translateX: '-50%',
 							}}
 							animate={{
 								translateY: '0%',
 								translateX: '-50%',
 							}}
+							transition={{ bounce: 0, duration: 0.2 }}
 							className={`wrapper ${cls.modal} ${className}`}>
 							{children}
 							<button
@@ -43,6 +45,7 @@ export const Modal = ({ children, isOpen, setIsopen, className }) => {
 					</>
 				)}
 			</AnimatePresence>
-		</>
+		</>,
+		document.getElementById('modal')
 	);
 };

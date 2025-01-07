@@ -117,7 +117,7 @@ export const Account = () => {
 	const [isOpen, setIsOpen] = useState(false);
 	const { setLoading } = useStore((state) => state);
 
-	const { data, isLoading, isSuccess } = useQuery({
+	const { data, isLoading, isSuccess, isError } = useQuery({
 		queryKey: [`user-info`],
 		queryFn: () =>
 			getUserData({
@@ -185,6 +185,10 @@ export const Account = () => {
 			setLoading(false);
 		}
 	}, [isSuccess, setLoading]);
+
+	if (isError) {
+		return <p>Произошла ошибка</p>;
+	}
 
 	if (isLoading) {
 		return (

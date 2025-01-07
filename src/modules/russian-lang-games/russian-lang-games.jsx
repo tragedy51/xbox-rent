@@ -8,9 +8,10 @@ import { useStore } from '../../store';
 
 const RussianLangGames = () => {
 	const content = useRef();
-	const { setVoiceActing, setCategoryBottomSheetIsOpen } = useStore(
-		(state) => state
-	);
+	const {
+		setVoiceActing,
+		setCategoryBottomSheetIsOpen,
+	} = useStore((state) => state);
 	const copyOfGames = useRef([]);
 
 	const { data, isSuccess, isLoading, isError } = useQuery({

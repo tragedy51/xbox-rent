@@ -49,6 +49,7 @@ export const CustomBottomSheet = ({
 
 		if (y.current > modalHeight / 4) {
 			await controls.start({ y: modalRef.current.offsetHeight });
+			document.getElementById('root').style.overflow = 'auto';
 			setIsopen(false);
 			onClose();
 		} else {
@@ -58,6 +59,7 @@ export const CustomBottomSheet = ({
 
 	useEffect(() => {
 		if (isOpen) {
+			document.getElementById('root').style.overflow = 'hidden';
 			controls.start({
 				y: adjustPosition ? -15 : 0,
 				width: adjustPosition ? '90%' : '100%',
@@ -93,6 +95,7 @@ export const CustomBottomSheet = ({
 									<button
 										className={cls.closeBtn}
 										onClick={() => {
+											document.getElementById('root').style.overflow = 'auto';
 											setIsopen(false);
 											onClose();
 										}}>
