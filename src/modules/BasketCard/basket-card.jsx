@@ -14,8 +14,8 @@ export const BasketCard = ({ adjustPosition }) => {
 	const {
 		basketBottomSheet,
 		setBasketBottomSheet,
-		setActiveGame,
-		setGameInfoBottomSheetIsOpen,
+		// setActiveGame,
+		// setGameInfoBottomSheetIsOpen,
 	} = useStore((state) => state);
 
 	const content = useRef(null);
@@ -39,13 +39,13 @@ export const BasketCard = ({ adjustPosition }) => {
 			}),
 	});
 
-	function handleOpenGameInfoBottomSheet(game) {
-		setActiveGame(game);
-		setGameInfoBottomSheetIsOpen(true);
-	}
+	// function handleOpenGameInfoBottomSheet(game) {
+	// 	setActiveGame(game);
+	// 	setGameInfoBottomSheetIsOpen(true);
+	// }
 
 	const recomendedInBasket = useMemo(() => {
-		return basketGames?.current_item_ids?.includes(data.id);
+		return basketGames?.current_item_ids?.includes(data?.id);
 	}, [basketGames, data]);
 
 	if (isLoading) {
@@ -71,7 +71,7 @@ export const BasketCard = ({ adjustPosition }) => {
 		if (data)
 			content.current = (
 				<BasketGameCard
-					onClick={() => handleOpenGameInfoBottomSheet(data)}
+					// onClick={() => handleOpenGameInfoBottomSheet(data)}
 					recommendation={true}
 					key={data.id}
 					game={data}

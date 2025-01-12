@@ -27,13 +27,21 @@ export const CategoryBottomSheet = ({ adjustPosition }) => {
 			adjustPosition={adjustPosition}
 			isOpen={categoryBottomSheetIsOpen}
 			setIsopen={handleCloseCategoryBottomSheet}
-			bottomSheetHeader={
-				<div style={{ marginTop: 0 }} className={cls.sectionHeader}>
-					<h2 style={{ fontWeight: 500 }} className='section-title'>
-						{activeCategory.name} {activeSeries.name}
-					</h2>
-				</div>
-			}>
+			// bottomSheetHeader={
+			// 	<div style={{ marginTop: 0 }} className={cls.sectionHeader}>
+			// 		<h2 style={{ fontWeight: 500 }} className='section-title'>
+			// 			{activeCategory.name} {activeSeries.name}
+			// 		</h2>
+			// 	</div>
+			// }
+		>
+			<div style={{ marginTop: 0 }} className={cls.sectionHeader}>
+				<h2
+					style={{ fontWeight: 500 }}
+					className='section-title'>
+					{activeCategory.name} {activeSeries.name}
+				</h2>
+			</div>
 			<GamesFilteredBycategory inBottomSheet={true} />
 		</CustomBottomSheet>
 	);

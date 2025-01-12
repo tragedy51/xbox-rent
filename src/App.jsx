@@ -23,6 +23,7 @@ const router = createHashRouter([
 			},
 			{ path: '/account', element: <Account /> },
 			{ path: '/basket', element: <RentGames /> },
+			{ path: '/basket/remove-messages', element: <RentGames /> },
 			{ path: '/:anything', element: <NotFound /> },
 			{
 				path: '/buy-games',

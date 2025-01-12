@@ -16,9 +16,10 @@ import SelectConsole from '../../pages/rent-games/components/select-console/sele
 import { hashString } from '../../helpers/hashString';
 import WebApp from '@twa-dev/sdk';
 import { checkUserConsole } from '../../pages/rent-games/api/checkConsole';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { getAndCreateBasket } from './api/getAndCreateBasket';
 import parse from 'html-react-parser';
+import { removeMessages } from './api/removeMessages';
 
 // const allContentVariants = {
 // 	isHidden: {
@@ -32,8 +33,6 @@ import parse from 'html-react-parser';
 const Root = () => {
 	const [openConsoleModal, setOpenConsoleModal] = useState(false);
 	// const container = useRef();
-
-	const [hash, setHash] = useState();
 	const {
 		XsIsOpen,
 		changeXsIsOpen,
@@ -46,28 +45,6 @@ const Root = () => {
 		setBasketGamesId,
 		XsTitle,
 	} = useStore((state) => state);
-
-	const location = useLocation();
-
-	useEffect(() => {
-		switch (location.pathname) {
-			case '/basket':
-				setBasketBottomSheet(true);
-				return;
-			default:
-				return;
-		}
-	}, [location, setBasketBottomSheet]);
-
-	const { data, isSuccess } = useQuery({
-		queryKey: ['user-info'],
-		queryFn: () =>
-			checkUserConsole({
-				token: hash,
-				id: WebApp?.initDataUnsafe?.user?.id || 1147564292, //815737483
-			}),
-		enabled: hash !== undefined,
-	});
 
 	// eslint-disable-next-line no-unused-vars
 	const { data: basket, isSuccess: basketCreateIsSuccess } = useQuery({
@@ -91,6 +68,44 @@ const Root = () => {
 		setBasketGamesCount,
 		setBasketGamesId,
 	]);
+
+	const [hash, setHash] = useState();
+
+	const location = useLocation();
+
+	const { mutate } = useMutation({
+		mutationFn: removeMessages,
+		onSettled: () => {
+			setBasketBottomSheet(true);
+		},
+	});
+
+	useEffect(() => {
+		switch (location.pathname) {
+			case '/basket':
+				setBasketBottomSheet(true);
+				return;
+			case '/basket/remove-messages':
+				if (basket?.basket_id)
+					mutate({
+						client_id: WebApp?.initDataUnsafe?.user?.id || 1147564292,
+						basket_id: basket.basket_id,
+					});
+				return;
+			default:
+				return;
+		}
+	}, [basket?.basket_id, location, mutate, setBasketBottomSheet]);
+
+	const { data, isSuccess } = useQuery({
+		queryKey: ['user-info'],
+		queryFn: () =>
+			checkUserConsole({
+				token: hash,
+				id: WebApp?.initDataUnsafe?.user?.id || 1147564292, //815737483
+			}),
+		enabled: hash !== undefined,
+	});
 
 	useEffect(() => {
 		hashString(

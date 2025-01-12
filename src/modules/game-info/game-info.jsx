@@ -98,7 +98,7 @@ export const GameInfo = ({ adjustPosition }) => {
 							{data.subprice !== '0.00' ? (
 								<>
 									<div className={cls.discount}>{data.price} ₽</div>
-									<p className={cls.price}>{data.subprice} ₽</p>
+									<p className={cls.price}>{data.original_price !== '0.00' ? data.original_price : data.subprice} ₽</p>
 								</>
 							) : (
 								<p className={cls.price}>{data.price} ₽</p>

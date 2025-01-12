@@ -43,7 +43,7 @@
 	transform: translate(-50%, -50%);
 }
 
-.sheetHeader .line {
+/* .sheetHeader .line {
 	width: 35px;
 	height: 4px;
 	border-radius: 99px;
@@ -52,7 +52,7 @@
 	top: 50%;
 	left: 50%;
 	transform: translate(-50%, -50%);
-}
+} */
 
 .sheetHeaderContent h2 {
 	font-size: 1.2rem;
@@ -74,4 +74,44 @@
 
 .sheetMain {
 	height: calc(100% - 30px - 50px - 60px);
+}
+
+.line {
+	--line-height: 4px;
+	width: 35px;
+	height: 4px;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}
+.line:after,
+.line:before {
+	content: '';
+	position: absolute;
+	top: calc(50% - calc(var(--line-height) / 2));
+	width: calc(50% + 1px);
+	height: var(--line-height);
+	background: #fff;
+	border-radius: 50px;
+	transition: all 0.25s ease-in-out;
+}
+.line:before {
+	--half-height: calc(var(--line-height) / 2);
+	left: 0;
+	border-top-right-radius: 0;
+	border-bottom-right-radius: 0;
+	transform-origin: right;
+}
+.line:after {
+	right: 0;
+	border-top-left-radius: 0;
+	border-bottom-left-radius: 0;
+	transform-origin: left;
+}
+.line.active:after {
+	transform: rotate(-25deg);
+}
+.line.active:before {
+	transform: rotate(25deg);
 }

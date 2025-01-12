@@ -8,11 +8,39 @@ import { CategoryBottomSheet } from '../../modules/CategoryBottomSheet/CategoryB
 import { GameInfo } from '../../modules/game-info/game-info';
 import { useStore } from '../../store';
 import GameOfDay from './sections/GameOfDay/GameOfDay';
+import { useEffect, useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { getGameDetail } from '../../modules/game-info/api/getGameDetail';
 
 export const RentGames = () => {
-	const { gameInfoBottomSheetIsOpen, basketBottomSheet } = useStore(
-		(state) => state
-	);
+	const {
+		gameInfoBottomSheetIsOpen,
+		basketBottomSheet,
+		setGameInfoBottomSheetIsOpen,
+		setActiveGame,
+	} = useStore((state) => state);
+	const [rentId, setRentId] = useState(undefined);
+
+	const { data, isSuccess } = useQuery({
+		queryKey: [`game-detail-${rentId}`],
+		queryFn: () => getGameDetail(rentId),
+		enabled: rentId !== undefined,
+	});
+
+	useEffect(() => {
+		const queryParams = new URLSearchParams(window.location.search);
+		const rentId = queryParams.get('rent_id');
+		if (rentId) {
+			setRentId(rentId);
+		}
+	}, []);
+
+	useEffect(() => {
+		if (isSuccess) {
+			setActiveGame(data);
+			setGameInfoBottomSheetIsOpen(true);
+		}
+	}, [data, isSuccess, setActiveGame, setGameInfoBottomSheetIsOpen]);
 
 	return (
 		<>

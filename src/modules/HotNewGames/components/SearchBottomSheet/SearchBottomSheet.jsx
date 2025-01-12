@@ -1,7 +1,7 @@
 import { Icon } from '@iconify/react/dist/iconify.js';
 import GamesCont from '../../../../components/GamesCont/GamesCont';
 import { CustomBottomSheet } from '../../../../UI/BottomSheet/BottomSheet';
-import cls from './SearchBottomSheet.module.css';
+// import cls from './SearchBottomSheet.module.css';
 
 const SearchBottomSheet = ({ adjustPosition, isOpen, setIsOpen, games }) => {
 	return (
@@ -9,13 +9,14 @@ const SearchBottomSheet = ({ adjustPosition, isOpen, setIsOpen, games }) => {
 			adjustPosition={adjustPosition}
 			isOpen={isOpen}
 			setIsopen={setIsOpen}
-			bottomSheetHeader={
-				<div style={{ marginTop: 0 }} className={cls.sectionHeader}>
-					<h2 style={{ fontWeight: 500 }} className='section-title'>
-						Результат поиска
-					</h2>
-				</div>
-			}>
+			// bottomSheetHeader={
+			// 	<div style={{ marginTop: 0 }} className={cls.sectionHeader}>
+			// 		<h2 style={{ fontWeight: 500 }} className='section-title'>
+			// 			Результат поиска
+			// 		</h2>
+			// 	</div>
+			// }
+			>
 			{games ? (
 				<GamesCont games={games} inBottomSheet={true} />
 			) : (

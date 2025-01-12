@@ -10,6 +10,7 @@ import useScrollDirection from '../../hooks/useScrollDirection';
 import { useStore } from '../../store';
 import { IphoneShareIcon } from '../../assets';
 import { handleTelegramShare } from '../../helpers/handleTelegramShare';
+import { createPortal } from 'react-dom';
 
 export const CustomBottomSheet = ({
 	sheetBgColor,
@@ -29,6 +30,7 @@ export const CustomBottomSheet = ({
 	const mainRef = useRef(null);
 	const { direction, activeGame } = useStore((state) => state);
 	const touchStartPoint = useRef(0);
+	// const [lineIsActive, setLineIsActive] = useState(false);
 
 	useScrollDirection(mainRef);
 
@@ -37,6 +39,7 @@ export const CustomBottomSheet = ({
 		if (onTheTop && direction === 'up') {
 			if (y.current < 0) return;
 			y.set(touchY);
+			// setLineIsActive(true);
 		}
 		if (y.current > 0 && direction === 'down') {
 			if (y.current < 0) return;
@@ -55,6 +58,8 @@ export const CustomBottomSheet = ({
 		} else {
 			controls.start({ y: 0 });
 		}
+
+		// setLineIsActive(false);
 	}
 
 	useEffect(() => {
@@ -65,10 +70,12 @@ export const CustomBottomSheet = ({
 				width: adjustPosition ? '90%' : '100%',
 				marginInline: 'auto',
 			});
+		} else {
+			document.getElementById('root').style.overflow = 'auto';
 		}
 	}, [controls, isOpen, adjustPosition, backdropControls]);
 
-	return (
+	return createPortal(
 		<AnimatePresence>
 			{isOpen && (
 				<>
@@ -106,7 +113,7 @@ export const CustomBottomSheet = ({
 											{bottomSheetHeader}
 										</div>
 									)}
-									{!bottomSheetHeader && <div className={cls.line} />}
+									{!bottomSheetHeader && <div className={`${cls.line}`} />}
 									{shareIcon && (
 										<button
 											onClick={() => handleTelegramShare(activeGame)}
@@ -144,6 +151,7 @@ export const CustomBottomSheet = ({
 					/>
 				</>
 			)}
-		</AnimatePresence>
+		</AnimatePresence>,
+		document.getElementById('modal')
 	);
 };

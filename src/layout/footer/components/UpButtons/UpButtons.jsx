@@ -81,19 +81,7 @@ export const UpButtons = () => {
 								animate={{ opacity: 1 }}
 								initial={{ opacity: 0 }}
 								exit={{ opacity: 0 }}>
-								{counter}
-							</motion.p>
-							<motion.p
-								animate={{ opacity: 1 }}
-								initial={{ opacity: 0 }}
-								exit={{ opacity: 0 }}>
-								__
-							</motion.p>
-							<motion.p
-								animate={{ opacity: 1 }}
-								initial={{ opacity: 0 }}
-								exit={{ opacity: 0 }}>
-								{gamesCount}
+								{counter}/{gamesCount}
 							</motion.p>
 						</div>
 					) : (

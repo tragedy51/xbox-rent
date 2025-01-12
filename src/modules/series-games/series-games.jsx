@@ -59,14 +59,18 @@ const SeriesGames = () => {
 	useEffect(() => {
 		if (isSuccess) {
 			copyOfGames.current = [...data.results];
-			const randomIndex = Math.floor(
-				Math.random() * copyOfGames.current.length
-			);
+			let currentIndex = copyOfGames.current.length;
 
-			[copyOfGames.current[0], copyOfGames.current[randomIndex]] = [
-				copyOfGames.current[randomIndex],
-				copyOfGames.current[0],
-			];
+			// While there remain elements to shuffle...
+			while (currentIndex != 0) {
+				// Pick a remaining element...
+				let randomIndex = Math.floor(Math.random() * currentIndex);
+				currentIndex--;
+
+				// And swap it with the current element.
+				[copyOfGames.current[currentIndex], copyOfGames.current[randomIndex]] =
+					[copyOfGames.current[randomIndex], copyOfGames.current[currentIndex]];
+			}
 		}
 	}, [data, isSuccess]);
 

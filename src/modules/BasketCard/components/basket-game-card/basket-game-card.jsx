@@ -122,7 +122,9 @@ export const BasketGameCard = ({
 						{game.subprice && game.subprice !== '0.00' ? (
 							<>
 								<p className={cls.discount}>{game.price} ₽</p>
-								<p className={cls.price}>{game.subprice} ₽</p>
+								<p className={cls.price}>
+									{game.original_price ? game.original_price : game.subprice} ₽
+								</p>
 							</>
 						) : (
 							<p className={cls.price}>{game.price} ₽</p>
@@ -136,12 +138,12 @@ export const BasketGameCard = ({
 						<DeleteIcon width={16} height={16} />
 					</button>
 				) : inBasket ? (
-					<button className={cls.deleteBtn}>
+					<button className={`${cls.deleteBtn} ${cls.basketBtn}`}>
 						<Icon icon='mdi:success-bold' width='24' height='24' />
 					</button>
 				) : (
 					<button
-						className={cls.deleteBtn}
+						className={`${cls.deleteBtn} ${cls.basketBtn}`}
 						onClick={() => handleAddGameToBasket(game)}>
 						<BasketIcon width={24} height={24} />
 					</button>
