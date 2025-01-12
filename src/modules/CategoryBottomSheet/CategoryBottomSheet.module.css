@@ -55,8 +55,8 @@ body:has(.sheet) {
 .sectionHeader {
 	display: flex;
 	flex-direction: column;
-	padding: 0 16px;
 	margin-bottom: 16px;
+	align-items: center;
 }
 
 .subtitle {
