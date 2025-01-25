@@ -6,12 +6,13 @@ import { useQuery } from '@tanstack/react-query';
 import { getGameDetail } from './api/getGameDetail';
 import GameAbout from './pages/game-about/game-about';
 import GameScreens from './pages/game-screens/game-screens';
-import GameDlc from './pages/game-dlc/game-dlc';
 import GameVideos from './pages/game-videos/game-videos';
 import { GamePassIcon, RussianFlagIcon, XSIcon } from '../../assets';
+import { gameInfoHeader } from '../../consts/game-info-header';
 import Loading from '../../UI/Loading/Loading';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Icon } from '@iconify/react/dist/iconify.js';
+import { Swiper, SwiperSlide } from 'swiper/react';
 
 export const GameInfo = ({ adjustPosition }) => {
 	const {
@@ -24,7 +25,9 @@ export const GameInfo = ({ adjustPosition }) => {
 		isAdmin,
 		setXsTitle,
 	} = useStore((state) => state);
-	const [page, setPage] = useState('detail');
+
+	// that state refers to current swiper index that shows number of page (countdown starts from 0)
+	const [page, setPage] = useState(0);
 	const [bigImage, setBigImage] = useState('');
 
 	useEffect(() => {
@@ -34,6 +37,8 @@ export const GameInfo = ({ adjustPosition }) => {
 	}, [page, activeGame]);
 
 	const content = useRef(null);
+	const swiperRef = useRef(null);
+	const activeBarRef = useRef(null);
 
 	function handleOpenXsInfo(e, name) {
 		e.stopPropagation();
@@ -59,6 +64,36 @@ export const GameInfo = ({ adjustPosition }) => {
 			})}г`
 		);
 		changeXsIsOpen(true);
+	}
+
+	function handleActiveBarWidth(index) {
+		const node = document.querySelector(`#active-page-${index}`);
+		if (!node || !activeBarRef.current) return;
+
+		const widthOfCurrentNode = window.getComputedStyle(node).width;
+		activeBarRef.current.style.width = widthOfCurrentNode;
+	}
+
+	function handleSwiper(sw) {
+		swiperRef.current = sw;
+		handleActiveBarWidth(sw.activeIndex);
+	}
+
+	function handleSlideChange(sw) {
+		handleActiveBarWidth(sw.activeIndex);
+		setPage(sw.activeIndex);
+	}
+
+	function handleProgress(sw) {
+		if (!activeBarRef.current) return;
+
+		const swiperWrapper = sw.wrapperEl;
+		const slidesCount = sw.slides.length;
+		const totalWidth = swiperWrapper.clientWidth;
+		const slidesWidth = totalWidth / slidesCount;
+
+		const left = (totalWidth - slidesWidth) * sw.progress + (slidesWidth - 76) * sw.progress;
+		activeBarRef.current.style.left = `${sw.progress == 1 ? left - 7 : left || 9}px`;
 	}
 
 	const { data, isLoading, isError, isSuccess } = useQuery({
@@ -147,54 +182,52 @@ export const GameInfo = ({ adjustPosition }) => {
 						<header className={cls.gameInfoHeader}>
 							<div className='wrapper'>
 								<div className={cls.gameInfoHeaderLinks}>
-									<button
-										className={`${
-											page === 'detail'
-												? `${cls.active} ${cls.navBtn}`
-												: cls.navBtn
-										}`}
-										onClick={() => setPage('detail')}>
-										Об игре
-									</button>
-									{data.screenshots.length !== 0 && (
-										<button
-											className={`${
-												page === 'screens'
-													? `${cls.active} ${cls.navBtn}`
-													: cls.navBtn
-											}`}
-											onClick={() => setPage('screens')}>
-											Скрины
-										</button>
-									)}
-									{data.screenshots.length !== 0 && (
-										<button
-											className={`${
-												page === 'videos'
-													? `${cls.active} ${cls.navBtn}`
-													: cls.navBtn
-											}`}
-											onClick={() => setPage('videos')}>
-											Видео
-										</button>
-									)}
+									{gameInfoHeader.map((str, i) => {
+										if (i > 0 && data.screenshots.length == 0) return;
+
+										return (
+											<button
+												key={i}
+												id={`active-page-${i}`}
+												className={`${cls.navBtn} ${page == i && cls.active}`}
+												onClick={() => swiperRef.current.slideTo(i)}
+											>
+												{str}
+											</button>
+										);
+									})}
+									<span
+										ref={activeBarRef}
+										className={cls.activeBar}
+									/>
 								</div>
 							</div>
 						</header>
 						<main className={cls.gameInfoMain}>
-							{page === 'detail' ? (
-								<GameAbout setBigImage={setBigImage} data={data} />
-							) : page === 'screens' ? (
-								<GameScreens screens={data.screenshots} />
-							) : page === 'videos' ? (
-								<GameVideos
-									videos={data.videos}
-									trailer={data.trailer}
-									title={data.title}
-								/>
-							) : (
-								<GameDlc />
-							)}
+							<Swiper
+								autoHeight
+								onSwiper={handleSwiper}
+								onProgress={handleProgress}
+								onSlideChange={handleSlideChange}
+							>
+								<SwiperSlide key={0}>
+									<GameAbout setBigImage={setBigImage} data={data} />
+								</SwiperSlide>
+								{data.screenshots.length !== 0 && (
+									<>
+										<SwiperSlide key={1}>
+											<GameScreens screens={data.screenshots} />
+										</SwiperSlide>
+										<SwiperSlide key={2}>
+											<GameVideos
+												videos={data.videos}
+												trailer={data.trailer}
+												title={data.title}
+											/>
+										</SwiperSlide>
+									</>
+								)}
+							</Swiper>
 						</main>
 					</div>
 				</div>
