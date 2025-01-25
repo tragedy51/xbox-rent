@@ -68,7 +68,7 @@ export const GameInfo = ({ adjustPosition }) => {
 
 	function handleActiveBarWidth(index) {
 		const node = document.querySelector(`#active-page-${index}`);
-		if (!node) return;
+		if (!node || !activeBarRef.current) return;
 
 		const widthOfCurrentNode = window.getComputedStyle(node).width;
 		activeBarRef.current.style.width = widthOfCurrentNode;
@@ -85,14 +85,15 @@ export const GameInfo = ({ adjustPosition }) => {
 	}
 
 	function handleProgress(sw) {
-		const swiperWrapper = sw.wrapperEl;
+		if (!activeBarRef.current) return;
 
+		const swiperWrapper = sw.wrapperEl;
 		const slidesCount = sw.slides.length;
 		const totalWidth = swiperWrapper.clientWidth;
-		const slideWidth = totalWidth / slidesCount;
+		const slidesWidth = totalWidth / slidesCount;
 
-		const leftPosition = 9 + sw.progress * (totalWidth - slideWidth);
-		activeBarRef.current.style.left = `${leftPosition}px`;
+		const left = (totalWidth - slidesWidth) * sw.progress + (slidesWidth - 76) * sw.progress;
+		activeBarRef.current.style.left = `${sw.progress == 1 ? left - 7 : left || 9}px`;
 	}
 
 	const { data, isLoading, isError, isSuccess } = useQuery({
@@ -209,15 +210,15 @@ export const GameInfo = ({ adjustPosition }) => {
 								onProgress={handleProgress}
 								onSlideChange={handleSlideChange}
 							>
-								<SwiperSlide>
+								<SwiperSlide key={0}>
 									<GameAbout setBigImage={setBigImage} data={data} />
 								</SwiperSlide>
 								{data.screenshots.length !== 0 && (
 									<>
-										<SwiperSlide>
+										<SwiperSlide key={1}>
 											<GameScreens screens={data.screenshots} />
 										</SwiperSlide>
-										<SwiperSlide>
+										<SwiperSlide key={2}>
 											<GameVideos
 												videos={data.videos}
 												trailer={data.trailer}
